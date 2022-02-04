@@ -26,6 +26,7 @@ class Connexionsgbd {
 
         // Get a connection to the database
         Connection conn = DriverManager.getConnection(dbUrl, username, password);
+        RequetesSQL.maBD(conn);
         // Print information about connection warnings
         SQLWarningsExceptions.printWarnings(conn);
         conn.close() ;
