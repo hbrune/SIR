@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Contrôleur;
+package Controleur;
 
 /**
  *
@@ -28,7 +28,6 @@ public class Controller {
         //Cette fonction est la même quelle que soit l'utilisateur
         //Elle permet à la secrétaire de vérifier l'existence d'un patient
         //Et pour un manip/PH d'accéder au DMR d'un patient
-        
     }
     
     public void ajouterPatient() {

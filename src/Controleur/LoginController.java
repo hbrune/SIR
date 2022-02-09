@@ -2,16 +2,15 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Contrôleur;
+package Controleur;
 
-import Modèle.Login;
-import Modèle.TypeUtilisateur;
+import Modele.Login;
+import Modele.TypeUtilisateur;
 import Vue.Accueil;
 import Vue.Authentification;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import sir.DbConnection;
 
 /**
  *
@@ -19,14 +18,12 @@ import sir.DbConnection;
  */
 public class LoginController {
     Login user;
-    DbConnection coDB;
     Authentification authView;
     Accueil accueilView;
     
     
     public LoginController() {
         user = null;
-        coDB = new DbConnection();
         this.authView = authView;
     }
     
@@ -70,7 +67,7 @@ public class LoginController {
                 
 
 
-                //On crée un user à partir des infos récupérées (on vérifie qu'il est valide
+                //On crée un user à partir des infos récupérées (on vérifie qu'il est valide)
                 
                 if (user.isUserValid()) {
                     setUser(user);

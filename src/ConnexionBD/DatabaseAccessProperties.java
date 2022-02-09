@@ -28,8 +28,7 @@ public class DatabaseAccessProperties {
             return;
         } 
         catch (IOException e) {
-            System.err.println( "IOException: " + 
-            e.getMessage()) ;
+            System.err.println( "IOException: " + e.getMessage()) ;
             e.printStackTrace();
             return;
         }

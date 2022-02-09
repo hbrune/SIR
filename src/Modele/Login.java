@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Modèle;
+package Modele;
 
 /**
  *
@@ -16,8 +16,12 @@ public class Login {
     String surname;
     int function;
 
-    public Login() {
-
+    public Login(String idLogin, String password, String name, String surname, int function) {
+        this.idLogin = idLogin;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.function = function;
     }
 
     

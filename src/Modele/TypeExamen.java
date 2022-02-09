@@ -2,21 +2,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Contrôleur;
-
-import Modèle.Login;
-import sir.DbConnection;
+package Modele;
 
 /**
  *
  * @author Brune
  */
-public class ManipAndPhController {
-    Login user;
-    DbConnection coDB;
+public enum TypeExamen {
+    RADIO (1),
+    SCANNER (2),
+    IRM (3);
+
+    int type;
     
-    public ManipAndPhController(Login user) {
-        this.user = user;
+    private TypeExamen(int type) {
+        this.type = type;
     }
     
+    private int type() {
+        return type;
+    }
 }

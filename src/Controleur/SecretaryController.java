@@ -2,23 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Modèle;
+package Controleur;
 
+import Modele.Login;
 /**
  *
  * @author Brune
  */
-public enum TypeGenre {
-    H (1),
-    F (2);
-
-    int type;
+public class SecretaryController {
+    Login user;
     
-    private TypeGenre(int type) {
-        this.type = type;
+    public SecretaryController(Login user) {
+        this.user = user;
     }
     
-    private int type() {
-        return type;
-    }
 }

@@ -2,20 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Contrôleur;
+package Controleur;
 
-import Modèle.Login;
-import sir.DbConnection;
+import Modele.Login;
 
 /**
  *
  * @author Brune
  */
-public class SecretaryController {
+public class ManipAndPhController {
     Login user;
-    DbConnection coDB;
     
-    public SecretaryController(Login user) {
+    public ManipAndPhController(Login user) {
         this.user = user;
     }
     

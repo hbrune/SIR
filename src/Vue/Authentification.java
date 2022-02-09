@@ -4,7 +4,7 @@
  */
 package Vue;
 
-import Contrôleur.LoginController;
+import Controleur.LoginController;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
