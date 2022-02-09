@@ -2,15 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Controleur;
+package Contrôleur;
 
-import Modele.Login;
-import Modele.TypeUtilisateur;
+import ConnexionBD.DatabaseAccessProperties;
+import Modèle.Login;
+import Modèle.TypeUtilisateur;
 import Vue.Accueil;
 import Vue.Authentification;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import sir.DbConnection;
 
 /**
  *
@@ -18,12 +20,15 @@ import java.sql.Statement;
  */
 public class LoginController {
     Login user;
+    DbConnection coDB;
     Authentification authView;
     Accueil accueilView;
+    DatabaseAccessProperties dap;
     
     
-    public LoginController() {
+    public LoginController() throws ClassNotFoundException {
         user = null;
+        dap = new DatabaseAccessProperties();
         this.authView = authView;
     }
     
@@ -67,7 +72,7 @@ public class LoginController {
                 
 
 
-                //On crée un user à partir des infos récupérées (on vérifie qu'il est valide)
+                //On crée un user à partir des infos récupérées (on vérifie qu'il est valide
                 
                 if (user.isUserValid()) {
                     setUser(user);
