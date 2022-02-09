@@ -19,6 +19,7 @@ public class DatabaseAccessProperties {
     private String dbUrl;
     private String username, password;
     private static final String configurationFile = "BD.properties";
+    private Connection conn;
     
     public DatabaseAccessProperties() throws ClassNotFoundException {
         
@@ -45,7 +46,7 @@ public class DatabaseAccessProperties {
             // Load the database driver
             Class.forName(jdbcDriver) ;
             // Get a connection to the database
-            Connection conn = DriverManager.getConnection(dbUrl, username, password);
+            conn = DriverManager.getConnection(dbUrl, username, password);
             RequetesSQL.recherchePatient(conn,"momo");
             
         }catch( SQLException se ) {
@@ -68,6 +69,10 @@ public class DatabaseAccessProperties {
     }
     public String getPassword() {
         return password;
+    }
+    
+    public Connection getConn() {
+        return conn;
     }
 }
 
