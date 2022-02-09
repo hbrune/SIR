@@ -19,10 +19,15 @@ base de donn�es
         
         // Execute the query
         ResultSet rsTest = stmt.executeQuery("SELECT * FROM LOGIN where proId = '" + proId + "' and password = '" + password + "'") ;
-        while(rsTest.next()) { 
-            System.out.println(rsTest);
-            Modele.Login m = new Modele.Login(rsTest.getString(1),rsTest.getString(2),rsTest.getString(3),rsTest.getString(4),rsTest.getInt(5)); 
-            System.out.println("Votre login est correct !");
+        try {
+            while(rsTest.next()) {    
+                System.out.println("Votre login est correct !");
+            }
+        }
+        finally {
+            if(rsTest == null) {
+                System.out.println("Votre login est incorrect...");
+            }
         }
         // Close the result set, statement and the connection
         rsTest.close() ;
