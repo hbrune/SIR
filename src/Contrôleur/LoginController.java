@@ -6,6 +6,8 @@ package Contrôleur;
 
 import Modèle.Login;
 import Modèle.TypeUtilisateur;
+import Vue.Accueil;
+import Vue.Authentification;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -18,19 +20,32 @@ import sir.DbConnection;
 public class LoginController {
     Login user;
     DbConnection coDB;
+    Authentification authView;
+    Accueil accueilView;
+    
     
     public LoginController() {
         user = null;
         coDB = new DbConnection();
+        this.authView = authView;
+    }
+    
+    public void setAuthView(Authentification authView) {
+        this.authView = authView;
     }
     
     public void login(String login, String pwd) throws SQLException {
         //Tests en attendant la BD
         if (login.equals("login") && pwd.equals("mdp")){    
             System.out.println("connecté");
+            authView.dispose();
+            authView = null;
+            accueilView = new Accueil();
+            accueilView.setUser(user);
+            accueilView.setVisible(true);
         }
 
-
+/*
         //Requete
         String request = "select * from login where username = " + login; 
         try {
@@ -44,15 +59,19 @@ public class LoginController {
                 
                 //On récupère les infos
                 //A remplacer par les infos récupérées
-                String idLogin = "";
-                String password = "";
-                String name = "";
-                String surname = "";
-                TypeUtilisateur type = TypeUtilisateur.PH;
+                while (res.next()) {
+                    
+                    Login user = new Login ();
+                    user.setIdLogin(res.getNString("loginID"));
+                    user.setSurname(res.getNString("surname"));
+                    user.setName(res.getNString("name"));
+                    user.setFunction(res.getInt("function"));
+                }
+                
 
 
                 //On crée un user à partir des infos récupérées (on vérifie qu'il est valide
-                Login user = new Login ("", "", "", "", type);
+                
                 if (user.isUserValid()) {
                     setUser(user);
                 }
@@ -75,7 +94,7 @@ public class LoginController {
         
         
         
-        
+        */
         
     }
     

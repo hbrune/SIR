@@ -24,6 +24,7 @@ public class Authentification extends JFrame {
     public Authentification(LoginController controller) {
         initComponents();
         this.controller = controller;
+        this.controller.setAuthView(this);
     }
 
     /**

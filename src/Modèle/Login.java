@@ -14,19 +14,15 @@ public class Login {
     String password;
     String name;
     String surname;
-    TypeUtilisateur function;
+    int function;
 
-    public Login(String idLogin, String password, String name, String surname, TypeUtilisateur function) {
-        this.idLogin = idLogin;
-        this.password = password;
-        this.name = name;
-        this.surname = surname;
-        this.function = function;
+    public Login() {
+
     }
 
     
     public boolean isUserValid(){
-        return (idLogin != null && password != null && name != null && surname != null && function != null);
+        return (idLogin != null && password != null && name != null && surname != null && function != 0);
     }
             
     public String getIdLogin() {
@@ -61,11 +57,11 @@ public class Login {
         this.surname = surname;
     }
 
-    public TypeUtilisateur getFunction() {
+    public int getFunction() {
         return function;
     }
 
-    public void setFunction(TypeUtilisateur function) {
+    public void setFunction(int function) {
         this.function = function;
     }
     

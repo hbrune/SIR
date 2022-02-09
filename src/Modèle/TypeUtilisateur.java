@@ -16,11 +16,11 @@ public enum TypeUtilisateur {
 
     int type;
     
-    private TypeUtilisateur(int type) {
+    TypeUtilisateur(int type) {
         this.type = type;
     }
     
-    private int type() {
+    public int type() {
         return type;
     }
 }
