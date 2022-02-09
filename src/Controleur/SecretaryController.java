@@ -39,14 +39,14 @@ public class SecretaryController {
     
     public void recherchePatient(String critere, String recherche) {
     
-        recherchePatientByCriteria(critere, recherche);
+        //recherchePatientByCriteria(critere, recherche);
        
     }
     
     public void recherchePatientFromDdn(Date ddn) {
         
         //Conversion date en date SQL > '05-JAN-2003
-        recherchePatientByDdn(recherche);     
+        //recherchePatientByDdn(recherche);     
            
        
     }
