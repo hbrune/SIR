@@ -2,11 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Contrôleur;
+package Controleur;
 
-import Modèle.Login;
+import Modele.Login;
 import java.time.LocalDate;
-import sir.DbConnection;
 
 /**
  *
@@ -14,7 +13,6 @@ import sir.DbConnection;
  */
 public class SecretaryController {
     Login user;
-    DbConnection coDB;
     
     public SecretaryController(Login user) {
         this.user = user;

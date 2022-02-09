@@ -2,17 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Contrôleur;
+package Controleur;
 
 import ConnexionBD.DatabaseAccessProperties;
-import Modèle.Login;
-import Modèle.TypeUtilisateur;
+import Modele.Login;
+import Modele.TypeUtilisateur;
 import Vue.Accueil;
 import Vue.Authentification;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import sir.DbConnection;
 
 /**
  *
@@ -20,7 +19,6 @@ import sir.DbConnection;
  */
 public class LoginController {
     Login user;
-    DbConnection coDB;
     Authentification authView;
     Accueil accueilView;
     DatabaseAccessProperties dap;

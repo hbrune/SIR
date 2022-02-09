@@ -46,7 +46,7 @@ public class DatabaseAccessProperties {
             Class.forName(jdbcDriver) ;
             // Get a connection to the database
             Connection conn = DriverManager.getConnection(dbUrl, username, password);
-            RequetesSQL.maBD(conn);
+            RequetesSQL.recherchePatient(conn,"momo");
             
         }catch( SQLException se ) {
 
