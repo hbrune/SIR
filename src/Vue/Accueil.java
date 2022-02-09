@@ -67,7 +67,7 @@ public class Accueil extends javax.swing.JFrame {
 
         jButton2.setBackground(new java.awt.Color(153, 204, 255));
         jButton2.setForeground(new java.awt.Color(153, 204, 255));
-        //jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home/icons8_sign_out_40px_1.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons8_sign_out_40px_1.png"))); // NOI18N
         jButton2.setBorder(null);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -107,7 +107,7 @@ public class Accueil extends javax.swing.JFrame {
 
         jButton1.setBackground(new java.awt.Color(255, 255, 255));
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        //jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home/icons8_add_user_group_man_woman_40px.png"))); // NOI18N
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("icons8_add_user_group_man_woman_40px.png"))); // NOI18N
         jButton1.setBorder(null);
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -118,7 +118,7 @@ public class Accueil extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 18)); // NOI18N
         jLabel2.setText(" Rechercher un patient : ");
 
-        //jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/home/icons8_find_user_male_40px.png"))); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("icons8_find_user_male_40px.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);

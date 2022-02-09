@@ -4,6 +4,7 @@
  */
 package Contrôleur;
 
+import ConnexionBD.DatabaseAccessProperties;
 import Modèle.Login;
 import Modèle.TypeUtilisateur;
 import Vue.Accueil;
@@ -22,11 +23,12 @@ public class LoginController {
     DbConnection coDB;
     Authentification authView;
     Accueil accueilView;
+    DatabaseAccessProperties dap;
     
     
-    public LoginController() {
+    public LoginController() throws ClassNotFoundException {
         user = null;
-        coDB = new DbConnection();
+        dap = new DatabaseAccessProperties();
         this.authView = authView;
     }
     

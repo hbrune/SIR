@@ -3,6 +3,9 @@ package ConnexionBD;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.Properties;
 /**
 * The BenchmarkProperties class describes the properties of 
@@ -15,12 +18,13 @@ public class DatabaseAccessProperties {
     private String jdbcDriver;
     private String dbUrl;
     private String username, password;
+    private static final String configurationFile = "BD.properties";
     
-    public DatabaseAccessProperties(String propertiesFile) {
+    public DatabaseAccessProperties() throws ClassNotFoundException {
         
         try {    
             prop = new Properties();
-            prop.load(new FileInputStream(propertiesFile));
+            prop.load(new FileInputStream(configurationFile));
         } 
         catch (FileNotFoundException e) {
             System.err.println( "FileNotFoundException: " + e.getMessage()) ;
@@ -37,17 +41,33 @@ public class DatabaseAccessProperties {
         dbUrl = prop.getProperty("database.url");
         username = prop.getProperty("database.username");
         password = prop.getProperty("database.password");
+        
+        try {
+            // Load the database driver
+            Class.forName(jdbcDriver) ;
+            // Get a connection to the database
+            Connection conn = DriverManager.getConnection(dbUrl, username, password);
+            RequetesSQL.maBD(conn);
+            
+        }catch( SQLException se ) {
+
+        // Print information about SQL exceptions
+        SQLWarningsExceptions.printExceptions(se);
+
+        return;
         }
-        public String getJdbcDriver() {
+    }
+    
+    public String getJdbcDriver() {
         return jdbcDriver;
-        }
-        public String getDatabaseUrl() {
+    }
+    public String getDatabaseUrl() {
         return dbUrl;
-        }
-        public String getUsername() {
+    }
+    public String getUsername() {
         return username;
-        }
-        public String getPassword() {
+    }
+    public String getPassword() {
         return password;
     }
 }

@@ -4,6 +4,7 @@
  */
 package sir;
 
+import ConnexionBD.DatabaseAccessProperties;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -14,12 +15,14 @@ import javax.swing.plaf.nimbus.NimbusLookAndFeel;
  * @author Brune
  */
 public class SIR extends JFrame {
+    DatabaseAccessProperties dap;
     
-    public SIR() {
+    public SIR() throws ClassNotFoundException {
         super("Hôpital Princeton Plainsborough");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.setSize(1000,600);
         this.setLocationRelativeTo(null);
+        dap = new DatabaseAccessProperties();
     }
 
     /**
