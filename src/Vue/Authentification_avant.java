@@ -8,12 +8,12 @@ package Vue;
  *
  * @author saman
  */
-public class Authentification extends javax.swing.JFrame {
+public class Authentification_avant extends javax.swing.JFrame {
 
     /**
      * Creates new form Authentification
      */
-    public Authentification() {
+    public Authentification_avant() {
         initComponents();
     }
 
