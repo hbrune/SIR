@@ -4,17 +4,25 @@
  */
 package Vue;
 
+import Controleur.LoginController;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author saman
  */
 public class Authentification extends javax.swing.JFrame {
 
+    LoginController controller;
     /**
      * Creates new form Authentification
      */
-    public Authentification() {
+    public Authentification(LoginController controller) {
         initComponents();
+        this.controller = controller;
+        controller.setAuthView(this);
     }
 
     /**
@@ -67,8 +75,6 @@ public class Authentification extends javax.swing.JFrame {
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
-        jLabel1.setIcon(new javax.swing.ImageIcon("C:\\Users\\saman\\Downloads\\Projet SIS\\plainsbro.png")); // NOI18N
-
         jLabel2.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 18)); // NOI18N
         jLabel2.setText("Connexion ");
 
@@ -106,7 +112,6 @@ public class Authentification extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 12)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(153, 0, 51));
-        jLabel7.setText("Erreur : identifiant ou mot de passe incorrects");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -155,12 +160,12 @@ public class Authentification extends javax.swing.JFrame {
                     .addComponent(jLabel4)
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jLabel6)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 26, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 122, Short.MAX_VALUE)
                 .addComponent(jButton1)
                 .addGap(46, 46, 46))
         );
@@ -175,7 +180,20 @@ public class Authentification extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        String login = jTextField1.getText();
+        String pwd;
+        pwd = jPasswordField1.getText();
+        try {
+            controller.login(login, pwd);
+        } catch (SQLException ex) {
+            Logger.getLogger(Authentification.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Authentification.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String error = controller.getError();
+        if(!error.equals("")) {
+            jLabel7.setText(error);
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
@@ -208,7 +226,13 @@ public class Authentification extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Authentification().setVisible(true);
+                LoginController lc;
+                try {
+                    lc = new LoginController();
+                    new Authentification(lc).setVisible(true);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Authentification.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         });
     }
