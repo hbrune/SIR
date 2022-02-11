@@ -8,7 +8,6 @@ import ConnexionBD.DatabaseAccessProperties;
 import ConnexionBD.RequetesSQL;
 import Modele.Login;
 import Modele.TypeUtilisateur;
-import Vue.Accueil;
 import Vue.Authentification;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,82 +20,47 @@ import java.sql.Statement;
 public class LoginController {
     Login user;
     Authentification authView;
-    Accueil accueilView;
     RequetesSQL sql;
+    String error = "";
     
     
     public LoginController() throws ClassNotFoundException {
         user = null;
-        sql = new RequetesSQL();
-        this.authView = authView;
+        sql = new RequetesSQL();        
+        authView = new Authentification(this);
+        authView.setVisible(true);
     }
     
     public void setAuthView(Authentification authView) {
         this.authView = authView;
     }
     
-    public void login(String login, String pwd) throws SQLException {
-        //Tests en attendant la BD
-        if (login.equals("login") && pwd.equals("mdp")){    
-            System.out.println("connecté");
-            authView.dispose();
-            authView = null;
-            accueilView = new Accueil();
-            accueilView.setUser(user);
-            accueilView.setVisible(true);
-        }
-
-/*
-        //Requete
-        String request = "select * from login where username = " + login; 
+    public String getError() {
+        return error;
+    }
+    
+    public void login(String login, String pwd) throws SQLException, ClassNotFoundException {
+        
         try {
-            //Appel a la DB qui retourne les infos de l'utilisateur
-            Statement st = coDB.getConnexion().createStatement();
-            ResultSet res = st.executeQuery(request);
-            
-            
-            if (res.next()) {
-                //Verif password
-                
-                //On récupère les infos
-                //A remplacer par les infos récupérées
-                while (res.next()) {
-                    
-                    Login user = new Login ();
-                    user.setIdLogin(res.getNString("loginID"));
-                    user.setSurname(res.getNString("surname"));
-                    user.setName(res.getNString("name"));
-                    user.setFunction(res.getInt("function"));
-                }
-                
-
-
-                //On crée un user à partir des infos récupérées (on vérifie qu'il est valide
-                
-                if (user.isUserValid()) {
-                    setUser(user);
-                }
-
-                //Vue page d'accueil secrétaire
-                
-                
-                //Vue page d'accueil autre utilisateur
-                
-                
-            } else {
-                System.out.println("Username incorrect");
-            }
-            
-           
-            
+            if (!login.equals("") && !pwd.equals("")) {
+                Login user = sql.authentification(login, pwd);            
+                if (user != null){    
+                    authView.dispose();
+                    authView = null;
+                    if(user.getFunction() == 4) {
+                        //display secretaire dashboard
+                    } else {
+                        ManipAndPhController mp = new ManipAndPhController(user);
+                    }
+                } else {
+                    error = "Identifiant ou mot de passe incorrect";
+                } 
+                } else {
+                    error = "Veuillez entrer vos informations de connexion";
+            }  
         } catch(SQLException e) {
-            System.out.println("erreur"); 
+            error = e.getMessage();
         }
-        
-        
-        
-        */
-        
     }
     
     public void setUser(Login user){
