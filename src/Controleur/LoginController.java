@@ -26,7 +26,9 @@ public class LoginController {
     
     public LoginController() throws ClassNotFoundException {
         user = null;
-        sql = new RequetesSQL();
+        sql = new RequetesSQL();        
+        authView = new Authentification(this);
+        authView.setVisible(true);
     }
     
     public void setAuthView(Authentification authView) {
