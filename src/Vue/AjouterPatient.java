@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Vue;
-import Modèle.Patient;
+
 import java.time.LocalDate;
 /**
  *
