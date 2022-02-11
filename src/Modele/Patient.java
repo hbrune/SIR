@@ -18,7 +18,8 @@ public class Patient {
     String gender;
     LocalDate ddn;
 
-    public Patient(String name, String surname, String adress, String gender, LocalDate ddn) {
+    public Patient(String patientId, String name, String surname, String adress, String gender, LocalDate ddn) {
+        this.patientId = patientId;
         this.name = name;
         this.surname = surname;
         this.adress = adress;

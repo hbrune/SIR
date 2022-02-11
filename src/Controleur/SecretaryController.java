@@ -5,7 +5,9 @@
 package Controleur;
 
 import ConnexionBD.DatabaseAccessProperties;
+import ConnexionBD.RequetesSQL;
 import Modele.Login;
+import Modele.Patient;
 import java.sql.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -14,6 +16,7 @@ import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  *
@@ -21,7 +24,8 @@ import java.util.Date;
  */
 public class SecretaryController {
     Login user;
-    private static DatabaseAccessProperties dap;
+    private static RequetesSQL sql;
+    String error = "";
     
     public SecretaryController(Login user) {
         this.user = user;
@@ -31,6 +35,21 @@ public class SecretaryController {
     
         //recherchePatientByCriteria(critere, recherche);
        
+    }
+    
+    public void ajouterPatient(String lastNameP, String firstNameP, String adress, String gender, Date ddn) throws SQLException {
+        /*if(!sql.verifierPatient(lastNameP, firstNameP, adress)) {
+           //On génère un UID
+           String UID = UUID.randomUUID().toString();
+           if(sql.getPatientById(UID) == null) {
+               //Un patient avec cet UID existe déjà
+           }
+           Patient newP = new Patient(UID, lastNameP, firstNameP, adress, gender, ddn);
+           
+        } else {
+            //Un patient avec ce nom prénom et adresse existe déjà : message d'erreur
+            error = "Ce patient existe déjà";
+        }*/
     }
     
     public void recherchePatientFromDdn(Date ddn) {
