@@ -8,6 +8,7 @@ import ConnexionBD.DatabaseAccessProperties;
 import ConnexionBD.RequetesSQL;
 import Modele.Login;
 import java.sql.Connection;
+import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -38,9 +39,13 @@ public class SIR extends JFrame {
         RequetesSQL rs = new RequetesSQL();
         //Login user = new Login("5", "mika", "MORILLON", "Mikael", 1);
         //rs.addUser(user);
-        
         rs.getPatientById("1");
         rs.authentification("5","mika");
+        rs.verifierPatient("momo", "momo", "5 rue de la Paix");
+        Date date1 = new Date();
+        Modele.Patient patient1 = new Modele.Patient("2", "mimi", "mimi", "39 rue Benezet", "F", date1);
+        //rs.addPatient(patient1);
+        //rs.getPatientById("1");
     }
     
 }
