@@ -267,8 +267,14 @@ public class Authentification extends JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                LoginController lc = new LoginController();
-                new Authentification(lc).setVisible(true);
+                LoginController lc;
+                try {
+                    lc = new LoginController();
+                    new Authentification(lc).setVisible(true);
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(Authentification.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                
             }
         });
     }

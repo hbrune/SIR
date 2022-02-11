@@ -67,7 +67,7 @@ public class Accueil extends javax.swing.JFrame {
 
         jButton2.setBackground(new java.awt.Color(153, 204, 255));
         jButton2.setForeground(new java.awt.Color(153, 204, 255));
-        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons8_sign_out_40px_1.png"))); // NOI18N
+        jButton2.setIcon(new javax.swing.ImageIcon(getClass().getResource("icons8_sign_out_40px_1.png"))); // NOI18N
         jButton2.setBorder(null);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {

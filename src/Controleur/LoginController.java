@@ -5,6 +5,7 @@
 package Controleur;
 
 import ConnexionBD.DatabaseAccessProperties;
+import ConnexionBD.RequetesSQL;
 import Modele.Login;
 import Modele.TypeUtilisateur;
 import Vue.Accueil;
@@ -21,12 +22,12 @@ public class LoginController {
     Login user;
     Authentification authView;
     Accueil accueilView;
-    DatabaseAccessProperties dap;
+    RequetesSQL sql;
     
     
     public LoginController() throws ClassNotFoundException {
         user = null;
-        dap = new DatabaseAccessProperties();
+        sql = new RequetesSQL();
         this.authView = authView;
     }
     

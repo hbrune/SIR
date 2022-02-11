@@ -12,21 +12,21 @@ public class Login {
     // A voir si on laisse le password ici
     String idLogin;
     String password;
-    String name;
-    String surname;
+    String lastName;
+    String firstName;
     int function;
 
-    public Login(String idLogin, String password, String name, String surname, int function) {
+    public Login(String idLogin, String password, String lastName, String firstName, int function) {
         this.idLogin = idLogin;
         this.password = password;
-        this.name = name;
-        this.surname = surname;
+        this.lastName = lastName;
+        this.firstName = firstName;
         this.function = function;
     }
 
     
     public boolean isUserValid(){
-        return (idLogin != null && password != null && name != null && surname != null && function != 0);
+        return (idLogin != null && password != null && lastName != null && firstName != null && function != 0);
     }
             
     public String getIdLogin() {
@@ -45,20 +45,20 @@ public class Login {
         this.password = password;
     }
 
-    public String getName() {
-        return name;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     public int getFunction() {
