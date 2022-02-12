@@ -22,6 +22,7 @@ public class recherche_patient_medecin extends javax.swing.JFrame {
      * Creates new form recherche_patient_medecin
      */
  public recherche_patient_medecin() {
+     
         initComponents();
         JRecherche.getColumn("Acces Dossier Patient").setCellRenderer(new RendererAndEditor() {
             @Override

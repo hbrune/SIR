@@ -5,6 +5,8 @@
 package Vue;
 
 import Controleur.LoginController;
+import java.awt.Dimension;
+import java.awt.Toolkit;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,14 +18,19 @@ import java.util.logging.Logger;
 public class Authentification extends javax.swing.JFrame {
 
     LoginController controller;
+
     /**
      * Creates new form Authentification
      */
     public Authentification(LoginController controller) {
         initComponents();
+        initComponents();
+        Toolkit toolkit = getToolkit();
+        Dimension size = toolkit.getScreenSize();
+        setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
         this.setLocationRelativeTo(null);
         this.controller = controller;
-        
+
     }
 
     /**
@@ -67,7 +74,7 @@ public class Authentification extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jLabel3)
-                .addGap(0, 110, Short.MAX_VALUE))
+                .addGap(0, 120, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -76,7 +83,7 @@ public class Authentification extends javax.swing.JFrame {
                 .addGap(0, 500, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 210, 480));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 220, 370));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -156,7 +163,7 @@ public class Authentification extends javax.swing.JFrame {
                                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(40, 40, 40)))))
-                .addGap(0, 209, Short.MAX_VALUE))
+                .addGap(0, 199, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -185,10 +192,10 @@ public class Authentification extends javax.swing.JFrame {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(131, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 0, 640, 480));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 0, 630, 370));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -209,7 +216,7 @@ public class Authentification extends javax.swing.JFrame {
             Logger.getLogger(Authentification.class.getName()).log(Level.SEVERE, null, ex);
         }
         String error = controller.getError();
-        if(!error.equals("")) {
+        if (!error.equals("")) {
             jLabel7.setText(error);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -246,10 +253,7 @@ public class Authentification extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                
-            }
+        java.awt.EventQueue.invokeLater(() -> {
         });
     }
 

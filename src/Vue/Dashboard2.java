@@ -42,7 +42,7 @@ public class Dashboard2 extends javax.swing.JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Date d = new Date();
-                SimpleDateFormat s = new SimpleDateFormat("hh-mm-ss");
+                SimpleDateFormat s = new SimpleDateFormat("hh:mm");
                 timeLab.setText(s.format(d));
             }
         }).start();
