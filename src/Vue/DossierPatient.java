@@ -211,6 +211,7 @@ public class DossierPatient extends javax.swing.JFrame {
 
         jLabel13.setText("Adresse : ");
 
+        JExam.setBackground(new java.awt.Color(228, 237, 246));
         JExam.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, "", null},
@@ -241,6 +242,7 @@ public class DossierPatient extends javax.swing.JFrame {
             }
         });
         JExam.setColumnSelectionAllowed(true);
+        JExam.setSelectionForeground(new java.awt.Color(153, 204, 255));
         JExam.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(JExam);
         JExam.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
