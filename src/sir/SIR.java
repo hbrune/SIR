@@ -6,7 +6,9 @@ package sir;
 
 import ConnexionBD.DatabaseAccessProperties;
 import ConnexionBD.RequetesSQL;
+import Controleur.LoginController;
 import Modele.Login;
+import Vue.Authentification;
 import java.sql.Connection;
 import java.util.Date;
 import javax.swing.JFrame;
@@ -25,8 +27,8 @@ public class SIR extends JFrame {
     public SIR() throws ClassNotFoundException {
         super("Hôpital Princeton Plainsborough");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        this.setSize(1000,600);
-        this.setLocationRelativeTo(null);
+        //this.setSize(1000,600);
+        //this.setLocationRelativeTo(null);
     }
 
     /**
@@ -34,10 +36,8 @@ public class SIR extends JFrame {
      */
     public static void main(String[] args) throws Exception {
       //  UIManager.setLookAndFeel( new NimbusLookAndFeel());
-        SIR sir = new SIR();
-     //   sir.setVisible(true);
         RequetesSQL rs = new RequetesSQL();
-        //Login user = new Login("5", "mika", "MORILLON", "Mikael", 1);
+        Login user = new Login("40", "roux", "ROUX", "Caitlin", 4);
         //rs.addUser(user);
         rs.getPatientById("1");
         rs.authentification("5","mika");
@@ -46,6 +46,11 @@ public class SIR extends JFrame {
         Modele.Patient patient1 = new Modele.Patient("2", "mimi", "mimi", "39 rue Benezet", "F", date1);
         //rs.addPatient(patient1);
         //rs.getPatientById("1");
+        LoginController lc = new LoginController(); 
+      
+     //sir.setVisible(true);
+     //Login user = new Login("5", "mika", "MORILLON", "Mikael", 1);
+     //rs.addUser(user);
     }
     
 }
