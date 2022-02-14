@@ -16,12 +16,12 @@ import java.util.EventObject;
  *
  * @author saman
  */
-public class Recherche_patient_medecin extends javax.swing.JFrame {
+public class RecherchePatientMedecin extends javax.swing.JFrame {
 
     /**
      * Creates new form recherche_patient_medecin
      */
- public Recherche_patient_medecin() {
+ public RecherchePatientMedecin() {
      
         initComponents();
         JRecherche.getColumn("Acces Dossier Patient").setCellRenderer(new RendererAndEditor() {
@@ -305,20 +305,21 @@ public class Recherche_patient_medecin extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Recherche_patient_medecin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RecherchePatientMedecin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Recherche_patient_medecin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RecherchePatientMedecin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Recherche_patient_medecin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RecherchePatientMedecin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Recherche_patient_medecin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(RecherchePatientMedecin.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new Recherche_patient_medecin().setVisible(true);
+                new RecherchePatientMedecin().setVisible(true);
             }
         });
     }

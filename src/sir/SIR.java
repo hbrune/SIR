@@ -35,7 +35,11 @@ public class SIR extends JFrame {
      */
     public static void main(String[] args) throws Exception {
       //  UIManager.setLookAndFeel( new NimbusLookAndFeel());
-      LoginController lc = new LoginController(); 
+        RequetesSQL rs = new RequetesSQL();
+        Login user = new Login("40", "roux", "ROUX", "Caitlin", 4);
+        //rs.addUser(user);
+        LoginController lc = new LoginController(); 
+      
      //sir.setVisible(true);
      //Login user = new Login("5", "mika", "MORILLON", "Mikael", 1);
      //rs.addUser(user);

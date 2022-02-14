@@ -48,7 +48,7 @@ public class LoginController {
                     authView.dispose();
                     authView = null;
                     if(user.getFunction() == 4) {
-                        //display secretaire dashboard
+                        SecretaireController sc = new SecretaireController(user);
                     } else {
                         ManipAndPhController mp = new ManipAndPhController(user);
                     }
@@ -57,6 +57,7 @@ public class LoginController {
                 } 
                 } else {
                     error = "Veuillez entrer vos informations de connexion";
+                    authView.repaint();
             }  
         } catch(SQLException e) {
             error = e.getMessage();

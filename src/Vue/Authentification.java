@@ -24,7 +24,6 @@ public class Authentification extends javax.swing.JFrame {
      */
     public Authentification(LoginController controller) {
         initComponents();
-        initComponents();
         Toolkit toolkit = getToolkit();
         Dimension size = toolkit.getScreenSize();
         setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
@@ -83,7 +82,7 @@ public class Authentification extends javax.swing.JFrame {
                 .addGap(0, 500, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 220, 370));
+        getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 220, -1));
 
         jPanel2.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -163,7 +162,7 @@ public class Authentification extends javax.swing.JFrame {
                                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGap(40, 40, 40)))))
-                .addGap(0, 199, Short.MAX_VALUE))
+                .addGap(0, 350, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -192,10 +191,10 @@ public class Authentification extends javax.swing.JFrame {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(254, Short.MAX_VALUE))
         );
 
-        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 0, 630, 370));
+        getContentPane().add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 0, 780, 600));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -208,6 +207,7 @@ public class Authentification extends javax.swing.JFrame {
         String login = jTextField1.getText();
         String pwd;
         pwd = jPasswordField1.getText();
+        
         try {
             controller.login(login, pwd);
         } catch (SQLException ex) {
