@@ -38,6 +38,14 @@ public class SecretaireController {
         dashboard.setVisible(true);
     }
     
+    // GETTERS ET SETTERS
+    
+    public String getError() {
+        return error;
+    }
+    
+    // INTERFACES
+    
     public void displayDashboard() {
         dashboard = new DashboardSecretaire(user, this);
         dashboard.setVisible(true);
@@ -59,9 +67,14 @@ public class SecretaireController {
         ap.setVisible(true);
     }
         
+    // RECHERCHE ET AJOUT EN BD
+    
     public void recherchePatient(String critere, String recherche) {
     
         //recherchePatientByCriteria(critere, recherche);
+        if (recherche.equals("recherche selon le critère selectionné") || recherche.equals("")) {
+            error = "Veuillez entrer une recherche";
+        }
        
     }
     
@@ -78,6 +91,8 @@ public class SecretaireController {
             //Un patient avec ce nom prénom et adresse existe déjà : message d'erreur
             error = "Ce patient existe déjà";
         }*/
+        
+        //Vérifier date
     }
     
     public void recherchePatientFromDdn(Date ddn) {
@@ -85,6 +100,5 @@ public class SecretaireController {
         //Conversion date en date SQL > '05-JAN-2003
         //recherchePatientByDdn(recherche);     
            
-       
     }    
 }

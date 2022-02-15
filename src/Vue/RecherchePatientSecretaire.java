@@ -6,6 +6,9 @@ package Vue;
 
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -44,13 +47,14 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
         backButton = new javax.swing.JButton();
         decoButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        critère = new javax.swing.JComboBox<>();
+        critere = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         JRecherche = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
+        rechercheText = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         ajoutPatientButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
+        rechercheButton = new javax.swing.JButton();
+        error = new javax.swing.JLabel();
 
         jCheckBoxMenuItem1.setSelected(true);
         jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
@@ -130,11 +134,11 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
         jPanel2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jPanel2.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 12)); // NOI18N
 
-        critère.setEditable(true);
-        critère.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        critère.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID Patient", "Nom", "Prénom", "Date de naissance", "Sexe" }));
-        critère.setToolTipText("choisissez un critère de recherche");
-        critère.setBorder(null);
+        critere.setEditable(true);
+        critere.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        critere.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID Patient", "Nom", "Prénom", "Date de naissance", "Sexe" }));
+        critere.setToolTipText("choisissez un critère de recherche");
+        critere.setBorder(null);
 
         JRecherche.setBackground(new java.awt.Color(203, 221, 238));
         JRecherche.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 13)); // NOI18N
@@ -164,9 +168,14 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
         jScrollPane1.setViewportView(JRecherche);
         JRecherche.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
-        jTextField1.setFont(new java.awt.Font("Yu Gothic UI Light", 2, 12)); // NOI18N
-        jTextField1.setText("recherche selon le critère selectionné");
-        jTextField1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        rechercheText.setFont(new java.awt.Font("Yu Gothic UI Light", 2, 12)); // NOI18N
+        rechercheText.setText("recherche selon le critère selectionné");
+        rechercheText.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        rechercheText.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rechercheTextMouseClicked(evt);
+            }
+        });
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
@@ -184,16 +193,19 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_search_40px_2.png"))); // NOI18N
-        jButton1.setText("Recherche");
-        jButton1.setBorder(null);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        rechercheButton.setBackground(new java.awt.Color(255, 255, 255));
+        rechercheButton.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        rechercheButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_search_40px_2.png"))); // NOI18N
+        rechercheButton.setText("Recherche");
+        rechercheButton.setBorder(null);
+        rechercheButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                rechercheButtonActionPerformed(evt);
             }
         });
+
+        error.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        error.setForeground(new java.awt.Color(255, 51, 0));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -202,21 +214,22 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 941, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel1)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(critère, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(critere, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(rechercheText, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(0, 510, Short.MAX_VALUE)
+                                .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(ajoutPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(rechercheButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(28, 28, 28))
         );
@@ -228,11 +241,13 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(ajoutPatientButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(critère, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(critere, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(error)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1))
+                    .addComponent(rechercheText, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rechercheButton))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(273, Short.MAX_VALUE))
@@ -265,14 +280,47 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_decoButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void rechercheButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rechercheButtonActionPerformed
+       String critereToFind = "";
+        switch(String.valueOf(critere.getSelectedItem())) {
+            case ("ID Patient"):
+                critereToFind = "patientId";
+                break;
+            case("Prénom"):
+                critereToFind = "firstNameP";
+                break;
+            case ("Nom"):
+                critereToFind = "lastNameP";
+                break;
+            case ("Sexe"):
+                System.out.println("gender");
+                break;
+            case("Date de naissance"):
+                critereToFind = "birthDate";
+                break;   
+        }
+        if(critereToFind.equals("birthDate")) {
+            //TODO : recherche avec date
+        } else {
+            sc.recherchePatient(critereToFind, rechercheText.getText());
+        }
+        error.setText(sc.getError());
+        
+        
+    }//GEN-LAST:event_rechercheButtonActionPerformed
 
     private void ajoutPatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ajoutPatientButtonActionPerformed
-        sc.displayAjoutPatient("recherche");
+        try {
+            sc.displayAjoutPatient("recherche");
+        } catch (SQLException ex) {
+            Logger.getLogger(RecherchePatientSecretaire.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
     }//GEN-LAST:event_ajoutPatientButtonActionPerformed
+
+    private void rechercheTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rechercheTextMouseClicked
+        rechercheText.setText("");
+    }//GEN-LAST:event_rechercheTextMouseClicked
     
     
     /**
@@ -314,9 +362,9 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
     private javax.swing.JTable JRecherche;
     private javax.swing.JButton ajoutPatientButton;
     private javax.swing.JButton backButton;
-    private javax.swing.JComboBox<String> critère;
+    private javax.swing.JComboBox<String> critere;
     private javax.swing.JButton decoButton;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel error;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
     private javax.swing.JDialog jDialog1;
     private javax.swing.JLabel jLabel1;
@@ -325,6 +373,7 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton rechercheButton;
+    private javax.swing.JTextField rechercheText;
     // End of variables declaration//GEN-END:variables
 }

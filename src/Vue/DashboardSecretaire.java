@@ -8,8 +8,11 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.Timer;
 //import jdk.jfr.internal.consumer.EventLog.start;
 
@@ -244,9 +247,9 @@ public class DashboardSecretaire extends javax.swing.JFrame {
                                     .addComponent(jLabel10)))
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(ajoutPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(recherchePatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(recherchePatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ajoutPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(303, Short.MAX_VALUE))
         );
@@ -281,7 +284,11 @@ public class DashboardSecretaire extends javax.swing.JFrame {
     }//GEN-LAST:event_recherchePatientButtonActionPerformed
 
     private void ajoutPatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ajoutPatientButtonActionPerformed
-        sc.displayAjoutPatient("dashboard");
+        try {
+            sc.displayAjoutPatient("dashboard");
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardSecretaire.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
     }//GEN-LAST:event_ajoutPatientButtonActionPerformed
 

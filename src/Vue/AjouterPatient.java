@@ -8,6 +8,7 @@ import Controleur.SecretaireController;
 import Modele.Login;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.util.Date;
 import javax.swing.ButtonGroup;
 
 /**
@@ -63,12 +64,12 @@ public class AjouterPatient extends javax.swing.JFrame {
         JR2 = new javax.swing.JRadioButton();
         JR1 = new javax.swing.JRadioButton();
         jLabel8 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
-        jLabel12 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField();
+        addPatientButton = new javax.swing.JButton();
+        error = new javax.swing.JLabel();
+        lastNameText = new javax.swing.JTextField();
+        firstNameText = new javax.swing.JTextField();
+        dateText = new javax.swing.JTextField();
+        adressText = new javax.swing.JTextField();
         uidLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -157,30 +158,30 @@ public class AjouterPatient extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 24)); // NOI18N
         jLabel8.setText("Nouveau patient :");
 
-        jButton1.setBackground(new java.awt.Color(209, 223, 238));
-        jButton1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
-        jButton1.setText("Ajouter");
-        jButton1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        addPatientButton.setBackground(new java.awt.Color(209, 223, 238));
+        addPatientButton.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
+        addPatientButton.setText("Ajouter");
+        addPatientButton.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        addPatientButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addPatientButtonActionPerformed(evt);
+            }
+        });
 
-        jLabel12.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 14)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(204, 0, 51));
-        jLabel12.setText("Erreur : patient déjà enregisté ");
+        error.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 14)); // NOI18N
+        error.setForeground(new java.awt.Color(204, 0, 51));
 
-        jTextField2.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        jTextField2.setText("jTextField1");
-        jTextField2.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        lastNameText.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        lastNameText.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jTextField3.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        jTextField3.setText("jTextField1");
-        jTextField3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        firstNameText.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        firstNameText.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jTextField4.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        jTextField4.setText("jTextField1");
-        jTextField4.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        dateText.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        dateText.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        jTextField5.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        jTextField5.setText("jTextField1");
-        jTextField5.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        adressText.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        adressText.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         uidLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         uidLabel.setText("jLabel5");
@@ -211,18 +212,18 @@ public class AjouterPatient extends javax.swing.JFrame {
                                                 .addGap(13, 13, 13)
                                                 .addComponent(JR2)
                                                 .addGap(0, 0, Short.MAX_VALUE))
-                                            .addComponent(jTextField2, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
-                                            .addComponent(jTextField3)
+                                            .addComponent(lastNameText, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
+                                            .addComponent(firstNameText)
                                             .addComponent(uidLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField4))
+                                        .addComponent(dateText))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jTextField5))))
+                                        .addComponent(adressText))))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(174, 174, 174)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(addPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(80, 80, 80))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
@@ -233,7 +234,7 @@ public class AjouterPatient extends javax.swing.JFrame {
                 .addGap(377, 377, 377))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel12)
+                .addComponent(error)
                 .addGap(405, 405, 405))
         );
         jPanel2Layout.setVerticalGroup(
@@ -247,7 +248,7 @@ public class AjouterPatient extends javax.swing.JFrame {
                         .addGap(45, 45, 45)
                         .addComponent(jLabel1)))
                 .addGap(15, 15, 15)
-                .addComponent(jLabel12)
+                .addComponent(error)
                 .addGap(32, 32, 32)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -259,14 +260,14 @@ public class AjouterPatient extends javax.swing.JFrame {
                         .addGap(30, 30, 30)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(dateText, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(27, 27, 27))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(uidLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(lastNameText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(firstNameText, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(84, 84, 84)))
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -275,9 +276,9 @@ public class AjouterPatient extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(adressText, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
+                .addComponent(addPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(29, 29, 29))
         );
 
@@ -315,6 +316,15 @@ public class AjouterPatient extends javax.swing.JFrame {
     private void JR1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JR1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_JR1ActionPerformed
+
+    private void addPatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPatientButtonActionPerformed
+        String patientId = uidLabel.getText();
+        String firstName = firstNameText.getText();
+        String lastName = lastNameText.getText();
+        //Date ddn = dateText.getText();
+        String adress = adressText.getText();
+        
+    }//GEN-LAST:event_addPatientButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -354,12 +364,15 @@ public class AjouterPatient extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton JR1;
     private javax.swing.JRadioButton JR2;
+    private javax.swing.JButton addPatientButton;
+    private javax.swing.JTextField adressText;
     private javax.swing.JButton backButton;
+    private javax.swing.JTextField dateText;
     private javax.swing.JButton decoButton;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel error;
+    private javax.swing.JTextField firstNameText;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -368,10 +381,7 @@ public class AjouterPatient extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField lastNameText;
     private javax.swing.JLabel uidLabel;
     // End of variables declaration//GEN-END:variables
 }
