@@ -5,23 +5,23 @@
 package Modele;
 
 import java.time.LocalDate;
-
+import java.util.Date;
 /**
  *
  * @author Brune
  */
 public class Patient {
     String patientId;
-    String name;
-    String surname;
+    String lastNameP;
+    String firstNameP;
     String adress;
     String gender;
-    LocalDate ddn;
+    Date ddn;
 
-    public Patient(String patientId, String name, String surname, String adress, String gender, LocalDate ddn) {
+    public Patient(String patientId, String lastNameP, String firstNameP, String adress, String gender, Date ddn) {
         this.patientId = patientId;
-        this.name = name;
-        this.surname = surname;
+        this.lastNameP = lastNameP;
+        this.firstNameP = firstNameP;
         this.adress = adress;
         this.gender = gender;
         this.ddn = ddn;
@@ -31,12 +31,12 @@ public class Patient {
         return patientId;
     }
 
-    public String getName() {
-        return name;
+    public String getLastNameP() {
+        return lastNameP;
     }
 
-    public String getSurname() {
-        return surname;
+    public String getFirstNameP() {
+        return firstNameP;
     }
 
     public String getAdress() {
@@ -47,7 +47,7 @@ public class Patient {
         return gender;
     }
 
-    public LocalDate getDdn() {
+    public Date getDdn() {
         return ddn;
     }
     

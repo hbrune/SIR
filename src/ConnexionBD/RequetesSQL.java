@@ -2,6 +2,7 @@ package ConnexionBD;
     
 import Modele.Login;
 import Modele.Patient;
+import java.util.Date;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,6 +10,7 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 
 public class RequetesSQL {
@@ -28,17 +30,74 @@ base de donn�es
         conn = dap.getConn();
     }
     
-   /* public static int getLastIdLogin() {
-        //Pour ajouter un id qui n'existe pas 
-    } */
+    //verifierPatient renvoie boolean (select...where...)
+    public boolean verifierPatient(String lastName, String firstName, String adress) throws SQLException {
+        
+        //Get a statement from the connection
+        Statement stmt = dap.getConn().createStatement() ;
+        
+        //Execute the query
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM PATIENT where lastNameP = '" + lastName + "' and firstNameP = '" + firstName + "' and adress = '" + adress + "'");
+        
+        Patient patient = null;
+        String patientId = "";
+        String lastNameP = "";
+        String firstNameP = "";
+        String address = "";
+        String gender = "";
+        Date birthDate;
+        boolean verifPatient = false;
+         
+        while(rsTest.next()) { 
+            patientId = rsTest.getString(1);
+            lastNameP = rsTest.getString(2);
+            firstNameP = rsTest.getString(3);
+            address = rsTest.getString(4);
+            gender = rsTest.getString(5);
+            birthDate = rsTest.getDate(6);   
+            patient = new Patient(patientId, lastNameP, firstNameP, address, gender, birthDate);    
+        }
+        if(patient != null) {
+            System.out.println("Votre patient existe déjà !"); 
+            verifPatient = true;
+        }
+        else { 
+            System.out.println("Votre patient n'existe pas");
+        }   
+         
+        // Close the result set, statement and the connection
+        rsTest.close() ;
+        stmt.close() ;
+        
+        return verifPatient;
+    }
+    //addPatient
+    public void addPatient(Patient patient) throws SQLException {
+        //Get a statement from the connection
+        Statement stmt = dap.getConn().createStatement() ;
+        //Execute the query
+        ResultSet rsTest = stmt.executeQuery("INSERT INTO PATIENT (patientId, lastNameP, firstNameP, adress, gender, birthDate) VALUES ('" + patient.getPatientId() + "', '" + patient.getLastNameP() + "', '" + patient.getFirstNameP() + "', '" + patient.getAdress() + "', '" + patient.getGender() + "', 'TO_DATE('" + new java.sql.Date(patient.getDdn().toString()) + "')");
+        
+        while(rsTest.next()) {
+            System.out.println("Votre patient a bien été ajouté !");
+        } 
+        // Close the result set, statement and the connection
+        rsTest.close() ;
+        stmt.close() ;
+    }
             
     public void addUser(Login login) throws SQLException {
         Statement stmt = conn.createStatement() ;
         
         // Execute the query
-        ResultSet rsTest = stmt.executeQuery("INSERT INTO LOGIN (proId, password, lastName, firstName, function) VALUES ('" + login.getIdLogin() + "', '" + login.getPassword() + "', '" + login.getLastName() + "', '" + login.getFirstName() + "'," + login.getFunction() + ") ");
+        ResultSet rsTest = stmt.executeQuery("INSERT INTO LOGIN (proId, password, lastName, firstName, function) VALUES ('" + login.getIdLogin() + "', '" + login.getPassword() + "', '" + login.getLastName() + "', '" + login.getFirstName() + "', " + login.getFunction() + ")");
         
-// Close the result set, statement and the connection
+        while(rsTest.next()) {
+            System.out.println(""
+                    + ""
+                    + "L'utilisateur a bien été ajouté !");
+        } 
+        // Close the result set, statement and the connection
         rsTest.close() ;
         stmt.close() ;
     }
@@ -60,12 +119,12 @@ base de donn�es
         
         try {
             while(rsTest.next()) { 
-                id = rsTest.getString(2);
+                id = rsTest.getString(1);
                 password = rsTest.getString(2);
-                prenom = rsTest.getString(3);
-                nom = rsTest.getString(4);
+                nom = rsTest.getString(3);
+                prenom = rsTest.getString(4);
                 fonction = rsTest.getInt(5);
-                System.out.println("Votre login est correct ! Bienvenue " + rsTest.getString(3));
+                System.out.println("Votre login est correct ! Bienvenue " + rsTest.getString(4));
                 user = new Login(id, pwd, nom, prenom, fonction);
                 
             }
@@ -91,17 +150,23 @@ base de donn�es
         
         Patient pat = null;
         String idP = "";
-        String nameP = "";
-        String surnameP = "";
+        String lastNameP = "";
+        String firstNameP = "";
         String adressP = "";
         String genderP = "";
-        LocalDate ddnP = null;
+ //       Date ddnP = null;
         
         
         while(rsTest.next()) {
-           
             //remplir les infos du patient avec les résultats de la requête
-            
+                idP = rsTest.getString(1);
+                lastNameP = rsTest.getString(2);
+                firstNameP = rsTest.getString(3);
+                adressP = rsTest.getString(4);
+                genderP = rsTest.getString(5);
+  //              ddnP = rsTest.getDate(5);
+ //               pat = new Patient(idP, lastNameP, firstNameP, adressP, genderP, ddnP);
+                System.out.println("Patient: " + pat);
         }
         
         // Close the result set, statement and the connection
@@ -164,7 +229,7 @@ base de donn�es
             String surname = "";
             String adress = "";
             String gender = "";
-            LocalDate ddn = null;
+            Date ddn = null;
 
 
             while(rsTest.next()) { 
@@ -181,4 +246,37 @@ base de donn�es
         stmt.close() ;
         return patients;
     }
+    
+    public void recherchePatientByCriteria(String critere, String recherche) throws SQLException {
+        
+        // Get a statement from the connection
+        Statement stmt = dap.getConn().createStatement() ;
+        
+        // Execute the query
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM PATIENT where " + critere + "= '" + recherche + "'") ;
+        while(rsTest.next()) { 
+            System.out.println(rsTest);
+            System.out.println("Id du patient : " + rsTest.getString(1));
+        }
+        // Close the result set, statement and the connection
+        rsTest.close() ;
+        stmt.close() ;
+    }
+
+    public void recherchePatientByDdn(String critere, String recherche) throws SQLException {
+        
+        // Get a statement from the connection
+        Statement stmt = dap.getConn().createStatement() ;
+        
+        // Execute the query
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM PATIENT where birthDate = '" + recherche + "'") ;
+        while(rsTest.next()) { 
+            System.out.println(rsTest);
+            System.out.println("Id du patient : " + rsTest.getString(1));
+        }
+        // Close the result set, statement and the connection
+        rsTest.close() ;
+        stmt.close() ;
+    }
+    
 }
