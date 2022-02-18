@@ -8,7 +8,6 @@ import Controleur.LoginController;
 import Controleur.ManipAndPhController;
 import Modele.Login;
 import Modele.Patient;
-import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.CellEditorListener;

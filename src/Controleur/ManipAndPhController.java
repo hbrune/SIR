@@ -1,6 +1,7 @@
 package Controleur;
 
 import ConnexionBD.RequetesSQL;
+import Modele.Examen;
 import Modele.Login;
 import Modele.Patient;
 import Vue.AjouterExamen;
@@ -71,14 +72,21 @@ public class ManipAndPhController extends UserController {
     
     public void recherchePatient(String critere, String recherche) throws SQLException {
     
-        //recherchePatientByCriteria(critere, recherche);
         if (recherche.equals("recherche selon le critère selectionné") || recherche.equals("")) {
             error = "Veuillez entrer une recherche";
         } else {
             error = "";
             ArrayList<Patient> patients = sql.getPatientByCriteria(critere, recherche);
             rp.updatePatients(patients);
+        }
+    }
     
+    public void ajouterExam(Examen e) throws SQLException {
+        try {
+            sql.addExamen(e);
+            success = "Examen enregistré";
+        } catch(SQLException error) {
+            this.error = error.getMessage();
         }
     }
     
