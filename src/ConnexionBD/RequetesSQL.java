@@ -36,7 +36,8 @@ base de donn�es
         Statement stmt = dap.getConn().createStatement() ;
         
         //Execute the query
-        ResultSet rsTest = stmt.executeQuery("SELECT * FROM PATIENT where lastNameP = '" + p.getLastNameP().toLowerCase() + "' and firstNameP = '" + p.getFirstNameP().toLowerCase() + "' and adress = '" + p.getAdress().toLowerCase() + "'");
+        java.sql.Date dateSql = new java.sql.Date(p.getDdn().getTime());
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM PATIENT where lastNameP = '" + p.getLastNameP().toLowerCase() + "' and firstNameP = '" + p.getFirstNameP().toLowerCase() + "' and birthDate = TO_DATE('" + dateSql + "', 'YYYY-MM-DD')");
         
         Patient patient = null;
         String patientId = "";
@@ -54,7 +55,7 @@ base de donn�es
             address = rsTest.getString(4);
             gender = rsTest.getString(5);
             birthDate = rsTest.getDate(6);   
-            patient = new Patient(patientId, lastNameP, firstNameP, address, gender, birthDate);    
+            patient = new Patient(patientId, lastNameP, firstNameP, address, gender, birthDate);  
         }
         if(patient != null) {
             verifPatient = true;
