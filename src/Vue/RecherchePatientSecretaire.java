@@ -4,11 +4,20 @@
  */
 package Vue;
 
+import Modele.Patient;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 /**
  *
@@ -18,16 +27,19 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
 
     Controleur.SecretaireController sc;
     Modele.Login user;
+    DefaultTableModel patientsModel;
     /**
      * Creates new form Recherche_Patient
      */
-    public RecherchePatientSecretaire(Modele.Login user, Controleur.SecretaireController sc) {
+    public RecherchePatientSecretaire(Modele.Login user, Controleur.SecretaireController sc, ArrayList<Patient> patients) {
         initComponents();
          Toolkit toolkit = getToolkit();
         Dimension size= toolkit.getScreenSize();
         setLocation(size.width/2 - getWidth()/2 ,  size.height/2-getHeight()/2) ;
         this.sc = sc;
         this.user = user;
+        this.updatePatients(patients);
+        
     }
 
     /**
@@ -159,12 +171,24 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
-        JRecherche.setColumnSelectionAllowed(true);
+        JRecherche.setCellSelectionEnabled(false);
+        JRecherche.setEnabled(false);
+        JRecherche.setFocusable(false);
+        JRecherche.setRowHeight(30);
+        JRecherche.setRowMargin(5);
+        JRecherche.setVerifyInputWhenFocusTarget(false);
         jScrollPane1.setViewportView(JRecherche);
         JRecherche.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 
@@ -249,8 +273,8 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
                     .addComponent(rechercheText, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(rechercheButton))
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(273, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(166, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -302,7 +326,11 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
         if(critereToFind.equals("birthDate")) {
             //TODO : recherche avec date
         } else {
-            sc.recherchePatient(critereToFind, rechercheText.getText());
+           try {
+               sc.recherchePatient(critereToFind, rechercheText.getText());
+           } catch (SQLException ex) {
+               Logger.getLogger(RecherchePatientSecretaire.class.getName()).log(Level.SEVERE, null, ex);
+           }
         }
         error.setText(sc.getError());
         
@@ -322,6 +350,24 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
         rechercheText.setText("");
     }//GEN-LAST:event_rechercheTextMouseClicked
     
+    public void updatePatients(ArrayList<Patient> patients) {
+        String col[] = {"Identifiant","Nom","Prénom", "Adresse", "Date de naissance", "Sexe"};
+
+        this.patientsModel = new DefaultTableModel(col, 0);
+
+        JRecherche.setModel(patientsModel);
+        
+        for (int i = 0; i < patients.size(); i++) {
+            String id = patients.get(i).getPatientId();
+            String lastName = patients.get(i).getLastNameP().toUpperCase();
+            String firstName = patients.get(i).getFirstNameP().substring(0, 1).toUpperCase() + patients.get(i).getFirstNameP().substring(1);;
+            String adress = patients.get(i).getAdress();
+            Date bod = patients.get(i).getDdn();
+            String gender = patients.get(i).getGender();
+            Object[] data = {id , lastName, firstName, adress, bod, gender};
+            patientsModel.addRow(data);
+        }
+    }
     
     /**
      * @param args the command line arguments

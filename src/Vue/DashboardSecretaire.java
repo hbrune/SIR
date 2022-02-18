@@ -279,7 +279,11 @@ public class DashboardSecretaire extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void recherchePatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recherchePatientButtonActionPerformed
-        sc.displayRecherchePatient();
+        try {
+            sc.displayRecherchePatient();
+        } catch (SQLException ex) {
+            Logger.getLogger(DashboardSecretaire.class.getName()).log(Level.SEVERE, null, ex);
+        }
         this.dispose();
     }//GEN-LAST:event_recherchePatientButtonActionPerformed
 

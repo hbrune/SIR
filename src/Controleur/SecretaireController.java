@@ -18,6 +18,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -29,11 +30,14 @@ public class SecretaireController {
     Login user;
     private static RequetesSQL sql;
     DashboardSecretaire dashboard;
+    RecherchePatientSecretaire rp;
     String error = "";
+    String success = "";
+    
     
     public SecretaireController(Login user) throws ClassNotFoundException {
         this.user = user;
-        RequetesSQL sql = new RequetesSQL();
+        sql = new RequetesSQL();
         dashboard = new DashboardSecretaire(user, this);
         dashboard.setVisible(true);
     }
@@ -44,6 +48,10 @@ public class SecretaireController {
         return error;
     }
     
+    public String getSuccess() {
+        return success;
+    }
+    
     // INTERFACES
     
     public void displayDashboard() {
@@ -51,14 +59,14 @@ public class SecretaireController {
         dashboard.setVisible(true);
     }
     
-    public void displayRecherchePatient() {
-        RecherchePatientSecretaire rp = new RecherchePatientSecretaire(user, this);
+    public void displayRecherchePatient() throws SQLException {
+        ArrayList<Patient> patients = sql.getPatients();
+        rp = new RecherchePatientSecretaire(user, this, patients);
         rp.setVisible(true);
     }
     
     public void displayAjoutPatient(String origine) throws SQLException {
-        String UID = UUID.randomUUID().toString();
-        System.out.println(UID);
+        String UID = generateUid();
         /*if(sql.getPatientById(UID) != null) {
             //Un patient avec cet UID existe déjà, on relance la fonction pour générer un autre UID
             displayAjoutPatient(origine);
@@ -66,33 +74,48 @@ public class SecretaireController {
         AjouterPatient ap = new AjouterPatient(user, this, origine, UID);
         ap.setVisible(true);
     }
+    
+    public String generateUid() {
+        return UUID.randomUUID().toString().replace("-","").substring(0,10);
+    }
         
     // RECHERCHE ET AJOUT EN BD
     
-    public void recherchePatient(String critere, String recherche) {
+    public void recherchePatient(String critere, String recherche) throws SQLException {
     
         //recherchePatientByCriteria(critere, recherche);
         if (recherche.equals("recherche selon le critère selectionné") || recherche.equals("")) {
             error = "Veuillez entrer une recherche";
+        } else {
+            error = "";
+            ArrayList<Patient> patients = sql.getPatientByCriteria(critere, recherche);
+            rp.updatePatients(patients);
+            
+            System.out.println(patients.size());
+            
         }
        
     }
     
-    public void ajouterPatient(String lastNameP, String firstNameP, String adress, String gender, Date ddn) throws SQLException {
-        /*if(!sql.verifierPatient(lastNameP, firstNameP, adress)) {
-           //On génère un UID
-           String UID = UUID.randomUUID().toString();
-           if(sql.getPatientById(UID) == null) {
-               //Un patient avec cet UID existe déjà
-           }
-           Patient newP = new Patient(UID, lastNameP, firstNameP, adress, gender, ddn);
-           
+    public void ajouterPatient(Patient p) throws SQLException {
+        if(p.getLastNameP().equals("") || p.getFirstNameP().equals("") || p.getAdress().equals("") ) {
+            error = "Veuillez remplir tous les champs";
+            success = "";
         } else {
-            //Un patient avec ce nom prénom et adresse existe déjà : message d'erreur
-            error = "Ce patient existe déjà";
-        }*/
-        
-        //Vérifier date
+            if(!sql.verifierPatient(p)) {
+            try {
+                sql.addPatient(p);
+                error = "";
+                success = "Un patient a bien été créé";
+            } catch (SQLException e) {
+                error = e.getMessage();
+            }
+            } else {
+                //Un patient avec ce nom prénom et adresse existe déjà : message d'erreur
+                error = "Ce patient existe déjà";
+                success = "";
+            }
+        }
     }
     
     public void recherchePatientFromDdn(Date ddn) {

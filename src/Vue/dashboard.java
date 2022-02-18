@@ -5,6 +5,7 @@
 package Vue;
 
 import Controleur.LoginController;
+import Controleur.ManipAndPhController;
 import Modele.Login;
 import Modele.TypeUtilisateur;
 import java.awt.Dimension;
@@ -26,6 +27,7 @@ import javax.swing.Timer;
 public class Dashboard extends javax.swing.JFrame {
 
     Login user;
+    ManipAndPhController mc;
     /**
      * Creates new form dashboard
      */
@@ -89,7 +91,7 @@ public class Dashboard extends javax.swing.JFrame {
         firstName2 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         jDayChooser1 = new com.toedter.calendar.JDayChooser();
-        jButton1 = new javax.swing.JButton();
+        recherchePatientButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -173,13 +175,13 @@ public class Dashboard extends javax.swing.JFrame {
         jLabel10.setBackground(new java.awt.Color(255, 255, 255));
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_treatment_40px_1.png"))); // NOI18N
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
-        jButton1.setText("Rechercher un patient");
-        jButton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        recherchePatientButton.setBackground(new java.awt.Color(255, 255, 255));
+        recherchePatientButton.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
+        recherchePatientButton.setText("Rechercher un patient");
+        recherchePatientButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        recherchePatientButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                recherchePatientButtonActionPerformed(evt);
             }
         });
 
@@ -210,7 +212,7 @@ public class Dashboard extends javax.swing.JFrame {
                                         .addComponent(firstName2, javax.swing.GroupLayout.DEFAULT_SIZE, 258, Short.MAX_VALUE)))
                                 .addGap(229, 229, 229))
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(recherchePatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 255, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addComponent(jDayChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(55, 55, 55))
@@ -232,7 +234,7 @@ public class Dashboard extends javax.swing.JFrame {
                         .addGap(50, 50, 50)
                         .addComponent(jLabel10)
                         .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(recherchePatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jDayChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(249, 249, 249))
         );
@@ -271,9 +273,9 @@ public class Dashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void recherchePatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recherchePatientButtonActionPerformed
+        
+    }//GEN-LAST:event_recherchePatientButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -317,7 +319,6 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel firstName1;
     private javax.swing.JLabel firstName2;
     private javax.swing.JLabel function;
-    private javax.swing.JButton jButton1;
     private com.toedter.calendar.JDayChooser jDayChooser1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -326,6 +327,7 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lastName;
+    private javax.swing.JButton recherchePatientButton;
     private javax.swing.JLabel time;
     // End of variables declaration//GEN-END:variables
 }

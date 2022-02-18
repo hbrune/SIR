@@ -4,13 +4,21 @@
  */
 package Vue;
 
+import Controleur.ManipAndPhController;
+import Modele.Login;
+import Modele.Patient;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.CellEditorListener;
 import javax.swing.table.*;
 import java.awt.Component;
 import java.awt.event.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.EventObject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,10 +26,11 @@ import java.util.EventObject;
  */
 public class RecherchePatientMedecin extends javax.swing.JFrame {
 
-    /**
-     * Creates new form recherche_patient_medecin
-     */
- public RecherchePatientMedecin() {
+    Controleur.ManipAndPhController mc;
+    Modele.Login user;
+    DefaultTableModel patientsModel;
+    
+ public RecherchePatientMedecin(Login user, ManipAndPhController mc,  ArrayList<Patient> patients) {
      
         initComponents();
         JRecherche.getColumn("Acces Dossier Patient").setCellRenderer(new RendererAndEditor() {
@@ -36,6 +45,11 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
                 throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
             }
         });
+        
+        this.mc = mc;
+        this.user = user;
+        this.updatePatients(patients);
+        
     }
 
     public abstract class RendererAndEditor implements TableCellRenderer, TableCellEditor {
@@ -112,12 +126,13 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel2 = new javax.swing.JPanel();
-        critère = new javax.swing.JComboBox<>();
+        critere = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
         JRecherche = new javax.swing.JTable();
-        jTextField1 = new javax.swing.JTextField();
+        rechercheText = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        rechercheButton = new javax.swing.JButton();
+        error = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         decoButton = new javax.swing.JButton();
         decoButton1 = new javax.swing.JButton();
@@ -129,28 +144,28 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         jPanel2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jPanel2.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 12)); // NOI18N
 
-        critère.setEditable(true);
-        critère.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID patient", "Nom", "Prénome", "Date de naissance", "Type d'examen" }));
-        critère.setToolTipText("choisissez un critère de recherche");
-        critère.setBorder(null);
+        critere.setEditable(true);
+        critere.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID Patient", "Nom", "Prénom", "Date de naissance", "Sexe" }));
+        critere.setToolTipText("choisissez un critère de recherche");
+        critere.setBorder(null);
 
         JRecherche.setBackground(new java.awt.Color(193, 216, 239));
         JRecherche.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"", "", "", null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {"d00bf4b4-96dc-474a-b18a-29b20196574b", "Titi", "Titi", "01/01/2001", "F", null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "ID patient", "Nom", "Prénom", "Date  de naissance", "Acces Dossier Patient"
+                "ID patient", "Nom", "Prénom", "Date  de naissance", "Sexe", "Acces Dossier Patient"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Integer.class, java.lang.Object.class
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -158,22 +173,35 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
             }
         });
         JRecherche.setColumnSelectionAllowed(true);
+        JRecherche.setEnabled(false);
+        JRecherche.setFocusable(false);
+        JRecherche.setRowHeight(30);
+        JRecherche.setRowMargin(5);
         jScrollPane1.setViewportView(JRecherche);
         JRecherche.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
-        jTextField1.setFont(new java.awt.Font("Yu Gothic UI Light", 2, 12)); // NOI18N
-        jTextField1.setText("recherche selon le critère selectionné");
-        jTextField1.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        rechercheText.setFont(new java.awt.Font("Yu Gothic UI Light", 2, 12)); // NOI18N
+        rechercheText.setText("recherche selon le critère selectionné");
+        rechercheText.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_Search_Contacts_40px.png"))); // NOI18N
         jLabel1.setText("Rechercher un patient : ");
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_search_40px_2.png"))); // NOI18N
-        jButton1.setText("Recherche");
-        jButton1.setBorder(null);
+        rechercheButton.setBackground(new java.awt.Color(255, 255, 255));
+        rechercheButton.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        rechercheButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_search_40px_2.png"))); // NOI18N
+        rechercheButton.setText("Recherche");
+        rechercheButton.setBorder(null);
+        rechercheButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rechercheButtonActionPerformed(evt);
+            }
+        });
+
+        error.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
+        error.setForeground(new java.awt.Color(255, 51, 0));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -182,16 +210,18 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 800, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 959, Short.MAX_VALUE)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(critère, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(48, 48, 48)
-                                .addComponent(jButton1)))
+                                    .addComponent(critere, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(rechercheText, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(rechercheButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -200,16 +230,19 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGap(5, 5, 5)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(critere, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(error))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(rechercheButton)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(critère, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(26, 26, 26)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton1))
-                .addContainerGap(64, Short.MAX_VALUE))
+                        .addGap(3, 3, 3)
+                        .addComponent(rechercheText)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(118, Short.MAX_VALUE))
         );
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
@@ -254,7 +287,7 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(decoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(25, Short.MAX_VALUE))
+                .addContainerGap(27, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(15, 15, 15)
@@ -273,7 +306,7 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -288,6 +321,55 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_decoButton1ActionPerformed
 
+    private void rechercheButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rechercheButtonActionPerformed
+        String critereToFind = "";
+        switch(String.valueOf(critere.getSelectedItem())) {
+            case ("ID Patient"):
+                critereToFind = "patientId";
+                break;
+            case("Prénom"):
+                critereToFind = "firstNameP";
+                break;
+            case ("Nom"):
+                critereToFind = "lastNameP";
+                break;
+            case ("Sexe"):
+                System.out.println("gender");
+                break;
+            case("Date de naissance"):
+                critereToFind = "birthDate";
+                break;   
+        }
+        if(critereToFind.equals("birthDate")) {
+            //TODO : recherche avec date
+        } else {
+           try {
+               mc.recherchePatient(critereToFind, rechercheText.getText());
+           } catch (SQLException ex) {
+               Logger.getLogger(RecherchePatientSecretaire.class.getName()).log(Level.SEVERE, null, ex);
+           }
+        }
+        error.setText(mc.getError());
+    }//GEN-LAST:event_rechercheButtonActionPerformed
+
+    public void updatePatients(ArrayList<Patient> patients) {
+        String col[] = {"Identifiant","Nom","Prénom", "Adresse", "Date de naissance", "Sexe"};
+
+        this.patientsModel = new DefaultTableModel(col, 0);
+
+        JRecherche.setModel(patientsModel);
+        
+        for (int i = 0; i < patients.size(); i++) {
+            String id = patients.get(i).getPatientId();
+            String lastName = patients.get(i).getLastNameP().toUpperCase();
+            String firstName = patients.get(i).getFirstNameP().substring(0, 1).toUpperCase() + patients.get(i).getFirstNameP().substring(1);;
+            String adress = patients.get(i).getAdress();
+            Date bod = patients.get(i).getDdn();
+            String gender = patients.get(i).getGender();
+            Object[] data = {id , lastName, firstName, adress, bod, gender};
+            patientsModel.addRow(data);
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -319,22 +401,22 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new RecherchePatientMedecin().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable JRecherche;
-    private javax.swing.JComboBox<String> critère;
+    private javax.swing.JComboBox<String> critere;
     private javax.swing.JButton decoButton;
     private javax.swing.JButton decoButton1;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JLabel error;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JButton rechercheButton;
+    private javax.swing.JTextField rechercheText;
     // End of variables declaration//GEN-END:variables
 }
    

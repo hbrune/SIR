@@ -6,10 +6,19 @@ package Vue;
 
 import Controleur.SecretaireController;
 import Modele.Login;
+import Modele.Patient;
 import java.awt.Dimension;
 import java.awt.Toolkit;
+import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Vector;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
+import javax.swing.DefaultComboBoxModel;
 
 /**
  *
@@ -21,6 +30,7 @@ public class AjouterPatient extends javax.swing.JFrame {
     Login user;
     String origine;
     String uid;
+    
     
     /**
      * Creates new form Ajouter_Patient
@@ -35,6 +45,7 @@ public class AjouterPatient extends javax.swing.JFrame {
         ButtonGroup G = new ButtonGroup();
         G.add(JR1);
         G.add(JR2);
+        JR1.setSelected(true);
         this.user = user;
         this.sc = sc;
         this.origine = origine;
@@ -65,12 +76,15 @@ public class AjouterPatient extends javax.swing.JFrame {
         JR1 = new javax.swing.JRadioButton();
         jLabel8 = new javax.swing.JLabel();
         addPatientButton = new javax.swing.JButton();
-        error = new javax.swing.JLabel();
         lastNameText = new javax.swing.JTextField();
         firstNameText = new javax.swing.JTextField();
-        dateText = new javax.swing.JTextField();
         adressText = new javax.swing.JTextField();
         uidLabel = new javax.swing.JLabel();
+        daySelection = new javax.swing.JComboBox<>();
+        monthSelection = new javax.swing.JComboBox<>();
+        yearSelection = new javax.swing.JComboBox<>();
+        error = new javax.swing.JLabel();
+        success = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -156,7 +170,7 @@ public class AjouterPatient extends javax.swing.JFrame {
         });
 
         jLabel8.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 24)); // NOI18N
-        jLabel8.setText("Nouveau patient :");
+        jLabel8.setText("Nouveau patient");
 
         addPatientButton.setBackground(new java.awt.Color(209, 223, 238));
         addPatientButton.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
@@ -168,23 +182,41 @@ public class AjouterPatient extends javax.swing.JFrame {
             }
         });
 
-        error.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 14)); // NOI18N
-        error.setForeground(new java.awt.Color(204, 0, 51));
-
         lastNameText.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         lastNameText.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         firstNameText.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         firstNameText.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
-        dateText.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        dateText.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
         adressText.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         adressText.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         uidLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         uidLabel.setText("jLabel5");
+
+        daySelection.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        daySelection.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31" }));
+
+        monthSelection.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        monthSelection.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre" }));
+        monthSelection.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                monthSelectionActionPerformed(evt);
+            }
+        });
+
+        yearSelection.setFont(new java.awt.Font("Yu Gothic UI", 0, 13));
+        yearSelection.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                yearSelectionActionPerformed(evt);
+            }
+        });
+
+        error.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        error.setForeground(new java.awt.Color(255, 0, 0));
+
+        success.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        success.setForeground(new java.awt.Color(0, 204, 0));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -195,47 +227,54 @@ public class AjouterPatient extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel11)
-                                    .addComponent(jLabel13))
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(6, 6, 6)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addComponent(JR1)
-                                                .addGap(13, 13, 13)
-                                                .addComponent(JR2)
-                                                .addGap(0, 0, Short.MAX_VALUE))
-                                            .addComponent(lastNameText, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
-                                            .addComponent(firstNameText)
-                                            .addComponent(uidLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(dateText))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(adressText))))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(174, 174, 174)
                                 .addComponent(addPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel2)
+                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel9)
+                                            .addComponent(jLabel11)
+                                            .addComponent(jLabel13))
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addGap(6, 6, 6)
+                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(lastNameText, javax.swing.GroupLayout.DEFAULT_SIZE, 245, Short.MAX_VALUE)
+                                                    .addComponent(firstNameText)
+                                                    .addComponent(uidLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                                        .addComponent(JR1)
+                                                        .addGap(13, 13, 13)
+                                                        .addComponent(JR2)
+                                                        .addGap(0, 0, Short.MAX_VALUE))))
+                                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(adressText))
+                                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addGap(18, 18, 18)
+                                                .addComponent(daySelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(monthSelection, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(yearSelection, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(0, 0, Short.MAX_VALUE))))
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addComponent(success)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(error, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                         .addGap(80, 80, 80))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jLabel1)
                         .addGap(18, 18, 18)))
                 .addComponent(jLabel8)
-                .addGap(377, 377, 377))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(error)
-                .addGap(405, 405, 405))
+                .addGap(347, 347, 347))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,40 +286,57 @@ public class AjouterPatient extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(45, 45, 45)
                         .addComponent(jLabel1)))
-                .addGap(15, 15, 15)
-                .addComponent(error)
-                .addGap(32, 32, 32)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(success)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel2)
-                        .addGap(28, 28, 28)
-                        .addComponent(jLabel3)
-                        .addGap(30, 30, 30)
+                        .addGap(45, 45, 45)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel2)
+                                .addGap(28, 28, 28)
+                                .addComponent(jLabel3)
+                                .addGap(30, 30, 30)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(daySelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(monthSelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(yearSelection, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(27, 27, 27))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(uidLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lastNameText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(firstNameText, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(84, 84, 84)))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(dateText, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(27, 27, 27))
+                            .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(JR2)
+                            .addComponent(JR1))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel13)
+                            .addComponent(adressText, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                        .addComponent(addPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(29, 29, 29))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(uidLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lastNameText, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(firstNameText, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(84, 84, 84)))
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(JR2)
-                    .addComponent(JR1))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel13)
-                    .addComponent(adressText, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
-                .addComponent(addPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29))
+                        .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
+
+        Calendar now = Calendar.getInstance();
+        int year = now.get(Calendar.YEAR);
+        Vector v=new Vector();
+        for (int i = 1910; i <= year; i++) {
+            v.add(i);
+        }
+        yearSelection.setModel(new DefaultComboBoxModel(v));
+        yearSelection.setSelectedItem(year);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -304,7 +360,11 @@ public class AjouterPatient extends javax.swing.JFrame {
         if (origine.equals("dashboard")) {
             sc.displayDashboard();
         } else {
-            sc.displayRecherchePatient();
+            try {
+                sc.displayRecherchePatient();
+            } catch (SQLException ex) {
+                Logger.getLogger(AjouterPatient.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
@@ -321,10 +381,57 @@ public class AjouterPatient extends javax.swing.JFrame {
         String patientId = uidLabel.getText();
         String firstName = firstNameText.getText();
         String lastName = lastNameText.getText();
-        //Date ddn = dateText.getText();
         String adress = adressText.getText();
+        String gender = "";
+        if(JR1.isSelected()) {
+            gender = "M";
+        } else {
+            gender = "F";
+        }
+        //Gestion de la date
+        int day = daySelection.getSelectedIndex() + 1;
+        int month = monthSelection.getSelectedIndex();
+        int year = new Integer(yearSelection.getSelectedItem().toString());
+        //Création d'un objet Date
+        Date ddn = new GregorianCalendar(year, month, day).getTime();
+       
+        Patient pToAdd = new Patient(patientId, lastName, firstName, adress, gender, ddn);
+        try {
+            sc.ajouterPatient(pToAdd);            
+        } catch (SQLException ex) {
+            Logger.getLogger(AjouterPatient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        String error = sc.getError();
+        if(!error.equals("")) {
+            this.error.setText("Erreur : " + error);
+            this.success.setText("");
+        } else {
+            this.error.setText("");
+        }
+        String success = sc.getSuccess();
+        if(!success.equals("")) {
+            //Confirmation
+            this.success.setText("Un patient a bien été créé");
+            //Remettre les champs à null et générer un nouvel UID
+            uidLabel.setText(sc.generateUid());
+            firstNameText.setText("");
+            lastNameText.setText("");
+            adressText.setText("");
+            JR1.setSelected(true);
+            daySelection.setSelectedIndex(0);
+            monthSelection.setSelectedIndex(0);
+            yearSelection.setSelectedIndex(yearSelection.getItemCount()-1);
+        }
         
     }//GEN-LAST:event_addPatientButtonActionPerformed
+
+    private void monthSelectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_monthSelectionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_monthSelectionActionPerformed
+
+    private void yearSelectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yearSelectionActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_yearSelectionActionPerformed
 
     /**
      * @param args the command line arguments
@@ -367,7 +474,7 @@ public class AjouterPatient extends javax.swing.JFrame {
     private javax.swing.JButton addPatientButton;
     private javax.swing.JTextField adressText;
     private javax.swing.JButton backButton;
-    private javax.swing.JTextField dateText;
+    private javax.swing.JComboBox<String> daySelection;
     private javax.swing.JButton decoButton;
     private javax.swing.JLabel error;
     private javax.swing.JTextField firstNameText;
@@ -382,6 +489,9 @@ public class AjouterPatient extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField lastNameText;
+    private javax.swing.JComboBox<String> monthSelection;
+    private javax.swing.JLabel success;
     private javax.swing.JLabel uidLabel;
+    private javax.swing.JComboBox<String> yearSelection;
     // End of variables declaration//GEN-END:variables
 }

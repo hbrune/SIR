@@ -31,13 +31,12 @@ base de donn�es
     }
     
     //verifierPatient renvoie boolean (select...where...)
-    public boolean verifierPatient(String lastName, String firstName, String adress) throws SQLException {
-        
+    public boolean verifierPatient(Patient p) throws SQLException {
         //Get a statement from the connection
         Statement stmt = dap.getConn().createStatement() ;
         
         //Execute the query
-        ResultSet rsTest = stmt.executeQuery("SELECT * FROM PATIENT where lastNameP = '" + lastName + "' and firstNameP = '" + firstName + "' and adress = '" + adress + "'");
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM PATIENT where lastNameP = '" + p.getLastNameP().toLowerCase() + "' and firstNameP = '" + p.getFirstNameP().toLowerCase() + "' and adress = '" + p.getAdress().toLowerCase() + "'");
         
         Patient patient = null;
         String patientId = "";
@@ -58,11 +57,7 @@ base de donn�es
             patient = new Patient(patientId, lastNameP, firstNameP, address, gender, birthDate);    
         }
         if(patient != null) {
-            System.out.println("Votre patient existe déjà !"); 
             verifPatient = true;
-        }
-        else { 
-            System.out.println("Votre patient n'existe pas");
         }   
          
         // Close the result set, statement and the connection
@@ -76,12 +71,8 @@ base de donn�es
         //Get a statement from the connection
         Statement stmt = dap.getConn().createStatement() ;
         //Execute the query
-        ResultSet rsTest = stmt.executeQuery("INSERT INTO PATIENT (patientId, lastNameP, firstNameP, adress, gender, birthDate) VALUES ('" + patient.getPatientId() + "', '" + patient.getLastNameP() + "', '" + patient.getFirstNameP() + "', '" + patient.getAdress() + "', '" + patient.getGender() + "', 'TO_DATE('" + new java.sql.Date(patient.getDdn().toString()) + "')");
-        
-        while(rsTest.next()) {
-            System.out.println("Votre patient a bien été ajouté !");
-        } 
-        // Close the result set, statement and the connection
+        java.sql.Date ddnSql = new java.sql.Date(patient.getDdn().getTime());
+        ResultSet rsTest = stmt.executeQuery("INSERT INTO PATIENT VALUES ('" + patient.getPatientId().toLowerCase() + "', '" + patient.getLastNameP().toLowerCase() + "', '" + patient.getFirstNameP().toLowerCase() + "', '" + patient.getAdress().toLowerCase() + "', '" + patient.getGender() + "', TO_DATE('" + ddnSql + "', 'YYYY-MM-DD'))");
         rsTest.close() ;
         stmt.close() ;
     }
@@ -92,11 +83,6 @@ base de donn�es
         // Execute the query
         ResultSet rsTest = stmt.executeQuery("INSERT INTO LOGIN (proId, password, lastName, firstName, function) VALUES ('" + login.getIdLogin() + "', '" + login.getPassword() + "', '" + login.getLastName() + "', '" + login.getFirstName() + "', " + login.getFunction() + ")");
         
-        while(rsTest.next()) {
-            System.out.println(""
-                    + ""
-                    + "L'utilisateur a bien été ajouté !");
-        } 
         // Close the result set, statement and the connection
         rsTest.close() ;
         stmt.close() ;
@@ -186,24 +172,20 @@ base de donn�es
         ResultSet rsTest = stmt.executeQuery("SELECT * FROM PATIENT") ;
         
         //Boucle pour chaque patient
-        /*while() {
+        while(rsTest.next()) {
             Patient patCourant = null;
-            String id = "";
-            String name = "";
-            String surname = "";
-            String adress = "";
-            String gender = "";
-            LocalDate ddn = null;
-
-
-            while(rsTest.next()) { 
-                System.out.println(rsTest);
-                System.out.println("Id du patient : " + rsTest.getString(1));
-
-                //remplir les infos du patient avec les résultats de la requête
-            }
+            String id = rsTest.getString(1);
+            String name = rsTest.getString(2);
+            String surname = rsTest.getString(3);
+            String adress = rsTest.getString(4);
+            String gender = rsTest.getString(5);
+            Date ddn = rsTest.getDate(6);
+            
+            patCourant = new Patient(id, name, surname, adress, gender, ddn);
+            
+            //Ajouter le patient à la liste
             patients.add(patCourant);
-        }*/      
+        }      
           
         // Close the result set, statement and the connection
         rsTest.close() ;
@@ -212,7 +194,7 @@ base de donn�es
     }
     
     
-    public List<Patient> getPatientByCriteria(String critere, String recherche) throws SQLException {
+    public ArrayList<Patient> getPatientByCriteria(String critere, String recherche) throws SQLException {
         ArrayList<Patient> patients = new ArrayList<>();
         
         // Get a statement from the connection
@@ -222,24 +204,20 @@ base de donn�es
         ResultSet rsTest = stmt.executeQuery("SELECT * FROM PATIENT WHERE " + critere + " = '" + recherche +  "'") ;
         
         //Boucle pour chaque patient
-        /*while() {
+        while(rsTest.next()) {
             Patient patCourant = null;
-            String id = "";
-            String name = "";
-            String surname = "";
-            String adress = "";
-            String gender = "";
-            Date ddn = null;
-
-
-            while(rsTest.next()) { 
-                System.out.println(rsTest);
-                System.out.println("Id du patient : " + rsTest.getString(1));
-
-                //remplir les infos du patient avec les résultats de la requête
-            }
+            String id = rsTest.getString(1);
+            String name = rsTest.getString(2);
+            String surname = rsTest.getString(3);
+            String adress = rsTest.getString(4);
+            String gender = rsTest.getString(5);
+            Date ddn = rsTest.getDate(6);
+            
+            patCourant = new Patient(id, name, surname, adress, gender, ddn);
+            
+            //Ajouter le patient à la liste
             patients.add(patCourant);
-        }*/      
+        }       
           
         // Close the result set, statement and the connection
         rsTest.close() ;
