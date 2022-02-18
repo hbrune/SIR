@@ -38,18 +38,6 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         Dimension size = toolkit.getScreenSize();
         setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
     
-        JRecherche.getColumn("Acces Dossier Patient").setCellRenderer(new RendererAndEditor() {
-            @Override
-            public void removeCellEditorListener(CellEditorListener l) {
-                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-            }
-        });
-        JRecherche.getColumn("Acces Dossier Patient").setCellEditor(new RendererAndEditor() {
-            @Override
-            public void removeCellEditorListener(CellEditorListener l) {
-                throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-            }
-        });
         
         this.mc = mc;
         this.user = user;
@@ -59,14 +47,14 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
 
     public abstract class RendererAndEditor implements TableCellRenderer, TableCellEditor {
 
-        private JButton Accès;
+        private JButton acces;
 
         RendererAndEditor() {
-            Accès = new JButton("Accès");
-            Accès.addActionListener(new ActionListener() {
+            acces = new JButton("Accès");
+            acces.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-
+                    System.out.println("button clicked");
                 }
             });
         }
@@ -75,14 +63,14 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         @Override
  public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
                                                  boolean hasFocus, int row, int column) {
-    return Accès;
+    return acces;
   }
 
 
         @Override
   public java.awt.Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
                                                         int column) {
-    return Accès;
+    return acces;
   }
 
 
@@ -172,9 +160,16 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, true
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
         JRecherche.setColumnSelectionAllowed(true);
@@ -225,20 +220,17 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 959, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 944, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(critere, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(rechercheText, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(critere, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(rechercheText, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(rechercheButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                            .addComponent(rechercheButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -385,7 +377,7 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
     }//GEN-LAST:event_rechercheTextMouseClicked
 
     public void updatePatients(ArrayList<Patient> patients) {
-        String col[] = {"Identifiant","Nom","Prénom", "Adresse", "Date de naissance", "Sexe"};
+        String col[] = {"Identifiant","Nom","Prénom", "Adresse", "Date de naissance", "Sexe", "Accès DMR"};
 
         this.patientsModel = new DefaultTableModel(col, 0);
 
@@ -398,13 +390,93 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
             String adress = patients.get(i).getAdress();
             Date bod = patients.get(i).getDdn();
             String gender = patients.get(i).getGender();
-            Object[] data = {id , lastName, firstName, adress, bod, gender};
+            Object[] data = {id , lastName, firstName, adress, bod, gender, "Accès dossier"};
+           // JRecherche.getColumn("Accès DMR").setCellRenderer(new ButtonRenderer());
+            //JRecherche.getColumn("Accès DMR").setCellEditor(new ButtonEditor(new JCheckBox()));
+            JRecherche.getColumn("Accès DMR").setCellRenderer(new RendererAndEditor() {
+                @Override
+                public void removeCellEditorListener(CellEditorListener l) {
+                    throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+                }
+                });
+                JRecherche.getColumn("Accès DMR").setCellEditor(new RendererAndEditor() {
+                @Override
+                    public void removeCellEditorListener(CellEditorListener l) {
+                    throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+                }
+            });
+
             patientsModel.addRow(data);
+            JRecherche.setColumnSelectionAllowed(true);
+            JRecherche.setRowSelectionAllowed(true);
         }
     }
-    /**
-     * @param args the command line arguments
-     */
+    
+  /*  class ButtonRenderer extends JButton implements TableCellRenderer {
+        public ButtonRenderer() {
+            setOpaque(true);
+        }
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+            if (isSelected) {
+                setForeground(table.getSelectionForeground());
+                setBackground(table.getSelectionBackground());
+            } else {
+                setForeground(table.getForeground());
+                setBackground(UIManager.getColor("Button.background"));
+            }
+            setText((value == null) ? "" : value.toString());
+            return this;
+        }
+    }
+    class ButtonEditor extends DefaultCellEditor {
+        protected JButton button;
+        private String label;
+        private boolean isPushed;
+        public ButtonEditor(JCheckBox checkBox) {
+            super(checkBox);
+            button = new JButton();
+            button.setOpaque(true);
+            button.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("bouton cliqué");
+                fireEditingStopped();
+            }
+            });
+        }
+        
+        @Override
+        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
+            if (isSelected) {
+                button.setForeground(table.getSelectionForeground());
+                button.setBackground(table.getSelectionBackground());
+            } else {
+                button.setForeground(table.getForeground());
+                button.setBackground(table.getBackground());
+            }
+            label = (value == null) ? "" : value.toString();
+            button.setText(label);
+            isPushed = true;
+            return button;
+        }
+        
+        @Override
+        public Object getCellEditorValue() {
+            if (isPushed) {
+                System.out.println("bouton cliqué");
+            }
+            isPushed = false;
+            return label;
+        }
+        
+        @Override
+        public boolean stopCellEditing() {
+            isPushed = false;
+            return super.stopCellEditing();
+        }
+    }*/
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">

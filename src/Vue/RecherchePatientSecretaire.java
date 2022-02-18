@@ -4,6 +4,7 @@
  */
 package Vue;
 
+import Controleur.LoginController;
 import Modele.Patient;
 import java.awt.Dimension;
 import java.awt.Toolkit;
@@ -301,7 +302,14 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void decoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decoButtonActionPerformed
-        // TODO add your handling code here:
+        user = null;
+        try {
+            LoginController lc = new LoginController();
+            this.dispose();
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_decoButtonActionPerformed
 
     private void rechercheButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rechercheButtonActionPerformed
