@@ -57,12 +57,14 @@ public class SIR extends JFrame {
         //rs.addUser(secretaire);
         //rs.addUser(medecin);
         
-        rs.getPatientById("1");
+        //rs.getPatientById("1");
         
         Examen exam1 = new Examen("1", "1", "1", "IRM", "Le patient va bien", ajd, 1);
-        //rs.addExamen(exam1);
+        Examen exam2 = new Examen("2", "1", "1", "IRM", "Le patient va toujours bien", ajd, 1);
+        rs.addExamen(exam2);
         //rs.addReport("1", "Le cr a été modifié");
-        rs.getExamenById("1");
+        //rs.getExamenById("1");
+        rs.getListExamenByPatient("1");
         
         ArrayList listPatients = rs.getPatients();
         System.out.println("Nombre de patients enregistrés : " + listPatients.size());

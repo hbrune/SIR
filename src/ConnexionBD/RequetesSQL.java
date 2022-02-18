@@ -300,7 +300,6 @@ base de donn�es
         Date date = null;
         int status;
         
-        
         while(rsTest.next()) {
                 examId = rsTest.getString(1);
                 patientId = rsTest.getString(2);
@@ -317,6 +316,43 @@ base de donn�es
         rsTest.close() ;
         stmt.close() ;
         return e;
+    }
+    
+    public ArrayList<Examen> getListExamenByPatient(String idP) throws SQLException {    
+        
+        ArrayList<Examen> examsP = new ArrayList<>();
+        
+        // Get a statement from the connection
+        Statement stmt = conn.createStatement() ;
+        
+        // Execute the query
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM EXAM where patientId = '" + idP + "'") ;
+        
+        Examen e = null;
+        String examId = "";
+        String patientId = "";
+        String proId = "";
+        String type;
+        String report = "";
+        Date date = null;
+        int status;
+        
+        while(rsTest.next()) {
+                examId = rsTest.getString(1);
+                patientId = rsTest.getString(2);
+                proId = rsTest.getString(3);
+                type = rsTest.getString(4);
+                report = rsTest.getString(5);
+                date = rsTest.getDate(6);    
+                status = rsTest.getInt(7);
+                e = new Examen(examId, patientId, proId, type, report, date, status);
+                examsP.add(e);
+        }
+        
+        // Close the result set, statement and the connection
+        rsTest.close() ;
+        stmt.close() ;
+        return examsP;
     }
     
 }
