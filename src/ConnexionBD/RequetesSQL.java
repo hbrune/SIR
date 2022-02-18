@@ -2,6 +2,7 @@ package ConnexionBD;
     
 import Modele.Login;
 import Modele.Patient;
+import Modele.Examen;
 import java.util.Date;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -151,7 +152,7 @@ base de donn�es
                 genderP = rsTest.getString(5);
                 ddnP = rsTest.getDate(6);             
                 pat = new Patient(idP, lastNameP, firstNameP, adressP, genderP, ddnP);
-                System.out.println("Patient: " + pat);
+                System.out.println("Id du patient: " + pat.getPatientId() + "\n" + "Nom: " + pat.getLastNameP() + "\n" + "Prénom: " + pat.getFirstNameP() + "\n" + "Adresse: " + pat.getAdress() + "\n" + "Sexe: " + pat.getGender() + "\n" + "Date de naissance: " + pat.getDdn());
         }
         
         // Close the result set, statement and the connection
@@ -254,6 +255,68 @@ base de donn�es
         // Close the result set, statement and the connection
         rsTest.close() ;
         stmt.close() ;
+    }
+    
+    public void addExamen(Examen e) throws SQLException {
+        
+        //Get a statement from the connection
+        Statement stmt = dap.getConn().createStatement() ;
+        
+        //Execute the query
+        java.sql.Timestamp ddnSql = new java.sql.Timestamp(e.getDate().getTime());
+        ResultSet rsTest = stmt.executeQuery("INSERT INTO EXAM VALUES ('" + e.getExamId() + "', '" + e.getPatientId() + "', '" + e.getProId() + "', '" + e.getType() + "', '" + e.getReport() + "', TO_TIMESTAMP_TZ('" + ddnSql + "', 'YYYY-MM-DD HH24:MI:SSXFF'), " + e.getStatus() +")");
+
+        rsTest.close() ;
+        stmt.close() ;
+        
+    }
+    
+    public void addReport(String examId, String report) throws SQLException {
+        
+        //Get a statement from the connection
+        Statement stmt = dap.getConn().createStatement() ;
+        
+        //Execute the query
+        ResultSet rsTest = stmt.executeQuery("UPDATE EXAM SET report = '" + report + "' WHERE examId = '" + examId +"'") ;
+        
+        rsTest.close() ;
+        stmt.close() ;
+        
+    }
+    
+    public Examen getExamenById(String id) throws SQLException {    
+        // Get a statement from the connection
+        Statement stmt = conn.createStatement() ;
+        
+        // Execute the query
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM EXAM where examId = '" + id + "'") ;
+        
+        Examen e = null;
+        String examId = "";
+        String patientId = "";
+        String proId = "";
+        String type;
+        String report = "";
+        Date date = null;
+        int status;
+        
+        
+        while(rsTest.next()) {
+                examId = rsTest.getString(1);
+                patientId = rsTest.getString(2);
+                proId = rsTest.getString(3);
+                type = rsTest.getString(4);
+                report = rsTest.getString(5);
+                date = rsTest.getDate(6);    
+                status = rsTest.getInt(7);
+                e = new Examen(examId, patientId, proId, type, report, date, status);
+                System.out.println("Id de l'examen: " + e.getExamId() + "\n" + "Id du patient: " + e.getPatientId() + "\n" + "Id professionnel: " + e.getProId() + "\n" + "Type d'examen: " + e.getType() + "\n" + "Compte-rendu: " + e.getReport() + "\n" + "Date de l'examen: " + e.getDate() + "\n" + "Status de l'examen: " + e.getStatus());
+        }
+        
+        // Close the result set, statement and the connection
+        rsTest.close() ;
+        stmt.close() ;
+        return e;
     }
     
 }

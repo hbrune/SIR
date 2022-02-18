@@ -8,6 +8,7 @@ import ConnexionBD.DatabaseAccessProperties;
 import ConnexionBD.RequetesSQL;
 import Controleur.LoginController;
 import Modele.Login;
+import Modele.Examen;
 import Vue.Authentification;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -55,6 +56,14 @@ public class SIR extends JFrame {
         // id mika : c6ecb6cb49
         //rs.addUser(secretaire);
         //rs.addUser(medecin);
+        
+        rs.getPatientById("1");
+        
+        Examen exam1 = new Examen("1", "1", "1", "IRM", "Le patient va bien", ajd, 1);
+        //rs.addExamen(exam1);
+        //rs.addReport("1", "Le cr a été modifié");
+        rs.getExamenById("1");
+        
         ArrayList listPatients = rs.getPatients();
         System.out.println("Nombre de patients enregistrés : " + listPatients.size());
         

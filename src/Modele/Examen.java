@@ -4,35 +4,35 @@
  */
 package Modele;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 /**
  *
  * @author Brune
  */
 public class Examen {
-    LocalDateTime date;
+    String examId;
     String patientId;
-    TypeExamen type;
     String proId;
+    String type;
     String report;
+    Date date;
+    int status;  
     
-    public Examen(LocalDateTime date, String patientId, TypeExamen type, String proId, String report) {
-        this.date = date;
+    public Examen(String examId, String patientId, String proId, String type, String report, Date date, int status) {
+        this.examId = examId;
         this.patientId = patientId;
-        this.type = type;
         this.proId = proId;
+        this.type = type;
         this.report = report;
+        this.date = date;
+        this.status = status;
     }
-    
-    public LocalDateTime getDate() {
-        return date;
+
+    public String getExamId() {
+        return examId;
     }
-    
-    public TypeExamen getType() {
-        return type;
-    }
-    
+ 
     public String getPatientId() {
         return patientId;
     }
@@ -41,9 +41,20 @@ public class Examen {
         return proId;
     }
     
-    public String getCompteRendu() {
+    public String getType() {
+        return type;
+    }
+    
+    public String getReport() {
         return report;
     }
     
+    public Date getDate() {
+        return date;
+    }
+    
+    public int getStatus() {
+        return status;
+    }
     
 }
