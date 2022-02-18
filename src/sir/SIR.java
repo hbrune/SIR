@@ -8,6 +8,7 @@ import ConnexionBD.DatabaseAccessProperties;
 import ConnexionBD.RequetesSQL;
 import Controleur.LoginController;
 import Modele.Login;
+import Modele.Patient;
 import Modele.Examen;
 import Vue.Authentification;
 import java.sql.Connection;
@@ -57,12 +58,18 @@ public class SIR extends JFrame {
         //rs.addUser(secretaire);
         //rs.addUser(medecin);
         
+        Date ddn = new Date();
+        Patient p1 = new Patient("23","mimi","mimi","5 rue de la Rue","M",ddn);
+        //rs.addPatient(p1);
+        rs.verifierPatient(p1);
+        
         //rs.getPatientById("1");
         
         Examen exam1 = new Examen("1", "1", "1", "IRM", "Le patient va bien", ajd, 1);
         Examen exam2 = new Examen("2", "1", "1", "IRM", "Le patient va toujours bien", ajd, 1);
         Examen exam3 = new Examen("3", "1", "2", "Scanner", "Le patient va mal", ajd, 1);
-        rs.addExamen(exam3);
+        Examen exam4 = new Examen("4", "1", "2", "Scanner", "Il va mieux", ajd, 1);
+        //rs.addExamen(exam4);
         //rs.addReport("1", "Le cr a été modifié");
         //rs.getExamenById("1");
         rs.getListExamenByPatient("1");
