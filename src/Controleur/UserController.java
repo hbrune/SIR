@@ -11,6 +11,7 @@ import Vue.DashboardSecretaire;
 import Vue.RecherchePatientSecretaire;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  *
@@ -45,5 +46,8 @@ public class UserController {
         }
     }
     
+    public String generateUid() {
+        return UUID.randomUUID().toString().replace("-","").substring(0,10);
+    }
     //public abstract void updatePatients(ArrayList<Patient> patients);
 }

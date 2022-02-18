@@ -8,6 +8,7 @@ import Controleur.LoginController;
 import Controleur.ManipAndPhController;
 import Modele.Login;
 import Modele.Patient;
+import static com.sun.xml.internal.fastinfoset.alphabet.BuiltInRestrictedAlphabets.table;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.CellEditorListener;
@@ -42,6 +43,7 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         this.mc = mc;
         this.user = user;
         this.updatePatients(patients);
+        accesDmrButton.setEnabled(false);
         
     }
 
@@ -126,6 +128,7 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         rechercheButton = new javax.swing.JButton();
         error = new javax.swing.JLabel();
+        accesDmrButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         backButton = new javax.swing.JButton();
         decoButton = new javax.swing.JButton();
@@ -145,23 +148,23 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         JRecherche.setBackground(new java.awt.Color(193, 216, 239));
         JRecherche.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"d00bf4b4-96dc-474a-b18a-29b20196574b", "Titi", "Titi", "01/01/2001", "F", null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {"d00bf4b4-96dc-474a-b18a-29b20196574b", "Titi", "Titi", "01/01/2001", "F"},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "ID patient", "Nom", "Prénom", "Date  de naissance", "Sexe", "Acces Dossier Patient"
+                "ID patient", "Nom", "Prénom", "Date  de naissance", "Sexe"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+                java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, true
+                false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -172,11 +175,16 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        JRecherche.setColumnSelectionAllowed(true);
-        JRecherche.setEnabled(false);
         JRecherche.setFocusable(false);
         JRecherche.setRowHeight(30);
         JRecherche.setRowMargin(5);
+        JRecherche.setSelectionBackground(new java.awt.Color(102, 153, 255));
+        JRecherche.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        JRecherche.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JRechercheMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(JRecherche);
         JRecherche.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
@@ -213,23 +221,36 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         error.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         error.setForeground(new java.awt.Color(255, 51, 0));
 
+        accesDmrButton.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        accesDmrButton.setText("Accès DMR");
+        accesDmrButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                accesDmrButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 944, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(critere, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(rechercheText, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addContainerGap()
+                        .addComponent(accesDmrButton, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(rechercheButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 944, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(critere, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(rechercheText, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(rechercheButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -249,7 +270,9 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
                         .addComponent(rechercheText)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(118, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(accesDmrButton, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(44, Short.MAX_VALUE))
         );
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
@@ -376,24 +399,40 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         rechercheText.setText("");
     }//GEN-LAST:event_rechercheTextMouseClicked
 
+    private void accesDmrButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accesDmrButtonActionPerformed
+        int row = JRecherche.getSelectedRow();
+        String idPatient = JRecherche.getModel().getValueAt(row, 0).toString();
+        
+        if (idPatient != null){
+            try {
+            mc.displayDossierPatient(idPatient);
+            } catch (SQLException ex) {
+            Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.dispose();
+    }//GEN-LAST:event_accesDmrButtonActionPerformed
+
+    private void JRechercheMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JRechercheMouseClicked
+        accesDmrButton.setEnabled(true);
+    }//GEN-LAST:event_JRechercheMouseClicked
+
     public void updatePatients(ArrayList<Patient> patients) {
-        String col[] = {"Identifiant","Nom","Prénom", "Adresse", "Date de naissance", "Sexe", "Accès DMR"};
+        String col[] = {"Identifiant","Nom","Prénom", "Adresse", "Date de naissance", "Sexe"};
 
         this.patientsModel = new DefaultTableModel(col, 0);
 
         JRecherche.setModel(patientsModel);
         
         for (int i = 0; i < patients.size(); i++) {
-            String id = patients.get(i).getPatientId();
-            String lastName = patients.get(i).getLastNameP().toUpperCase();
-            String firstName = patients.get(i).getFirstNameP().substring(0, 1).toUpperCase() + patients.get(i).getFirstNameP().substring(1);;
-            String adress = patients.get(i).getAdress();
+            String id = patients.get(i).getPatientId().trim();
+            String lastName = patients.get(i).getLastNameP().toUpperCase().trim();
+            String firstName = patients.get(i).getFirstNameP().substring(0, 1).toUpperCase() + patients.get(i).getFirstNameP().substring(1).trim();
+            String adress = patients.get(i).getAdress().trim();
             Date bod = patients.get(i).getDdn();
             String gender = patients.get(i).getGender();
-            Object[] data = {id , lastName, firstName, adress, bod, gender, "Accès dossier"};
-           // JRecherche.getColumn("Accès DMR").setCellRenderer(new ButtonRenderer());
-            //JRecherche.getColumn("Accès DMR").setCellEditor(new ButtonEditor(new JCheckBox()));
-            JRecherche.getColumn("Accès DMR").setCellRenderer(new RendererAndEditor() {
+            Object[] data = {id , lastName, firstName, adress, bod, gender};
+            /*JRecherche.getColumn("Accès DMR").setCellRenderer(new RendererAndEditor() {
                 @Override
                 public void removeCellEditorListener(CellEditorListener l) {
                     throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
@@ -404,78 +443,12 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
                     public void removeCellEditorListener(CellEditorListener l) {
                     throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
                 }
-            });
+            });*/
 
             patientsModel.addRow(data);
-            JRecherche.setColumnSelectionAllowed(true);
-            JRecherche.setRowSelectionAllowed(true);
         }
     }
     
-  /*  class ButtonRenderer extends JButton implements TableCellRenderer {
-        public ButtonRenderer() {
-            setOpaque(true);
-        }
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            if (isSelected) {
-                setForeground(table.getSelectionForeground());
-                setBackground(table.getSelectionBackground());
-            } else {
-                setForeground(table.getForeground());
-                setBackground(UIManager.getColor("Button.background"));
-            }
-            setText((value == null) ? "" : value.toString());
-            return this;
-        }
-    }
-    class ButtonEditor extends DefaultCellEditor {
-        protected JButton button;
-        private String label;
-        private boolean isPushed;
-        public ButtonEditor(JCheckBox checkBox) {
-            super(checkBox);
-            button = new JButton();
-            button.setOpaque(true);
-            button.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("bouton cliqué");
-                fireEditingStopped();
-            }
-            });
-        }
-        
-        @Override
-        public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
-            if (isSelected) {
-                button.setForeground(table.getSelectionForeground());
-                button.setBackground(table.getSelectionBackground());
-            } else {
-                button.setForeground(table.getForeground());
-                button.setBackground(table.getBackground());
-            }
-            label = (value == null) ? "" : value.toString();
-            button.setText(label);
-            isPushed = true;
-            return button;
-        }
-        
-        @Override
-        public Object getCellEditorValue() {
-            if (isPushed) {
-                System.out.println("bouton cliqué");
-            }
-            isPushed = false;
-            return label;
-        }
-        
-        @Override
-        public boolean stopCellEditing() {
-            isPushed = false;
-            return super.stopCellEditing();
-        }
-    }*/
     
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -511,6 +484,7 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable JRecherche;
+    private javax.swing.JButton accesDmrButton;
     private javax.swing.JButton backButton;
     private javax.swing.JComboBox<String> critere;
     private javax.swing.JButton decoButton;

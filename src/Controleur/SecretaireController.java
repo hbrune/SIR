@@ -26,7 +26,7 @@ import java.util.UUID;
  *
  * @author Brune
  */
-public class SecretaireController {
+public class SecretaireController extends UserController {
     Login user;
     private static RequetesSQL sql;
     DashboardSecretaire dashboard;

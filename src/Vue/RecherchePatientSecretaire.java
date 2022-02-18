@@ -367,11 +367,11 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
         
         for (int i = 0; i < patients.size(); i++) {
             String id = patients.get(i).getPatientId();
-            String lastName = patients.get(i).getLastNameP().toUpperCase();
-            String firstName = patients.get(i).getFirstNameP().substring(0, 1).toUpperCase() + patients.get(i).getFirstNameP().substring(1);;
-            String adress = patients.get(i).getAdress();
+            String lastName = patients.get(i).getLastNameP().toUpperCase().trim();
+            String firstName = patients.get(i).getFirstNameP().substring(0, 1).toUpperCase() + patients.get(i).getFirstNameP().substring(1).trim();
+            String adress = patients.get(i).getAdress().trim();
             Date bod = patients.get(i).getDdn();
-            String gender = patients.get(i).getGender();
+            String gender = patients.get(i).getGender().trim();
             Object[] data = {id , lastName, firstName, adress, bod, gender};
             patientsModel.addRow(data);
         }

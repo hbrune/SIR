@@ -3,8 +3,10 @@ package Controleur;
 import ConnexionBD.RequetesSQL;
 import Modele.Login;
 import Modele.Patient;
+import Vue.AjouterExamen;
 import Vue.Dashboard;
 import Vue.DashboardSecretaire;
+import Vue.DossierPatient;
 import Vue.RecherchePatientMedecin;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,10 +18,12 @@ import java.util.ArrayList;
 public class ManipAndPhController extends UserController {
     Login user;
     Dashboard dashboard;
+    AjouterExamen addExam;
+    RecherchePatientMedecin rp;
+    DossierPatient dp;
     RequetesSQL sql;
     String error = "";
     String success = "";
-    RecherchePatientMedecin rp;
     
     public ManipAndPhController(Login user) throws ClassNotFoundException {
         this.user = user;
@@ -51,6 +55,18 @@ public class ManipAndPhController extends UserController {
         dashboard.setVisible(true);
     }
     
+    public void displayAddExam(Patient p) {
+        String UID = generateUid();
+        addExam = new AjouterExamen(p, user, this, UID);
+        addExam.setVisible(true);
+    }
+    
+    public void displayDossierPatient(String idPatient) throws SQLException {
+        Patient p = sql.getPatientByCriteria("patientId", idPatient).get(0);
+        dp = new DossierPatient(user, p, this);
+        dp.setVisible(true);
+    }
+
     // RECHERCHE ET AJOUT EN BD
     
     public void recherchePatient(String critere, String recherche) throws SQLException {
@@ -62,11 +78,8 @@ public class ManipAndPhController extends UserController {
             error = "";
             ArrayList<Patient> patients = sql.getPatientByCriteria(critere, recherche);
             rp.updatePatients(patients);
-            
-            System.out.println(patients.size());
-            
+    
         }
-       
     }
     
     //A appeler dans le constructeur de l'interface chercher patient
@@ -82,4 +95,6 @@ public class ManipAndPhController extends UserController {
         liste = (ArrayList<Patient>) sql.getPatientByCriteria(critere, recherche);
         return liste;
     }
+
+
 }
