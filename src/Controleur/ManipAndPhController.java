@@ -4,6 +4,7 @@ import ConnexionBD.RequetesSQL;
 import Modele.Login;
 import Modele.Patient;
 import Vue.Dashboard;
+import Vue.DashboardSecretaire;
 import Vue.RecherchePatientMedecin;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ public class ManipAndPhController extends UserController {
     public ManipAndPhController(Login user) throws ClassNotFoundException {
         this.user = user;
         sql = new RequetesSQL();
-        dashboard = new Dashboard(user);
+        dashboard = new Dashboard(user, this);
         dashboard.setVisible(true);
     }
 
@@ -35,6 +36,19 @@ public class ManipAndPhController extends UserController {
     
     public String getSuccess() {
         return success;
+    }
+    
+    // DISPLAY VIEWS 
+    
+    public void displayRecherchePatient() throws SQLException {
+        ArrayList<Patient> patients = sql.getPatients();
+        rp = new RecherchePatientMedecin(user, this, patients);
+        rp.setVisible(true);
+    }
+    
+    public void displayDashboard() {
+        dashboard = new Dashboard(user, this);
+        dashboard.setVisible(true);
     }
     
     // RECHERCHE ET AJOUT EN BD
