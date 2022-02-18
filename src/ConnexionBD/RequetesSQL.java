@@ -30,7 +30,6 @@ base de donn�es
         conn = dap.getConn();
     }
     
-    //verifierPatient renvoie boolean (select...where...)
     public boolean verifierPatient(Patient p) throws SQLException {
         //Get a statement from the connection
         Statement stmt = dap.getConn().createStatement() ;
@@ -66,7 +65,7 @@ base de donn�es
         
         return verifPatient;
     }
-    //addPatient
+    
     public void addPatient(Patient patient) throws SQLException {
         //Get a statement from the connection
         Statement stmt = dap.getConn().createStatement() ;
@@ -140,7 +139,7 @@ base de donn�es
         String firstNameP = "";
         String adressP = "";
         String genderP = "";
- //       Date ddnP = null;
+        Date ddnP = null;
         
         
         while(rsTest.next()) {
@@ -150,8 +149,8 @@ base de donn�es
                 firstNameP = rsTest.getString(3);
                 adressP = rsTest.getString(4);
                 genderP = rsTest.getString(5);
-  //              ddnP = rsTest.getDate(5);
- //               pat = new Patient(idP, lastNameP, firstNameP, adressP, genderP, ddnP);
+                ddnP = rsTest.getDate(6);             
+                pat = new Patient(idP, lastNameP, firstNameP, adressP, genderP, ddnP);
                 System.out.println("Patient: " + pat);
         }
         
