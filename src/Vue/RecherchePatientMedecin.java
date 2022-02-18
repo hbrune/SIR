@@ -4,6 +4,7 @@
  */
 package Vue;
 
+import Controleur.LoginController;
 import Controleur.ManipAndPhController;
 import Modele.Login;
 import Modele.Patient;
@@ -33,6 +34,10 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
  public RecherchePatientMedecin(Login user, ManipAndPhController mc,  ArrayList<Patient> patients) {
      
         initComponents();
+        Toolkit toolkit = getToolkit();
+        Dimension size = toolkit.getScreenSize();
+        setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
+    
         JRecherche.getColumn("Acces Dossier Patient").setCellRenderer(new RendererAndEditor() {
             @Override
             public void removeCellEditorListener(CellEditorListener l) {
@@ -134,8 +139,8 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         rechercheButton = new javax.swing.JButton();
         error = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        backButton = new javax.swing.JButton();
         decoButton = new javax.swing.JButton();
-        decoButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -183,6 +188,16 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         rechercheText.setFont(new java.awt.Font("Yu Gothic UI Light", 2, 12)); // NOI18N
         rechercheText.setText("recherche selon le critère selectionné");
         rechercheText.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        rechercheText.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                rechercheTextMouseClicked(evt);
+            }
+        });
+        rechercheText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rechercheTextActionPerformed(evt);
+            }
+        });
 
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
@@ -247,25 +262,25 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
 
+        backButton.setBackground(new java.awt.Color(153, 204, 255));
+        backButton.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        backButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_back_40px.png"))); // NOI18N
+        backButton.setText("Retour");
+        backButton.setBorder(null);
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
+            }
+        });
+
         decoButton.setBackground(new java.awt.Color(153, 204, 255));
         decoButton.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        decoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_back_40px.png"))); // NOI18N
-        decoButton.setText("Retour");
+        decoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_sign_out_40px_3.png"))); // NOI18N
+        decoButton.setText("Déconnexion");
         decoButton.setBorder(null);
         decoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 decoButtonActionPerformed(evt);
-            }
-        });
-
-        decoButton1.setBackground(new java.awt.Color(153, 204, 255));
-        decoButton1.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        decoButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_sign_out_40px_3.png"))); // NOI18N
-        decoButton1.setText("Déconnexion");
-        decoButton1.setBorder(null);
-        decoButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                decoButton1ActionPerformed(evt);
             }
         });
 
@@ -274,24 +289,25 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(decoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addGap(23, 23, 23)
+                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addContainerGap(566, Short.MAX_VALUE)
-                    .addComponent(decoButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(820, Short.MAX_VALUE)
+                    .addComponent(decoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(22, 22, 22)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(decoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(29, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addGap(15, 15, 15)
-                    .addComponent(decoButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap()
+                    .addComponent(decoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(23, Short.MAX_VALUE)))
         );
 
@@ -313,13 +329,21 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        mc.displayDashboard();
+        this.dispose();
+    }//GEN-LAST:event_backButtonActionPerformed
+
     private void decoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decoButtonActionPerformed
-
+        user = null;
+        try {
+            LoginController lc = new LoginController();
+            this.dispose();
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_decoButtonActionPerformed
-
-    private void decoButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decoButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_decoButton1ActionPerformed
 
     private void rechercheButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rechercheButtonActionPerformed
         String critereToFind = "";
@@ -344,13 +368,21 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
             //TODO : recherche avec date
         } else {
            try {
-               mc.recherchePatient(critereToFind, rechercheText.getText());
+               mc.recherchePatient(critereToFind, rechercheText.getText().toLowerCase());
            } catch (SQLException ex) {
                Logger.getLogger(RecherchePatientSecretaire.class.getName()).log(Level.SEVERE, null, ex);
            }
         }
         error.setText(mc.getError());
     }//GEN-LAST:event_rechercheButtonActionPerformed
+
+    private void rechercheTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rechercheTextActionPerformed
+        
+    }//GEN-LAST:event_rechercheTextActionPerformed
+
+    private void rechercheTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rechercheTextMouseClicked
+        rechercheText.setText("");
+    }//GEN-LAST:event_rechercheTextMouseClicked
 
     public void updatePatients(ArrayList<Patient> patients) {
         String col[] = {"Identifiant","Nom","Prénom", "Adresse", "Date de naissance", "Sexe"};
@@ -407,9 +439,9 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable JRecherche;
+    private javax.swing.JButton backButton;
     private javax.swing.JComboBox<String> critere;
     private javax.swing.JButton decoButton;
-    private javax.swing.JButton decoButton1;
     private javax.swing.JLabel error;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;

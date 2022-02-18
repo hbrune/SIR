@@ -44,15 +44,14 @@ public class SIR extends JFrame {
         java.sql.Date ajdSql = new java.sql.Date(ajd.getTime());
         System.out.println(ajdSql);
         
-        
         RequetesSQL rs = new RequetesSQL();
-        String uid1 = UUID.randomUUID().toString().replace("-","").substring(0,10);
-        System.out.println(uid1);
-        String uid2 = UUID.randomUUID().toString().replace("-","").substring(0,10);
-        System.out.println(uid2);
-        Login secretaire = new Login(uid1, "roux", "ROUX", "Caitlin", 4);
+        //String uid1 = UUID.randomUUID().toString().replace("-","").substring(0,10);
+        //System.out.println(uid1);
+        //String uid2 = UUID.randomUUID().toString().replace("-","").substring(0,10);
+        //System.out.println(uid2);
+        //Login secretaire = new Login(uid1, "roux", "ROUX", "Caitlin", 4);
         // id caitlin : 97740e707f
-        Login medecin = new Login(uid2, "mika", "morillon", "mikael", 1);
+        //Login medecin = new Login(uid2, "mika", "morillon", "mikael", 1);
         // id mika : c6ecb6cb49
         //rs.addUser(secretaire);
         //rs.addUser(medecin);

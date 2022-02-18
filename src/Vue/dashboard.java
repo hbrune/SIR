@@ -12,6 +12,7 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -31,7 +32,7 @@ public class Dashboard extends javax.swing.JFrame {
     /**
      * Creates new form dashboard
      */
-    public Dashboard(Login user) {
+    public Dashboard(Login user, ManipAndPhController mc) {
         initComponents();
     
         this.user = user;
@@ -42,12 +43,12 @@ public class Dashboard extends javax.swing.JFrame {
         Toolkit toolkit = getToolkit();
         Dimension size = toolkit.getScreenSize();
         setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
-        this.setLocationRelativeTo(null);
+    
         //function.setText(String.valueOf(user.getFunction()));
         
         //String timeStamp = new SimpleDateFormat("EEE dd MMM", Locale.FRANCE).format(new Date());
         //dateLabel.setText(timeStamp);
-        
+        this.mc = mc;
         this.setLocationRelativeTo(null);
         
         
@@ -274,7 +275,12 @@ public class Dashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void recherchePatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recherchePatientButtonActionPerformed
-        
+        try {
+            mc.displayRecherchePatient();
+        } catch (SQLException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.dispose();
     }//GEN-LAST:event_recherchePatientButtonActionPerformed
 
     /**
