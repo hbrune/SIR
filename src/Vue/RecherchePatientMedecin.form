@@ -58,26 +58,21 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane1" pref="959" max="32767" attributes="0"/>
-                      <Group type="102" attributes="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                      <Component id="critere" alignment="0" max="32767" attributes="0"/>
-                                      <Component id="rechercheText" alignment="0" min="-2" pref="245" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="rechercheButton" min="-2" pref="133" max="-2" attributes="0"/>
-                                      <Component id="error" min="-2" pref="228" max="-2" attributes="0"/>
-                                  </Group>
-                              </Group>
+                      <Component id="jScrollPane1" min="-2" pref="944" max="-2" attributes="0"/>
+                      <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                      <Group type="102" alignment="0" attributes="0">
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="critere" alignment="0" max="32767" attributes="0"/>
+                              <Component id="rechercheText" alignment="0" min="-2" pref="245" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <EmptySpace type="separate" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="rechercheButton" min="-2" pref="133" max="-2" attributes="0"/>
+                              <Component id="error" min="-2" pref="228" max="-2" attributes="0"/>
+                          </Group>
                       </Group>
                   </Group>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <EmptySpace pref="25" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -142,7 +137,7 @@
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="6" rowCount="7">
-                    <Column editable="true" title="ID patient" type="java.lang.String">
+                    <Column editable="false" title="ID patient" type="java.lang.String">
                       <Data value="d00bf4b4-96dc-474a-b18a-29b20196574b"/>
                       <Data value="null"/>
                       <Data value="null"/>
@@ -151,7 +146,7 @@
                       <Data value="null"/>
                       <Data value="null"/>
                     </Column>
-                    <Column editable="true" title="Nom" type="java.lang.Object">
+                    <Column editable="false" title="Nom" type="java.lang.Object">
                       <Data value="Titi"/>
                       <Data value="null"/>
                       <Data value="null"/>
@@ -160,7 +155,7 @@
                       <Data value="null"/>
                       <Data value="null"/>
                     </Column>
-                    <Column editable="true" title="Pr&#xe9;nom" type="java.lang.String">
+                    <Column editable="false" title="Pr&#xe9;nom" type="java.lang.String">
                       <Data value="Titi"/>
                       <Data value="null"/>
                       <Data value="null"/>
@@ -169,7 +164,7 @@
                       <Data value="null"/>
                       <Data value="null"/>
                     </Column>
-                    <Column editable="true" title="Date  de naissance" type="java.lang.String">
+                    <Column editable="false" title="Date  de naissance" type="java.lang.String">
                       <Data value="01/01/2001"/>
                       <Data value="null"/>
                       <Data value="null"/>
@@ -178,7 +173,7 @@
                       <Data value="null"/>
                       <Data value="null"/>
                     </Column>
-                    <Column editable="true" title="Sexe" type="java.lang.String">
+                    <Column editable="false" title="Sexe" type="java.lang.String">
                       <Data value="F"/>
                       <Data value="null"/>
                       <Data value="null"/>
@@ -192,6 +187,11 @@
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="1">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
                       <Title/>
                       <Editor/>

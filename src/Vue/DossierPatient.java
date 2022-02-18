@@ -4,13 +4,20 @@
  */
 package Vue;
 
+import Controleur.LoginController;
+import Controleur.ManipAndPhController;
+import Modele.Login;
+import Modele.Patient;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.CellEditorListener;
 import javax.swing.table.*;
 import java.awt.Component;
 import java.awt.event.*;
+import java.sql.SQLException;
 import java.util.EventObject;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -18,14 +25,18 @@ import java.util.EventObject;
  */
 public class DossierPatient extends javax.swing.JFrame {
 
-    /**
-     * Creates new form DossierPatient
-     */
-    public DossierPatient() {
+    ManipAndPhController mc;
+    Login user;
+    Patient patient;
+    
+    public DossierPatient(Login user, Patient patient, ManipAndPhController mc) {
         initComponents();
         Toolkit toolkit = getToolkit();
         Dimension size= toolkit.getScreenSize();
         setLocation(size.width/2 - getWidth()/2 ,  size.height/2-getHeight()/2) ;
+        this.mc = mc;
+        this.user = user;
+        this.mc = mc;
         
     }
 
@@ -98,8 +109,8 @@ public class DossierPatient extends javax.swing.JFrame {
 
         jLabel8 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        backButton = new javax.swing.JButton();
         decoButton = new javax.swing.JButton();
-        decoButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -117,7 +128,7 @@ public class DossierPatient extends javax.swing.JFrame {
         JExam = new javax.swing.JTable();
         jLabel15 = new javax.swing.JLabel();
         jLabel14 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        addExamButton = new javax.swing.JButton();
 
         jLabel8.setText("...");
 
@@ -125,25 +136,25 @@ public class DossierPatient extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
 
+        backButton.setBackground(new java.awt.Color(153, 204, 255));
+        backButton.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        backButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_back_40px.png"))); // NOI18N
+        backButton.setText("Retour");
+        backButton.setBorder(null);
+        backButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backButtonActionPerformed(evt);
+            }
+        });
+
         decoButton.setBackground(new java.awt.Color(153, 204, 255));
         decoButton.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        decoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_back_40px.png"))); // NOI18N
-        decoButton.setText("Retour");
+        decoButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_sign_out_40px_3.png"))); // NOI18N
+        decoButton.setText("Déconnexion");
         decoButton.setBorder(null);
         decoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 decoButtonActionPerformed(evt);
-            }
-        });
-
-        decoButton1.setBackground(new java.awt.Color(153, 204, 255));
-        decoButton1.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        decoButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_sign_out_40px_3.png"))); // NOI18N
-        decoButton1.setText("Déconnexion");
-        decoButton1.setBorder(null);
-        decoButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                decoButton1ActionPerformed(evt);
             }
         });
 
@@ -152,24 +163,25 @@ public class DossierPatient extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(decoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 742, Short.MAX_VALUE))
+                .addGap(37, 37, 37)
+                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                     .addContainerGap(566, Short.MAX_VALUE)
-                    .addComponent(decoButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(decoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGap(22, 22, 22)))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(decoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(28, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanel1Layout.createSequentialGroup()
                     .addGap(15, 15, 15)
-                    .addComponent(decoButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(decoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(23, Short.MAX_VALUE)))
         );
 
@@ -257,13 +269,13 @@ public class DossierPatient extends javax.swing.JFrame {
         jLabel14.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
         jLabel14.setText("5 rue de la Paix");
 
-        jButton1.setBackground(new java.awt.Color(255, 255, 255));
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_new_copy_40px.png"))); // NOI18N
-        jButton1.setText("Ajouter un examen");
-        jButton1.setBorder(null);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        addExamButton.setBackground(new java.awt.Color(255, 255, 255));
+        addExamButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_new_copy_40px.png"))); // NOI18N
+        addExamButton.setText("Ajouter un examen");
+        addExamButton.setBorder(null);
+        addExamButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                addExamButtonActionPerformed(evt);
             }
         });
 
@@ -307,7 +319,7 @@ public class DossierPatient extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(43, 43, 43))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(146, 146, 146))))
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
@@ -324,17 +336,17 @@ public class DossierPatient extends javax.swing.JFrame {
                         .addGap(0, 46, Short.MAX_VALUE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel15)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel4)
-                                .addComponent(jLabel5)))))
+                                .addComponent(jLabel5))
+                            .addComponent(jLabel15))))
                 .addGap(17, 17, 17)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(26, 26, 26)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
@@ -376,17 +388,30 @@ public class DossierPatient extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void decoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decoButtonActionPerformed
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        try {
+            mc.displayRecherchePatient();
+        } catch (SQLException ex) {
+            Logger.getLogger(DossierPatient.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        this.dispose();
+    }//GEN-LAST:event_backButtonActionPerformed
 
+    private void decoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decoButtonActionPerformed
+        user = null;
+        try {
+            LoginController lc = new LoginController();
+            this.dispose();
+            
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_decoButtonActionPerformed
 
-    private void decoButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decoButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_decoButton1ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void addExamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addExamButtonActionPerformed
+        //mc.displayAddExam(Patient p);
+        this.dispose();
+    }//GEN-LAST:event_addExamButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -418,16 +443,15 @@ public class DossierPatient extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new DossierPatient().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable JExam;
+    private javax.swing.JButton addExamButton;
+    private javax.swing.JButton backButton;
     private javax.swing.JButton decoButton;
-    private javax.swing.JButton decoButton1;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
