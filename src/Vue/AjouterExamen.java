@@ -495,9 +495,10 @@ public class AjouterExamen extends javax.swing.JFrame {
         String image = imageText.getText();
         String report = reportText.getText();
         int status = 1;
-        System.out.println(examId + ", " + patientId + ", " + medecinId + ", " + type + ", " + image + ", " + report + ", " + status + " " + new Date());
+        System.out.println(examId + ", " + patientId + ", " + medecinId + ", " + type + ", " + report + ", " + status + " " + new Date());
         if(!type.equals("") && !image.equals("") && !report.equals("")) {
-            Examen exam = new Examen(examId, patientId, medecinId, type, report, new Date(), status);
+            Date date = new Date();
+            Examen exam = new Examen(examId, patientId, "4", type, report, date, status);
             try {
                 mc.ajouterExam(exam);
                 success.setText(mc.getSuccess());
@@ -508,8 +509,6 @@ public class AjouterExamen extends javax.swing.JFrame {
             error.setText("Veuillez remplir tous les champs");
         }
         error.setText(mc.getError());
-        
-        
     }//GEN-LAST:event_addExamButtonActionPerformed
 
     /**

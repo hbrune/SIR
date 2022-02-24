@@ -265,7 +265,8 @@ base de donn�es
         
         //Execute the query
         java.sql.Timestamp ddnSql = new java.sql.Timestamp(e.getDate().getTime());
-        ResultSet rsTest = stmt.executeQuery("INSERT INTO EXAM VALUES ('" + e.getExamId() + "', '" + e.getPatientId() + "', '" + e.getProId() + "', '" + e.getType() + "', '" + e.getReport() + "', TO_TIMESTAMP_TZ('" + ddnSql + "', 'YYYY-MM-DD HH24:MI:SSXFF'), " + e.getStatus() +")");
+        System.out.println(ddnSql);
+        ResultSet rsTest = stmt.executeQuery("INSERT INTO EXAM VALUES ('" + e.getExamId() + "', '" + e.getPatientId() + "', '" + e.getProId() + "', '" + e.getType() + "', '" + e.getReport() + "', CURRENT_TIMESTAMP, " + e.getStatus() +")");
 
         rsTest.close() ;
         stmt.close() ;
