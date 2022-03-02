@@ -64,7 +64,8 @@ public class ManipAndPhController extends UserController {
     
     public void displayDossierPatient(String idPatient) throws SQLException {
         Patient p = sql.getPatientByCriteria("patientId", idPatient).get(0);
-        dp = new DossierPatient(user, p, this);
+        ArrayList<Examen> e = sql.getListExamenByPatient(p.getPatientId());
+        dp = new DossierPatient(user, p, this, e);
         dp.setVisible(true);
     }
 
