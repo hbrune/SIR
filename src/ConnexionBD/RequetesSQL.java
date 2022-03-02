@@ -264,8 +264,8 @@ base de donn�es
         Statement stmt = dap.getConn().createStatement() ;
         
         //Execute the query
-        java.sql.Timestamp ddnSql = new java.sql.Timestamp(e.getDate().getTime());
-        System.out.println(ddnSql);
+        java.sql.Timestamp dateSql = new java.sql.Timestamp(e.getDate().getTime());
+        System.out.println(dateSql);
         ResultSet rsTest = stmt.executeQuery("INSERT INTO EXAM VALUES ('" + e.getExamId() + "', '" + e.getPatientId() + "', '" + e.getProId() + "', '" + e.getType() + "', '" + e.getReport() + "', CURRENT_TIMESTAMP, " + e.getStatus() +")");
 
         rsTest.close() ;

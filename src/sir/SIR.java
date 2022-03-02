@@ -69,7 +69,8 @@ public class SIR extends JFrame {
         Examen exam2 = new Examen("2", "1", "1", "IRM", "Le patient va toujours bien", ajd, 1);
         Examen exam3 = new Examen("3", "1", "2", "Scanner", "Le patient va mal", ajd, 1);
         Examen exam4 = new Examen("4", "1", "2", "Scanner", "Il va mieux", ajd, 1);
-        //rs.addExamen(exam4);
+        Examen exam5 = new Examen("5", "1", "1", "IRM", "Il va moins bien", ajd, 1);
+        //rs.addExamen(exam5);
         //rs.addReport("1", "Le cr a été modifié");
         //rs.getExamenById("1");
         rs.getListExamenByPatient("1");
