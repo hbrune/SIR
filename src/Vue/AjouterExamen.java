@@ -46,6 +46,7 @@ public class AjouterExamen extends javax.swing.JFrame {
         genderLabel.setText(patient.getGender());
         adressLabel.setText(patient.getAdress().trim());
         idExamLabel.setText(uid);
+        idMedecinLabel.setText(this.user.getIdLogin());
     }
 
     /**
