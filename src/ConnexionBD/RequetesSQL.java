@@ -36,8 +36,8 @@ base de donn�es
         Statement stmt = dap.getConn().createStatement() ;
         
         //Execute the query
-        java.sql.Date dateSql = new java.sql.Date(p.getDdn().getTime());
-        ResultSet rsTest = stmt.executeQuery("SELECT * FROM PATIENT where lastNameP = '" + p.getLastNameP().toLowerCase() + "' and firstNameP = '" + p.getFirstNameP().toLowerCase() + "' and birthDate = TO_DATE('" + dateSql + "', 'YYYY-MM-DD')");
+        java.sql.Date ddnSql = new java.sql.Date(p.getDdn().getTime());
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM PATIENT where lastNameP = '" + p.getLastNameP().toLowerCase() + "' and firstNameP = '" + p.getFirstNameP().toLowerCase() + "' and birthDate = TO_DATE('" + ddnSql + "', 'YYYY-MM-DD')");
         
         Patient patient = null;
         String patientId = "";
