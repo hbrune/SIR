@@ -88,7 +88,7 @@ public class SecretaireController extends UserController {
             error = "Veuillez entrer une recherche";
         } else {
             error = "";
-            ArrayList<Patient> patients = sql.getPatientByCriteria(critere, recherche);
+            ArrayList<Patient> patients = sql.getPatientByCriteria(critere, recherche.toLowerCase());
             rp.updatePatients(patients);
             
             System.out.println(patients.size());
