@@ -4,48 +4,17 @@
  */
 package Vue;
 
-import Controleur.LoginController;
-import Controleur.ManipAndPhController;
-import Modele.Examen;
-import Modele.Login;
-import Modele.Patient;
-import java.awt.Dimension;
-import java.awt.Toolkit;
-import java.sql.SQLException;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.ButtonGroup;
-
 /**
  *
  * @author saman
  */
-public class AjouterExamen extends javax.swing.JFrame {
+public class Completer_Examen extends javax.swing.JFrame {
 
-    Patient patient;
-    Login user;
-    ManipAndPhController mc;
-    
-    public AjouterExamen(Patient p, Login user, ManipAndPhController mc, String uid) {
-        initComponents();        
-        Toolkit toolkit = getToolkit();
-        Dimension size= toolkit.getScreenSize();
-        setLocation(size.width/2 - getWidth()/2 ,  size.height/2-getHeight()/2) ;
-        ButtonGroup G = new ButtonGroup();
-        G.add(JR1);
-        G.add(JR2);
-        JR1.setSelected(true);
-        this.patient = p;
-        this.user = user;
-        this.mc = mc;
-        idPatientLabel.setText(patient.getPatientId().trim());
-        lastNameLabel.setText(patient.getLastNameP().trim());
-        firstNameLabel.setText(patient.getFirstNameP().trim());
-        dateLabel.setText(patient.getDdn().toString().trim());
-        genderLabel.setText(patient.getGender());
-        adressLabel.setText(patient.getAdress().trim());
-        idExamLabel.setText(uid);
+    /**
+     * Creates new form Completer_Examen
+     */
+    public Completer_Examen() {
+        initComponents();
     }
 
     /**
@@ -57,7 +26,6 @@ public class AjouterExamen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         backButton = new javax.swing.JButton();
         decoButton = new javax.swing.JButton();
@@ -84,9 +52,6 @@ public class AjouterExamen extends javax.swing.JFrame {
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
-        JR2 = new javax.swing.JRadioButton();
-        JR1 = new javax.swing.JRadioButton();
-        typeExam = new javax.swing.JComboBox<>();
         imageText = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         reportText = new javax.swing.JTextArea();
@@ -95,6 +60,8 @@ public class AjouterExamen extends javax.swing.JFrame {
         addExamButton = new javax.swing.JButton();
         error = new javax.swing.JLabel();
         success = new javax.swing.JLabel();
+        idExamLabel1 = new javax.swing.JLabel();
+        idExamLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -129,7 +96,7 @@ public class AjouterExamen extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 579, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(decoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
         );
@@ -186,7 +153,7 @@ public class AjouterExamen extends javax.swing.JFrame {
 
         jLabel15.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
         jLabel15.setForeground(new java.awt.Color(0, 0, 102));
-        jLabel15.setText("Ajouter un examen");
+        jLabel15.setText("Ajouter un examen : ");
 
         jSeparator1.setBackground(new java.awt.Color(102, 204, 255));
         jSeparator1.setForeground(new java.awt.Color(102, 204, 255));
@@ -208,31 +175,13 @@ public class AjouterExamen extends javax.swing.JFrame {
         jLabel20.setText(" Image : ");
 
         jLabel21.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        jLabel21.setForeground(new java.awt.Color(204, 204, 204));
         jLabel21.setText("Compte rendu :");
 
         jLabel22.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         jLabel22.setText("ID médecin ayant réalisé l'examen : ");
 
-        JR2.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        JR2.setText("Non numérique");
-        JR2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JR2MouseClicked(evt);
-            }
-        });
-
-        JR1.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        JR1.setText("Numérique");
-        JR1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JR1MouseClicked(evt);
-            }
-        });
-
-        typeExam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "IRM", "Scanner" }));
-
         imageText.setFont(new java.awt.Font("Segoe UI", 2, 10)); // NOI18N
-        imageText.setText("URL ou \" format papier\" , selon le type d'examen");
         imageText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 imageTextActionPerformed(evt);
@@ -241,6 +190,8 @@ public class AjouterExamen extends javax.swing.JFrame {
 
         reportText.setColumns(20);
         reportText.setRows(5);
+        reportText.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        reportText.setFocusable(false);
         jScrollPane1.setViewportView(reportText);
 
         idMedecinLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
@@ -248,6 +199,7 @@ public class AjouterExamen extends javax.swing.JFrame {
 
         idExamLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         idExamLabel.setText("jLabel5");
+        idExamLabel.setEnabled(false);
 
         addExamButton.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
         addExamButton.setText("Enregistrer l'examen");
@@ -262,6 +214,14 @@ public class AjouterExamen extends javax.swing.JFrame {
 
         success.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
         success.setForeground(new java.awt.Color(0, 204, 0));
+
+        idExamLabel1.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        idExamLabel1.setText("jLabel5");
+        idExamLabel1.setEnabled(false);
+
+        idExamLabel2.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        idExamLabel2.setText("jLabel5");
+        idExamLabel2.setEnabled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -310,7 +270,7 @@ public class AjouterExamen extends javax.swing.JFrame {
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 239, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(215, 215, 215))
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -327,19 +287,6 @@ public class AjouterExamen extends javax.swing.JFrame {
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel16)
-                                            .addComponent(jLabel17))
-                                        .addGap(54, 54, 54)
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addComponent(JR1)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(JR2))
-                                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addGap(10, 10, 10)
-                                                .addComponent(idExamLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel22)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(idMedecinLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -348,15 +295,21 @@ public class AjouterExamen extends javax.swing.JFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 459, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGap(59, 59, 59)
+                                        .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 539, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel19)
+                                            .addComponent(jLabel16)
+                                            .addComponent(jLabel17)
                                             .addComponent(jLabel20))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(imageText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(typeExam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 539, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                        .addContainerGap(104, Short.MAX_VALUE))))
+                                            .addComponent(idExamLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(idExamLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(idExamLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                        .addContainerGap(48, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -403,24 +356,23 @@ public class AjouterExamen extends javax.swing.JFrame {
                         .addGap(81, 81, 81))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(idExamLabel1)
+                            .addComponent(jLabel17))
+                        .addGap(10, 10, 10)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel16)
-                            .addComponent(JR1)
-                            .addComponent(JR2))
-                        .addGap(12, 12, 12)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel17)
                             .addComponent(idExamLabel))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel19)
-                            .addComponent(typeExam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(idExamLabel2))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(imageText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
+                        .addGap(36, 36, 36)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel21))
@@ -432,10 +384,8 @@ public class AjouterExamen extends javax.swing.JFrame {
                 .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(success)
-                .addContainerGap(72, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-
-        idMedecinLabel.getAccessibleContext().setAccessibleName("");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -448,49 +398,39 @@ public class AjouterExamen extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        try {
+        /*  try {
             mc.displayDossierPatient(patient.getPatientId());
         } catch (SQLException ex) {
             Logger.getLogger(AjouterExamen.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.dispose();
+        this.dispose();*/
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void decoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decoButtonActionPerformed
-        user = null;
+        /*   user = null;
         try {
             LoginController lc = new LoginController();
             this.dispose();
-            
+
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        }*/
     }//GEN-LAST:event_decoButtonActionPerformed
 
     private void imageTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageTextActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_imageTextActionPerformed
 
-    private void JR2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JR2MouseClicked
-        imageText.setText("DMR papier");
-        imageText.setEditable(false);
-    }//GEN-LAST:event_JR2MouseClicked
-
-    private void JR1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JR1MouseClicked
-        imageText.setText("");
-        imageText.setEditable(true);
-    }//GEN-LAST:event_JR1MouseClicked
-
     private void addExamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addExamButtonActionPerformed
-        String examId = idExamLabel.getText();
+        /* String examId = idExamLabel.getText();
         String patientId = patient.getPatientId();
         String medecinId = idMedecinLabel.getText();
         String type = typeExam.getSelectedItem().toString();
@@ -510,7 +450,7 @@ public class AjouterExamen extends javax.swing.JFrame {
         } else {
             error.setText("Veuillez remplir tous les champs");
         }
-        error.setText(mc.getError());
+        error.setText(mc.getError());*/
     }//GEN-LAST:event_addExamButtonActionPerformed
 
     /**
@@ -530,39 +470,36 @@ public class AjouterExamen extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AjouterExamen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Completer_Examen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AjouterExamen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Completer_Examen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AjouterExamen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Completer_Examen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AjouterExamen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Completer_Examen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                new Completer_Examen().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JRadioButton JR1;
-    private javax.swing.JRadioButton JR2;
     private javax.swing.JButton addExamButton;
     private javax.swing.JLabel adressLabel;
     private javax.swing.JButton backButton;
-    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel dateLabel;
     private javax.swing.JButton decoButton;
     private javax.swing.JLabel error;
     private javax.swing.JLabel firstNameLabel;
     private javax.swing.JLabel genderLabel;
     private javax.swing.JLabel idExamLabel;
+    private javax.swing.JLabel idExamLabel1;
+    private javax.swing.JLabel idExamLabel2;
     private javax.swing.JLabel idMedecinLabel;
     private javax.swing.JLabel idPatientLabel;
     private javax.swing.JTextField imageText;
@@ -588,6 +525,5 @@ public class AjouterExamen extends javax.swing.JFrame {
     private javax.swing.JLabel lastNameLabel;
     private javax.swing.JTextArea reportText;
     private javax.swing.JLabel success;
-    private javax.swing.JComboBox<String> typeExam;
     // End of variables declaration//GEN-END:variables
 }
