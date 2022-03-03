@@ -6,6 +6,7 @@ package Vue;
 
 import Controleur.LoginController;
 import Controleur.ManipAndPhController;
+import Modele.Examen;
 import Modele.Login;
 import Modele.Patient;
 import java.awt.*;
@@ -15,6 +16,8 @@ import javax.swing.table.*;
 import java.awt.Component;
 import java.awt.event.*;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.EventObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,8 +31,9 @@ public class DossierPatient extends javax.swing.JFrame {
     ManipAndPhController mc;
     Login user;
     Patient patient;
+    DefaultTableModel examsModel;
     
-    public DossierPatient(Login user, Patient patient, ManipAndPhController mc) {
+    public DossierPatient(Login user, Patient patient, ManipAndPhController mc,  ArrayList<Examen> exams) {
         initComponents();
         Toolkit toolkit = getToolkit();
         Dimension size= toolkit.getScreenSize();
@@ -44,6 +48,8 @@ public class DossierPatient extends javax.swing.JFrame {
         dateLabel.setText(patient.getDdn().toString().trim());
         genderLabel.setText(patient.getGender());
         adressLabel.setText(patient.getAdress().trim());
+        
+        this.updateExams(exams);
         
     }
 
@@ -474,6 +480,23 @@ public class DossierPatient extends javax.swing.JFrame {
             public void run() {
             }
         });
+    }
+    
+    public void updateExams(ArrayList<Examen> exams) {
+        String col[] = {"N° examen","Date","Type"};
+
+        this.examsModel = new DefaultTableModel(col, 0);
+
+        JExam.setModel(examsModel);
+        
+        for (int i = 0; i < exams.size(); i++) {
+            String id = exams.get(i).getExamId().trim();
+            String date = exams.get(i).getDate().toString().trim();
+            String type = exams.get(i).getType().trim();
+            Object[] data = {id , date, type};
+
+            examsModel.addRow(data);
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

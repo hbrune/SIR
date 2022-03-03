@@ -46,6 +46,7 @@ public class AjouterExamen extends javax.swing.JFrame {
         genderLabel.setText(patient.getGender());
         adressLabel.setText(patient.getAdress().trim());
         idExamLabel.setText(uid);
+        idMedecinLabel.setText(this.user.getIdLogin());
     }
 
     /**
@@ -492,18 +493,19 @@ public class AjouterExamen extends javax.swing.JFrame {
     private void addExamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addExamButtonActionPerformed
         String examId = idExamLabel.getText();
         String patientId = patient.getPatientId();
-        String medecinId = idMedecinLabel.getText();
+        String proId = idMedecinLabel.getText();
         String type = typeExam.getSelectedItem().toString();
         String image = imageText.getText();
         String report = reportText.getText();
         int status = 1;
-        System.out.println(examId + ", " + patientId + ", " + medecinId + ", " + type + ", " + report + ", " + status + " " + new Date());
         if(!type.equals("") && !image.equals("") && !report.equals("")) {
             Date date = new Date();
-            Examen exam = new Examen(examId, patientId, "4", type, report, date, status);
+            Examen exam = new Examen(examId, patientId, proId, type, report, date, status);
             try {
                 mc.ajouterExam(exam);
-                success.setText(mc.getSuccess());
+                mc.displayDossierPatient(patientId);
+                this.dispose();
+                
             } catch (SQLException ex) {
                 Logger.getLogger(AjouterExamen.class.getName()).log(Level.SEVERE, null, ex);
             }

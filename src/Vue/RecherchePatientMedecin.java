@@ -431,18 +431,6 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
             Date bod = patients.get(i).getDdn();
             String gender = patients.get(i).getGender();
             Object[] data = {id , lastName, firstName, adress, bod, gender};
-            /*JRecherche.getColumn("Accès DMR").setCellRenderer(new RendererAndEditor() {
-                @Override
-                public void removeCellEditorListener(CellEditorListener l) {
-                    throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-                }
-                });
-                JRecherche.getColumn("Accès DMR").setCellEditor(new RendererAndEditor() {
-                @Override
-                    public void removeCellEditorListener(CellEditorListener l) {
-                    throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-                }
-            });*/
 
             patientsModel.addRow(data);
         }
