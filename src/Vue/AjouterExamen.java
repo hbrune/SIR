@@ -501,8 +501,6 @@ public class AjouterExamen extends javax.swing.JFrame {
                 .addContainerGap())
         );
 
-        idMedecinLabel.getAccessibleContext().setAccessibleName("");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
