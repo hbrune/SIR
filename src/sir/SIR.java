@@ -53,10 +53,17 @@ public class SIR extends JFrame {
         //System.out.println(uid2);
         //Login secretaire = new Login(uid1, "roux", "ROUX", "Caitlin", 4);
         // id caitlin : 97740e707f
+        //String uid2 = UUID.randomUUID().toString().replace("-","").substring(0,10);
+        //System.out.println(uid2);
+        //Login manip = new Login(uid2, "roux", "Roux", "Paul", 3);
+        
+        // id manip : bcfc00c134
+        // id caitlin : 97740e707f
         //Login medecin = new Login(uid2, "mika", "morillon", "mikael", 1);
         // id mika : c6ecb6cb49
         //rs.addUser(secretaire);
         //rs.addUser(medecin);
+        //rs.addUser(manip);
         
         Date ddn = new Date();
         Patient p1 = new Patient("23","mimi","mimi","5 rue de la Rue","M",ddn);
