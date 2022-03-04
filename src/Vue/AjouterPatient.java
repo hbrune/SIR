@@ -370,7 +370,7 @@ public class AjouterPatient extends javax.swing.JFrame {
         String adress = adressText.getText() + " " + codePostalText.getText() + " " + villeText.getText();
         String gender = "";
         if(JR1.isSelected()) {
-            gender = "M";
+            gender = "H";
         } else {
             gender = "F";
         }
