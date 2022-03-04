@@ -153,7 +153,6 @@ base de donn�es
                 genderP = rsTest.getString(5);
                 ddnP = rsTest.getDate(6);             
                 pat = new Patient(idP, lastNameP, firstNameP, adressP, genderP, ddnP);
-                System.out.println("Id du patient: " + pat.getPatientId() + "\n" + "Nom: " + pat.getLastNameP() + "\n" + "Prénom: " + pat.getFirstNameP() + "\n" + "Adresse: " + pat.getAdress() + "\n" + "Sexe: " + pat.getGender() + "\n" + "Date de naissance: " + pat.getDdn());
         }
         
         // Close the result set, statement and the connection
@@ -313,7 +312,6 @@ base de donn�es
                 date = rsTest.getDate(7);    
                 status = rsTest.getInt(8);
                 e = new Examen(examId, patientId, proId, proIdReport, type, report, date, status);
-                System.out.println("Id de l'examen: " + e.getExamId() + "\n" + "Id du patient: " + e.getPatientId() + "\n" + "Id professionnel: " + e.getProId() + "\n" + "Type d'examen: " + e.getType() + "\n" + "Compte-rendu: " + e.getReport() + "\n" + "Date de l'examen: " + e.getDate() + "\n" + "Status de l'examen: " + e.getStatus());
         }
         
         // Close the result set, statement and the connection
@@ -360,9 +358,76 @@ base de donn�es
         stmt.close() ;
         return examsP;
     }
+    
+    public ArrayList<Examen> getExamensIncomplete() throws SQLException {    
+        
+        ArrayList<Examen> examsP = new ArrayList<>();
+        
+        // Get a statement from the connection
+        Statement stmt = conn.createStatement();
+        
+        // Execute the query
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM EXAM WHERE status = 0");
+        Examen e = null;
+        String examId = "";
+        String patientId = "";
+        String proId = "";
+        String proIdReport = "";
+        String type;
+        String report = "";
+        Date date = null;
+        int status;
+        
+        while(rsTest.next()) {
+                examId = rsTest.getString(1);
+                patientId = rsTest.getString(2);
+                proId = rsTest.getString(3);
+                proIdReport = rsTest.getString(4);
+                type = rsTest.getString(5);
+                report = rsTest.getString(6);
+                date =  rsTest.getDate(7);    
+                status = rsTest.getInt(8);
+                e = new Examen(examId, patientId, proId, proIdReport, type, report, date, status);
+                examsP.add(e);
+        }
+        
+        // Close the result set, statement and the connection
+        rsTest.close() ;
+        stmt.close() ;
+        return examsP;
+    }
 
-    public Patient getPatientFromExam(String idExam) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Patient getPatientFromExam(String idExam) throws SQLException {
+        Patient p = null;
+        
+        // Get a statement from the connection
+        Statement stmt = conn.createStatement() ;
+        
+        // Execute the query
+        ResultSet rsTest = stmt.executeQuery("SELECT PATIENTID, LASTNAMEP, FIRSTNAMEP, ADRESS, GENDER, BIRTHDATE FROM PATIENT NATURAL JOIN EXAM WHERE EXAMID = '" + idExam + "'") ;
+
+        System.out.println("test");
+        String idP = "";
+        String lastNameP = "";
+        String firstNameP = "";
+        String adressP = "";
+        String genderP = "";
+        Date ddnP = null;
+        
+        while(rsTest.next()) {
+                idP = rsTest.getString(1);
+                lastNameP = rsTest.getString(2);
+                firstNameP = rsTest.getString(3);
+                adressP = rsTest.getString(4);
+                genderP = rsTest.getString(5);
+                ddnP = rsTest.getDate(6);             
+                p = new Patient(idP, lastNameP, firstNameP, adressP, genderP, ddnP);
+        }
+        
+        // Close the result set, statement and the connection
+        rsTest.close() ;
+        stmt.close() ;
+        return p;
     }
     
 }

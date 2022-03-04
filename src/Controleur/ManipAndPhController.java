@@ -1,5 +1,6 @@
 package Controleur;
 
+import Vue.CR;
 import ConnexionBD.RequetesSQL;
 import Modele.Examen;
 import Modele.Login;
@@ -24,6 +25,7 @@ public class ManipAndPhController extends UserController {
     RecherchePatientMedecin rp;
     DossierPatient dp;
     CompleterExamen ce;
+    CR cr;
     RequetesSQL sql;
     String error = "";
     String success = "";
@@ -79,6 +81,13 @@ public class ManipAndPhController extends UserController {
     }
 
     public void displayListExamToComplete() throws SQLException {
+        ArrayList<Examen> exams = sql.getExamensIncomplete();
+        ArrayList<Patient> patients = new ArrayList<>();
+        for(int i = 0; i< exams.size(); i++) {
+            patients.add(sql.getPatientFromExam(exams.get(i).getExamId()));
+        }
+        cr = new CR(this, user, exams, patients);
+        cr.setVisible(true);
         
         
     }
@@ -120,6 +129,10 @@ public class ManipAndPhController extends UserController {
 
     public void displayExam(String idExam) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void updateExam(Examen e, String report) throws SQLException {
+        sql.addReport(e.getExamId(), report);
     }
 
     

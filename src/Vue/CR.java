@@ -1,3 +1,5 @@
+package Vue;
+
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
@@ -10,18 +12,31 @@ import Modele.Patient;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
+import javax.swing.table.DefaultTableModel;
 
 public class CR extends javax.swing.JFrame {
-
+    Login user;
+    ManipAndPhController mc;
+    DefaultTableModel examsModel;
     /**
      * Creates new form CR
      */
     public CR() {
+        
+    }
+
+    public CR(ManipAndPhController mc, Login user, ArrayList<Examen> exams, ArrayList<Patient> patients) {
         initComponents();
+        this.user = user;
+        this.mc = mc;
+        this.setLocationRelativeTo(null);
+        this.updateExams(exams, patients);
+        completeButton.setEnabled(false);
     }
 
     /**
@@ -35,9 +50,9 @@ public class CR extends javax.swing.JFrame {
 
         jPanel2 = new javax.swing.JPanel();
         jLabel15 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        completeButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        JRecherche = new javax.swing.JTable();
+        JExam = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         backButton2 = new javax.swing.JButton();
@@ -50,16 +65,16 @@ public class CR extends javax.swing.JFrame {
         jLabel15.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
         jLabel15.setText("Examens à compléter :");
 
-        jButton1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 13)); // NOI18N
-        jButton1.setText("Completer ");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        completeButton.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 13)); // NOI18N
+        completeButton.setText("Compléter ");
+        completeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                completeButtonActionPerformed(evt);
             }
         });
 
-        JRecherche.setBackground(new java.awt.Color(226, 236, 245));
-        JRecherche.setModel(new javax.swing.table.DefaultTableModel(
+        JExam.setBackground(new java.awt.Color(226, 236, 245));
+        JExam.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -87,17 +102,17 @@ public class CR extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        JRecherche.setFocusable(false);
-        JRecherche.setRowHeight(30);
-        JRecherche.setRowMargin(5);
-        JRecherche.setSelectionBackground(new java.awt.Color(102, 153, 255));
-        JRecherche.setSelectionForeground(new java.awt.Color(0, 0, 0));
-        JRecherche.addMouseListener(new java.awt.event.MouseAdapter() {
+        JExam.setFocusable(false);
+        JExam.setRowHeight(30);
+        JExam.setRowMargin(5);
+        JExam.setSelectionBackground(new java.awt.Color(102, 153, 255));
+        JExam.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        JExam.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JRechercheMouseClicked(evt);
+                JExamMouseClicked(evt);
             }
         });
-        jScrollPane1.setViewportView(JRecherche);
+        jScrollPane1.setViewportView(JExam);
 
         jLabel8.setBackground(new java.awt.Color(255, 255, 255));
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_treatment_40px_1.png"))); // NOI18N
@@ -110,7 +125,7 @@ public class CR extends javax.swing.JFrame {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(completeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(21, 21, 21)
                         .addComponent(jLabel8)
@@ -134,8 +149,8 @@ public class CR extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(117, 117, 117))
+                .addComponent(completeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(111, 111, 111))
         );
 
         jPanel4.setBackground(new java.awt.Color(153, 204, 255));
@@ -207,9 +222,20 @@ public class CR extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void completeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeButtonActionPerformed
+        int row = JExam.getSelectedRow();
+        String idExam = JExam.getModel().getValueAt(row, 0).toString();
+        System.out.println(idExam);
+        if (idExam != null){
+            try {
+                mc.displayCompleteExam(idExam);
+            } catch (SQLException ex) {
+                Logger.getLogger(CR.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            this.dispose();
+        }
+        
+    }//GEN-LAST:event_completeButtonActionPerformed
 
     private void backButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButton2ActionPerformed
     /*    try {
@@ -231,9 +257,27 @@ public class CR extends javax.swing.JFrame {
         }*/
     }//GEN-LAST:event_decoButtonActionPerformed
 
-    private void JRechercheMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JRechercheMouseClicked
-       /* accesDmrButton.setEnabled(true);*/
-    }//GEN-LAST:event_JRechercheMouseClicked
+    private void JExamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JExamMouseClicked
+       completeButton.setEnabled(true);
+    }//GEN-LAST:event_JExamMouseClicked
+
+    public void updateExams(ArrayList<Examen> exams, ArrayList<Patient> patients) {
+        String col[] = {"N° examen","Patient","Date", "Type"};
+
+        this.examsModel = new DefaultTableModel(col, 0);
+
+        JExam.setModel(examsModel);
+        
+        for (int i = 0; i < exams.size(); i++) {
+            String id = exams.get(i).getExamId().trim();
+            String patient = patients.get(i).getLastNameP().trim().toUpperCase() + " " + patients.get(i).getFirstNameP().trim().toUpperCase();
+            String date = exams.get(i).getDate().toString();
+            String type = exams.get(i).getType().trim();
+            Object[] data = {id , patient, date, type};
+
+            examsModel.addRow(data);
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -261,20 +305,22 @@ public class CR extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(CR.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CR().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTable JRecherche;
+    private javax.swing.JTable JExam;
     private javax.swing.JButton backButton2;
+    private javax.swing.JButton completeButton;
     private javax.swing.JButton decoButton;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel2;

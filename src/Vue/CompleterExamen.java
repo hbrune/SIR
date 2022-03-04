@@ -8,6 +8,9 @@ import Controleur.ManipAndPhController;
 import Modele.Examen;
 import Modele.Login;
 import Modele.Patient;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -23,10 +26,22 @@ public class CompleterExamen extends javax.swing.JFrame {
      */
 
     public CompleterExamen(Login user, Patient p, ManipAndPhController mc, Examen e) {
+        initComponents();
         this.user = user;
         this.p = p;
         this.e = e;
         this.mc = mc;
+        this.setLocationRelativeTo(null);
+        
+        idPatientLabel.setText(p.getPatientId().trim());
+        lastNameLabel.setText(p.getLastNameP().trim().toUpperCase());
+        firstNameLabel.setText(p.getFirstNameP().trim().substring(0, 1).toUpperCase() + p.getFirstNameP().substring(1).trim());
+        dateLabel.setText(p.getDdn().toString().trim());
+        genderLabel.setText(p.getGender());
+        adressLabel.setText(p.getAdress().trim());
+        idExam.setText(e.getExamId().trim());
+        typeExam.setText(e.getType().trim());
+        dateExam.setText(e.getDate().toString());
     }
 
     /**
@@ -63,20 +78,17 @@ public class CompleterExamen extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
-        imageText = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         reportText = new javax.swing.JTextArea();
         idExamLabel = new javax.swing.JLabel();
-        addExamButton = new javax.swing.JButton();
+        saveExamButton = new javax.swing.JButton();
         error = new javax.swing.JLabel();
         success = new javax.swing.JLabel();
-        idExamLabel1 = new javax.swing.JLabel();
-        idExamLabel2 = new javax.swing.JLabel();
-        jLabel23 = new javax.swing.JLabel();
-        idExamLabel3 = new javax.swing.JLabel();
+        idExam = new javax.swing.JLabel();
+        typeExam = new javax.swing.JLabel();
+        dateExam = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setPreferredSize(new java.awt.Dimension(1000, 600));
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
 
@@ -164,33 +176,25 @@ public class CompleterExamen extends javax.swing.JFrame {
         jLabel19.setText("Type d'examen : ");
 
         jLabel20.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        jLabel20.setText("Type d'image");
+        jLabel20.setText("Type d'images");
 
         jLabel21.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         jLabel21.setText("Compte rendu :");
 
-        imageText.setFont(new java.awt.Font("Segoe UI", 2, 10)); // NOI18N
-        imageText.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                imageTextActionPerformed(evt);
-            }
-        });
-
         reportText.setColumns(20);
         reportText.setRows(5);
         reportText.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
-        reportText.setFocusable(false);
         jScrollPane1.setViewportView(reportText);
 
         idExamLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         idExamLabel.setText("jLabel5");
         idExamLabel.setEnabled(false);
 
-        addExamButton.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
-        addExamButton.setText("Enregistrer l'examen");
-        addExamButton.addActionListener(new java.awt.event.ActionListener() {
+        saveExamButton.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
+        saveExamButton.setText("Enregistrer l'examen");
+        saveExamButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addExamButtonActionPerformed(evt);
+                saveExamButtonActionPerformed(evt);
             }
         });
 
@@ -200,20 +204,15 @@ public class CompleterExamen extends javax.swing.JFrame {
         success.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
         success.setForeground(new java.awt.Color(0, 204, 0));
 
-        idExamLabel1.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        idExamLabel1.setText("jLabel5");
-        idExamLabel1.setEnabled(false);
+        idExam.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        idExam.setText("jLabel5");
+        idExam.setEnabled(false);
 
-        idExamLabel2.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        idExamLabel2.setText("jLabel5");
-        idExamLabel2.setEnabled(false);
+        typeExam.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        typeExam.setText("jLabel5");
+        typeExam.setEnabled(false);
 
-        jLabel23.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        jLabel23.setText("Type d'examen : ");
-
-        idExamLabel3.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        idExamLabel3.setText("jLabel5");
-        idExamLabel3.setEnabled(false);
+        dateExam.setText("jLabel5");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -285,20 +284,18 @@ public class CompleterExamen extends javax.swing.JFrame {
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel19)
                                             .addComponent(jLabel16)
-                                            .addComponent(jLabel23)
                                             .addComponent(jLabel17)
                                             .addComponent(jLabel20))
                                         .addGap(18, 18, 18)
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(idExamLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(imageText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(idExamLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(idExamLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(idExamLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                            .addComponent(idExamLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(idExam, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(typeExam, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(dateExam)))))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(234, 234, 234)
-                                .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(saveExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap(143, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -344,30 +341,26 @@ public class CompleterExamen extends javax.swing.JFrame {
                                 .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(idExamLabel1)
+                                    .addComponent(idExam)
                                     .addComponent(jLabel17))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel19)
-                                    .addComponent(idExamLabel2))
+                                    .addComponent(typeExam))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel16)
-                                    .addComponent(imageText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(dateExam))
+                                .addGap(18, 18, 18)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel23)
-                                    .addComponent(idExamLabel3))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(idExamLabel))
-                                .addGap(35, 35, 35)
+                                .addGap(50, 50, 50)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel21))))
                         .addGap(52, 52, 52)
-                        .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(saveExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(48, 48, 48)
                         .addComponent(success))
                     .addGroup(jPanel2Layout.createSequentialGroup()
@@ -413,33 +406,29 @@ public class CompleterExamen extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void addExamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addExamButtonActionPerformed
-        /* String examId = idExamLabel.getText();
-        String patientId = patient.getPatientId();
-        String medecinId = idMedecinLabel.getText();
-        String type = typeExam.getSelectedItem().toString();
-        String image = imageText.getText();
-        String report = reportText.getText();
-        int status = 1;
-        System.out.println(examId + ", " + patientId + ", " + medecinId + ", " + type + ", " + report + ", " + status + " " + new Date());
-        if(!type.equals("") && !image.equals("") && !report.equals("")) {
-            Date date = new Date();
-            Examen exam = new Examen(examId, patientId, "4", type, report, date, status);
+    private void saveExamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveExamButtonActionPerformed
+        
+        
+        if(!reportText.getText().equals("")) {
+            
+            
             try {
-                mc.ajouterExam(exam);
-                success.setText(mc.getSuccess());
+                mc.updateExam(e, reportText.getText());
+                mc.displayListExamToComplete();
+                this.dispose();
             } catch (SQLException ex) {
-                Logger.getLogger(AjouterExamen.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CompleterExamen.class.getName()).log(Level.SEVERE, null, ex);
             }
+                success.setText(mc.getSuccess());
         } else {
-            error.setText("Veuillez remplir tous les champs");
+            error.setText("Veuillez saisir le compte-rendu");
         }
-        error.setText(mc.getError());*/
-    }//GEN-LAST:event_addExamButtonActionPerformed
-
-    private void imageTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imageTextActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_imageTextActionPerformed
+        if(!mc.getError().equals("")) {
+            error.setText(mc.getError());
+        }
+        
+        
+    }//GEN-LAST:event_saveExamButtonActionPerformed
 
     private void decoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decoButtonActionPerformed
         /*   user = null;
@@ -497,20 +486,17 @@ public class CompleterExamen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addExamButton;
     private javax.swing.JLabel adressLabel;
     private javax.swing.JButton backButton;
+    private javax.swing.JLabel dateExam;
     private javax.swing.JLabel dateLabel;
     private javax.swing.JButton decoButton;
     private javax.swing.JLabel error;
     private javax.swing.JLabel firstNameLabel;
     private javax.swing.JLabel genderLabel;
+    private javax.swing.JLabel idExam;
     private javax.swing.JLabel idExamLabel;
-    private javax.swing.JLabel idExamLabel1;
-    private javax.swing.JLabel idExamLabel2;
-    private javax.swing.JLabel idExamLabel3;
     private javax.swing.JLabel idPatientLabel;
-    private javax.swing.JTextField imageText;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
@@ -521,7 +507,6 @@ public class CompleterExamen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel8;
@@ -532,6 +517,8 @@ public class CompleterExamen extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lastNameLabel;
     private javax.swing.JTextArea reportText;
+    private javax.swing.JButton saveExamButton;
     private javax.swing.JLabel success;
+    private javax.swing.JLabel typeExam;
     // End of variables declaration//GEN-END:variables
 }
