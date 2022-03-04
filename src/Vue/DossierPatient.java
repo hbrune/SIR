@@ -216,11 +216,6 @@ public class DossierPatient extends javax.swing.JFrame {
         JExam.setRowHeight(30);
         JExam.setSelectionForeground(new java.awt.Color(0, 0, 0));
         JExam.getTableHeader().setReorderingAllowed(false);
-        JExam.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JExamMouseClicked(evt);
-            }
-        });
         jScrollPane1.setViewportView(JExam);
         JExam.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         if (JExam.getColumnModel().getColumnCount() > 0) {
@@ -402,10 +397,6 @@ public class DossierPatient extends javax.swing.JFrame {
         }
         this.dispose();*/
     }//GEN-LAST:event_accesExamButtonActionPerformed
-
-    private void JExamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JExamMouseClicked
-        accesExamButton.setEnabled(true);
-    }//GEN-LAST:event_JExamMouseClicked
 
     /**
      * @param args the command line arguments
