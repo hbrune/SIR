@@ -105,5 +105,9 @@ public class ManipAndPhController extends UserController {
         return liste;
     }
 
+    public void displayExam(String idExam) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 
 }

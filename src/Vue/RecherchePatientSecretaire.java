@@ -153,7 +153,7 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
         critere.setToolTipText("choisissez un critère de recherche");
         critere.setBorder(null);
 
-        JRecherche.setBackground(new java.awt.Color(203, 221, 238));
+        JRecherche.setBackground(new java.awt.Color(228, 237, 246));
         JRecherche.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 13)); // NOI18N
         JRecherche.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -184,7 +184,6 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        JRecherche.setCellSelectionEnabled(false);
         JRecherche.setEnabled(false);
         JRecherche.setFocusable(false);
         JRecherche.setRowHeight(30);
@@ -275,7 +274,7 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
                     .addComponent(rechercheButton))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(166, Short.MAX_VALUE))
+                .addContainerGap(174, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

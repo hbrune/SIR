@@ -46,70 +46,6 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         
     }
 
-    public abstract class RendererAndEditor implements TableCellRenderer, TableCellEditor {
-
-        private JButton acces;
-
-        RendererAndEditor() {
-            acces = new JButton("Accès");
-            acces.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    System.out.println("button clicked");
-                }
-            });
-        }
-    
-   
-        @Override
- public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
-                                                 boolean hasFocus, int row, int column) {
-    return acces;
-  }
-
-
-        @Override
-  public java.awt.Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
-                                                        int column) {
-    return acces;
-  }
-
-
-        @Override
-  public Object getCellEditorValue() {
-    return null;
-  }
-
-
-  public boolean isCellEditable(EventObject anEvent) {
-    return true;
-  }
-
-
-        @Override
-  public boolean shouldSelectCell(EventObject anEvent) {
-    return true;
-  }
-
- 
-        @Override
-  public boolean stopCellEditing() {
-    return true;
-  }
-
-
-        @Override
-  public void cancelCellEditing() { }
-
-
-        @Override
-  public void addCellEditorListener(CellEditorListener l) { }
-
-    }
-  public void removeCellEditorListener(CellEditorListener l) { }
-
-   
-   
         /**
          * This method is called from within the constructor to initialize the
          * form. WARNING: Do NOT modify this code. The content of this method is
@@ -144,7 +80,7 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         critere.setToolTipText("choisissez un critère de recherche");
         critere.setBorder(null);
 
-        JRecherche.setBackground(new java.awt.Color(193, 216, 239));
+        JRecherche.setBackground(new java.awt.Color(228, 237, 246));
         JRecherche.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"d00bf4b4-96dc-474a-b18a-29b20196574b", "Titi", "Titi", "01/01/2001", "F"},
@@ -177,7 +113,6 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         JRecherche.setFocusable(false);
         JRecherche.setRowHeight(30);
         JRecherche.setRowMargin(5);
-        JRecherche.setSelectionBackground(new java.awt.Color(102, 153, 255));
         JRecherche.setSelectionForeground(new java.awt.Color(0, 0, 0));
         JRecherche.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
