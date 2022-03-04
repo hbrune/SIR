@@ -51,6 +51,11 @@ public class AjouterPatient extends javax.swing.JFrame {
         this.origine = origine;
         uidLabel.setText(uid);
     }
+    
+    
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.

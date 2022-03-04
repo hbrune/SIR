@@ -12,7 +12,6 @@ import Modele.Patient;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,16 +32,15 @@ public class AjouterExamen extends javax.swing.JFrame {
         Toolkit toolkit = getToolkit();
         Dimension size= toolkit.getScreenSize();
         setLocation(size.width/2 - getWidth()/2 ,  size.height/2-getHeight()/2) ;
-        ButtonGroup G = new ButtonGroup();
-        G.add(JR1);
-        G.add(JR2);
-        JR1.setSelected(true);
+       
+        
+        
         this.patient = p;
         this.user = user;
         this.mc = mc;
         idPatientLabel.setText(patient.getPatientId().trim());
-        lastNameLabel.setText(patient.getLastNameP().trim().toUpperCase());
-        firstNameLabel.setText(patient.getFirstNameP().trim().substring(0, 1).toUpperCase() + patient.getFirstNameP().substring(1).trim());
+        lastNameLabel.setText(patient.getLastNameP().trim());
+        firstNameLabel.setText(patient.getFirstNameP().trim());
         dateLabel.setText(patient.getDdn().toString().trim());
         genderLabel.setText(patient.getGender());
         adressLabel.setText(patient.getAdress().trim());
@@ -62,8 +60,6 @@ public class AjouterExamen extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        JExam = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         backButton = new javax.swing.JButton();
         decoButton = new javax.swing.JButton();
@@ -92,6 +88,7 @@ public class AjouterExamen extends javax.swing.JFrame {
         JR2 = new javax.swing.JRadioButton();
         JR1 = new javax.swing.JRadioButton();
         typeExam = new javax.swing.JComboBox<>();
+        imageText = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         reportText = new javax.swing.JTextArea();
         idExamLabel = new javax.swing.JLabel();
@@ -171,7 +168,7 @@ public class AjouterExamen extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 579, Short.MAX_VALUE)
                 .addComponent(decoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
         );
@@ -190,13 +187,13 @@ public class AjouterExamen extends javax.swing.JFrame {
         jLabel1.setBackground(new java.awt.Color(255, 255, 255));
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_NFT_User_64px.png"))); // NOI18N
 
-        jLabel2.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 13)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         jLabel2.setText("Nom : ");
 
-        jLabel3.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 13)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         jLabel3.setText("Prénom : ");
 
-        jLabel4.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 13)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         jLabel4.setText("ID patient :");
 
         idPatientLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
@@ -208,19 +205,19 @@ public class AjouterExamen extends javax.swing.JFrame {
         firstNameLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         firstNameLabel.setText("Momo");
 
-        jLabel9.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 13)); // NOI18N
+        jLabel9.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         jLabel9.setText("Date de naissance : ");
 
         dateLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         dateLabel.setText("01/01/2000");
 
-        jLabel11.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 13)); // NOI18N
+        jLabel11.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         jLabel11.setText("Genre : ");
 
         genderLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         genderLabel.setText("F");
 
-        jLabel13.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 13)); // NOI18N
+        jLabel13.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         jLabel13.setText("Adresse : ");
 
         adressLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
@@ -247,7 +244,7 @@ public class AjouterExamen extends javax.swing.JFrame {
         jLabel19.setText("Type d'examen : ");
 
         jLabel20.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        jLabel20.setText(" Images : ");
+        jLabel20.setText(" Image : ");
 
         CR.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
         CR.setText("Compte rendu :");
@@ -259,6 +256,11 @@ public class AjouterExamen extends javax.swing.JFrame {
                 JR2MouseClicked(evt);
             }
         });
+        JR2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JR2ActionPerformed(evt);
+            }
+        });
 
         JR1.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         JR1.setText("Numérique");
@@ -268,7 +270,15 @@ public class AjouterExamen extends javax.swing.JFrame {
             }
         });
 
-        typeExam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "IRM", "Scanner", "Radio" }));
+        typeExam.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "IRM", "Scanner" }));
+
+        imageText.setFont(new java.awt.Font("Segoe UI", 2, 10)); // NOI18N
+        imageText.setText("URL ou \" format papier\" , selon le type d'examen");
+        imageText.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                imageTextActionPerformed(evt);
+            }
+        });
 
         reportText.setColumns(20);
         reportText.setRows(5);
@@ -336,41 +346,26 @@ public class AjouterExamen extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(75, 75, 75)
-                        .addComponent(jLabel1)
-                        .addGap(92, 92, 92))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(1, 1, 1)
+                                .addGap(27, 27, 27)
                                 .addComponent(jLabel4)
                                 .addGap(18, 18, 18)
-                                .addComponent(idPatientLabel)
-                                .addGap(47, 47, 47))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jPanel2Layout.createSequentialGroup()
-                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                            .addComponent(jLabel3)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(firstNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                            .addComponent(jLabel2)
-                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                            .addComponent(lastNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGap(47, 47, 47))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(idPatientLabel))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(75, 75, 75)
+                                .addComponent(jLabel1)))
+                        .addGap(52, 52, 52))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel11)
+                                        .addComponent(jLabel3)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(genderLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(firstNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel13)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(adressLabel))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel9)
+                                        .addComponent(jLabel2)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
                 .addGap(10, 10, 10)
@@ -632,7 +627,7 @@ public class AjouterExamen extends javax.swing.JFrame {
     private javax.swing.JLabel genderLabel;
     private javax.swing.JLabel idExamLabel;
     private javax.swing.JLabel idPatientLabel;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JTextField imageText;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
@@ -649,8 +644,6 @@ public class AjouterExamen extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lastNameLabel;
     private javax.swing.JTextArea reportText;

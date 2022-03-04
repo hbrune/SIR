@@ -43,14 +43,69 @@ public class DossierPatient extends javax.swing.JFrame {
         this.mc = mc;
         this.patient = patient;
         idPatientLabel.setText(patient.getPatientId().trim());
-        lastNameLabel.setText(patient.getLastNameP().trim().toUpperCase());
-        firstNameLabel.setText(patient.getFirstNameP().trim().substring(0, 1).toUpperCase() + patient.getFirstNameP().substring(1).trim());
+        lastNameLabel.setText(patient.getLastNameP().trim());
+        firstNameLabel.setText(patient.getFirstNameP().trim());
         dateLabel.setText(patient.getDdn().toString().trim());
         genderLabel.setText(patient.getGender());
         adressLabel.setText(patient.getAdress().trim());
         
         this.updateExams(exams);
-        accesExamButton.setEnabled(false);  
+        
+    }
+
+    public abstract class RendererAndEditor implements TableCellRenderer, TableCellEditor {
+
+        private JButton Accès;
+
+        RendererAndEditor() {
+            Accès = new JButton("Accès");
+            Accès.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+
+                }
+            });
+        }
+
+        @Override
+        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                boolean hasFocus, int row, int column) {
+            return Accès;
+        }
+
+        @Override
+        public java.awt.Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
+                int column) {
+            return Accès;
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return null;
+        }
+
+        public boolean isCellEditable(EventObject anEvent) {
+            return true;
+        }
+
+        @Override
+        public boolean shouldSelectCell(EventObject anEvent) {
+            return true;
+        }
+
+        @Override
+        public boolean stopCellEditing() {
+            return true;
+        }
+
+        @Override
+        public void cancelCellEditing() {
+        }
+
+        @Override
+        public void addCellEditorListener(CellEditorListener l) {
+        }
+
     }
 
     public void removeCellEditorListener(CellEditorListener l) {
@@ -87,7 +142,7 @@ public class DossierPatient extends javax.swing.JFrame {
         jLabel15 = new javax.swing.JLabel();
         adressLabel = new javax.swing.JLabel();
         addExamButton = new javax.swing.JButton();
-        accesExamButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         jLabel8.setText("...");
 
@@ -213,14 +268,10 @@ public class DossierPatient extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        JExam.setColumnSelectionAllowed(true);
         JExam.setRowHeight(30);
-        JExam.setSelectionForeground(new java.awt.Color(0, 0, 0));
+        JExam.setSelectionForeground(new java.awt.Color(153, 204, 255));
         JExam.getTableHeader().setReorderingAllowed(false);
-        JExam.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                JExamMouseClicked(evt);
-            }
-        });
         jScrollPane1.setViewportView(JExam);
         JExam.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         if (JExam.getColumnModel().getColumnCount() > 0) {
@@ -244,11 +295,11 @@ public class DossierPatient extends javax.swing.JFrame {
             }
         });
 
-        accesExamButton.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 13)); // NOI18N
-        accesExamButton.setText("Consulter l'examen");
-        accesExamButton.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 13)); // NOI18N
+        jButton1.setText("Accès");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                accesExamButtonActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
 
@@ -262,7 +313,7 @@ public class DossierPatient extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGap(74, 74, 74)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel4)
                         .addGap(18, 18, 18)
@@ -270,11 +321,11 @@ public class DossierPatient extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(firstNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(firstNameLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lastNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(lastNameLabel))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -291,16 +342,15 @@ public class DossierPatient extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addGap(325, 325, 325))
+                        .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(124, 124, 124)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(84, 84, 84))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(accesExamButton))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(84, 84, 84))))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel15))
+                        .addGap(82, 82, 82))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -339,14 +389,14 @@ public class DossierPatient extends javax.swing.JFrame {
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel13)
                             .addComponent(adressLabel))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(207, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(accesExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(96, 96, 96))))
         );
 
@@ -393,19 +443,9 @@ public class DossierPatient extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_addExamButtonActionPerformed
 
-    private void accesExamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accesExamButtonActionPerformed
-        int row = JExam.getSelectedRow();
-        String idExam = JExam.getModel().getValueAt(row, 0).toString();
-        
-        /*if (idExam != null){
-            mc.displayExam(idExam);
-        }
-        this.dispose();*/
-    }//GEN-LAST:event_accesExamButtonActionPerformed
-
-    private void JExamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JExamMouseClicked
-        accesExamButton.setEnabled(true);
-    }//GEN-LAST:event_JExamMouseClicked
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -460,7 +500,6 @@ public class DossierPatient extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable JExam;
-    private javax.swing.JButton accesExamButton;
     private javax.swing.JButton addExamButton;
     private javax.swing.JLabel adressLabel;
     private javax.swing.JButton backButton;
@@ -469,6 +508,7 @@ public class DossierPatient extends javax.swing.JFrame {
     private javax.swing.JLabel firstNameLabel;
     private javax.swing.JLabel genderLabel;
     private javax.swing.JLabel idPatientLabel;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
