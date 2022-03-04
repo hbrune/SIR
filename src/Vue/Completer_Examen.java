@@ -51,11 +51,9 @@ public class Completer_Examen extends javax.swing.JFrame {
         jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
-        jLabel22 = new javax.swing.JLabel();
         imageText = new javax.swing.JTextField();
         jScrollPane1 = new javax.swing.JScrollPane();
         reportText = new javax.swing.JTextArea();
-        idMedecinLabel = new javax.swing.JLabel();
         idExamLabel = new javax.swing.JLabel();
         addExamButton = new javax.swing.JButton();
         error = new javax.swing.JLabel();
@@ -64,8 +62,6 @@ public class Completer_Examen extends javax.swing.JFrame {
         idExamLabel2 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         idExamLabel3 = new javax.swing.JLabel();
-        jLabel24 = new javax.swing.JLabel();
-        idMedecinLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -160,9 +156,6 @@ public class Completer_Examen extends javax.swing.JFrame {
         jLabel21.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         jLabel21.setText("Compte rendu :");
 
-        jLabel22.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        jLabel22.setText("ID médecin ayant réalisé l'examen : ");
-
         imageText.setFont(new java.awt.Font("Segoe UI", 2, 10)); // NOI18N
         imageText.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -175,9 +168,6 @@ public class Completer_Examen extends javax.swing.JFrame {
         reportText.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
         reportText.setFocusable(false);
         jScrollPane1.setViewportView(reportText);
-
-        idMedecinLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        idMedecinLabel.setText("5");
 
         idExamLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         idExamLabel.setText("jLabel5");
@@ -211,12 +201,6 @@ public class Completer_Examen extends javax.swing.JFrame {
         idExamLabel3.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         idExamLabel3.setText("jLabel5");
         idExamLabel3.setEnabled(false);
-
-        jLabel24.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        jLabel24.setText("ID médecin ayant réalisé l'examen : ");
-
-        idMedecinLabel1.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        idMedecinLabel1.setText("5");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -264,10 +248,6 @@ public class Completer_Examen extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(215, 215, 215))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
@@ -301,16 +281,12 @@ public class Completer_Examen extends javax.swing.JFrame {
                                             .addComponent(imageText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(idExamLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(idExamLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(idExamLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel22)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(idMedecinLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel24)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(idMedecinLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                            .addComponent(idExamLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))))))
+                        .addContainerGap(48, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(199, 199, 199))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -353,8 +329,7 @@ public class Completer_Examen extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel13)
-                            .addComponent(adressLabel))
-                        .addGap(81, 81, 81))
+                            .addComponent(adressLabel)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
@@ -380,20 +355,12 @@ public class Completer_Examen extends javax.swing.JFrame {
                         .addGap(35, 35, 35)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel21))
-                        .addGap(33, 33, 33)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel22)
-                            .addComponent(idMedecinLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel24)
-                            .addComponent(idMedecinLabel1))
-                        .addGap(11, 11, 11)))
+                            .addComponent(jLabel21))))
+                .addGap(32, 32, 32)
                 .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(65, 65, 65)
                 .addComponent(success)
-                .addContainerGap(231, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -416,8 +383,8 @@ public class Completer_Examen extends javax.swing.JFrame {
                     .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(decoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -532,8 +499,6 @@ public class Completer_Examen extends javax.swing.JFrame {
     private javax.swing.JLabel idExamLabel1;
     private javax.swing.JLabel idExamLabel2;
     private javax.swing.JLabel idExamLabel3;
-    private javax.swing.JLabel idMedecinLabel;
-    private javax.swing.JLabel idMedecinLabel1;
     private javax.swing.JLabel idPatientLabel;
     private javax.swing.JTextField imageText;
     private javax.swing.JLabel jLabel1;
@@ -546,9 +511,7 @@ public class Completer_Examen extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel8;
