@@ -14,15 +14,17 @@ public class Examen {
     String examId;
     String patientId;
     String proId;
+    String proIdReport;
     String type;
     String report;
     Date date;
     int status;  
     
-    public Examen(String examId, String patientId, String proId, String type, String report, Date date, int status) {
+    public Examen(String examId, String patientId, String proId, String proIdReport, String type, String report, Date date, int status) {
         this.examId = examId;
         this.patientId = patientId;
         this.proId = proId;
+        this.proIdReport = proIdReport;
         this.type = type;
         this.report = report;
         this.date = date;
@@ -39,6 +41,10 @@ public class Examen {
     
     public String getProId() {
         return proId;
+    }
+    
+    public String getProIdReport() {
+        return proIdReport;
     }
     
     public String getType() {

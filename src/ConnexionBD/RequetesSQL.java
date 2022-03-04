@@ -264,9 +264,9 @@ base de donn�es
         Statement stmt = dap.getConn().createStatement() ;
         
         //Execute the query
-        java.sql.Timestamp dateSql = new java.sql.Timestamp(e.getDate().getTime());
-        System.out.println(dateSql);
-        ResultSet rsTest = stmt.executeQuery("INSERT INTO EXAM VALUES ('" + e.getExamId() + "', '" + e.getPatientId() + "', '" + e.getProId() + "', '" + e.getType() + "', '" + e.getReport() + "', CURRENT_TIMESTAMP, " + e.getStatus() +")");
+        java.sql.Timestamp ddnSql = new java.sql.Timestamp(e.getDate().getTime());
+        System.out.println(ddnSql);
+        ResultSet rsTest = stmt.executeQuery("INSERT INTO EXAM VALUES ('" + e.getExamId() + "', '" + e.getPatientId() + "', '" + e.getProId() + "', '" + e.getProIdReport() +  "', '" + e.getType() + "', '" + e.getReport() + "', CURRENT_TIMESTAMP, " + e.getStatus() +")");
 
         rsTest.close() ;
         stmt.close() ;
@@ -279,7 +279,7 @@ base de donn�es
         Statement stmt = dap.getConn().createStatement() ;
         
         //Execute the query
-        ResultSet rsTest = stmt.executeQuery("UPDATE EXAM SET report = '" + report + "' WHERE examId = '" + examId +"'") ;
+        ResultSet rsTest = stmt.executeQuery("UPDATE EXAM SET report = '" + report + "', status = 1 WHERE examId = '" + examId +"'") ;
         
         rsTest.close() ;
         stmt.close() ;
@@ -297,6 +297,7 @@ base de donn�es
         String examId = "";
         String patientId = "";
         String proId = "";
+        String proIdReport = "";
         String type;
         String report = "";
         Date date = null;
@@ -306,11 +307,12 @@ base de donn�es
                 examId = rsTest.getString(1);
                 patientId = rsTest.getString(2);
                 proId = rsTest.getString(3);
-                type = rsTest.getString(4);
-                report = rsTest.getString(5);
-                date = rsTest.getDate(6);    
-                status = rsTest.getInt(7);
-                e = new Examen(examId, patientId, proId, type, report, date, status);
+                proIdReport = rsTest.getString(4);
+                type = rsTest.getString(5);
+                report = rsTest.getString(6);
+                date = rsTest.getDate(7);    
+                status = rsTest.getInt(8);
+                e = new Examen(examId, patientId, proId, proIdReport, type, report, date, status);
                 System.out.println("Id de l'examen: " + e.getExamId() + "\n" + "Id du patient: " + e.getPatientId() + "\n" + "Id professionnel: " + e.getProId() + "\n" + "Type d'examen: " + e.getType() + "\n" + "Compte-rendu: " + e.getReport() + "\n" + "Date de l'examen: " + e.getDate() + "\n" + "Status de l'examen: " + e.getStatus());
         }
         
@@ -334,6 +336,7 @@ base de donn�es
         String examId = "";
         String patientId = "";
         String proId = "";
+        String proIdReport = "";
         String type;
         String report = "";
         Date date = null;
@@ -343,11 +346,12 @@ base de donn�es
                 examId = rsTest.getString(1);
                 patientId = rsTest.getString(2);
                 proId = rsTest.getString(3);
-                type = rsTest.getString(4);
-                report = rsTest.getString(5);
-                date = rsTest.getDate(6);    
-                status = rsTest.getInt(7);
-                e = new Examen(examId, patientId, proId, type, report, date, status);
+                proIdReport = rsTest.getString(4);
+                type = rsTest.getString(5);
+                report = rsTest.getString(6);
+                date =  rsTest.getDate(7);    
+                status = rsTest.getInt(8);
+                e = new Examen(examId, patientId, proId, proIdReport, type, report, date, status);
                 examsP.add(e);
         }
         

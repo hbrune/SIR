@@ -35,10 +35,10 @@ public class DashboardSecretaire extends javax.swing.JFrame {
         setLocation(size.width/2 - getWidth()/2 ,  size.height/2-getHeight()/2) ;
         //showDate();
         showTime();
-        firstName1.setText(user.getFirstName());
-        firstName2.setText(user.getFirstName());
-        lastName.setText(user.getLastName());
-        function.setText(String.valueOf(user.getFunction()));
+        firstName1.setText(user.getFirstName().substring(0, 1).toUpperCase() + user.getFirstName().substring(1).trim());
+        firstName2.setText(user.getFirstName().substring(0, 1).toUpperCase() + user.getFirstName().substring(1).trim());
+        lastName.setText(user.getLastName().toUpperCase());
+        function.setText("Secrétaire");
         this.sc = sc;
     }
 
@@ -83,13 +83,13 @@ public class DashboardSecretaire extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
 
-        lastName.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        lastName.setFont(new java.awt.Font("Yu Gothic UI", 1, 13)); // NOI18N
         lastName.setText("nom:");
 
-        firstName1.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        firstName1.setFont(new java.awt.Font("Yu Gothic UI", 1, 13)); // NOI18N
         firstName1.setText("prénom:");
 
-        function.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        function.setFont(new java.awt.Font("Yu Gothic UI", 1, 13)); // NOI18N
         function.setText("fonction : ");
 
         decoButton.setBackground(new java.awt.Color(153, 204, 255));
@@ -114,11 +114,11 @@ public class DashboardSecretaire extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addComponent(jLabel11)
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(function)
-                    .addComponent(firstName1)
-                    .addComponent(lastName))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(function, javax.swing.GroupLayout.DEFAULT_SIZE, 143, Short.MAX_VALUE)
+                    .addComponent(firstName1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lastName, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 591, Short.MAX_VALUE)
                 .addComponent(decoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
         );
@@ -248,9 +248,7 @@ public class DashboardSecretaire extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(55, 55, 55))
+                            .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(305, Short.MAX_VALUE))
         );
