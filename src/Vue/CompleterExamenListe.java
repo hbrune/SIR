@@ -19,18 +19,18 @@ import java.util.logging.Logger;
 import javax.swing.ButtonGroup;
 import javax.swing.table.DefaultTableModel;
 
-public class CR extends javax.swing.JFrame {
+public class CompleterExamenListe extends javax.swing.JFrame {
     Login user;
     ManipAndPhController mc;
     DefaultTableModel examsModel;
     /**
      * Creates new form CR
      */
-    public CR() {
+    public CompleterExamenListe() {
         
     }
 
-    public CR(ManipAndPhController mc, Login user, ArrayList<Examen> exams, ArrayList<Patient> patients) {
+    public CompleterExamenListe(ManipAndPhController mc, Login user, ArrayList<Examen> exams, ArrayList<Patient> patients) {
         initComponents();
         this.user = user;
         this.mc = mc;
@@ -66,7 +66,7 @@ public class CR extends javax.swing.JFrame {
         jLabel15.setText("Examens à compléter :");
 
         completeButton.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 13)); // NOI18N
-        completeButton.setText("Compléter ");
+        completeButton.setText("Completer ");
         completeButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 completeButtonActionPerformed(evt);
@@ -149,8 +149,8 @@ public class CR extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(completeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(111, 111, 111))
+                .addComponent(completeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(117, 117, 117))
         );
 
         jPanel4.setBackground(new java.awt.Color(153, 204, 255));
@@ -230,7 +230,7 @@ public class CR extends javax.swing.JFrame {
             try {
                 mc.displayCompleteExam(idExam);
             } catch (SQLException ex) {
-                Logger.getLogger(CR.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CompleterExamenListe.class.getName()).log(Level.SEVERE, null, ex);
             }
             this.dispose();
         }
@@ -296,14 +296,18 @@ public class CR extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CR.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CompleterExamenListe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CR.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CompleterExamenListe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CR.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CompleterExamenListe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CR.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(CompleterExamenListe.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>

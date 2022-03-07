@@ -1,6 +1,6 @@
 package Controleur;
 
-import Vue.CR;
+import Vue.CompleterExamenListe;
 import ConnexionBD.RequetesSQL;
 import Modele.Examen;
 import Modele.Login;
@@ -25,7 +25,7 @@ public class ManipAndPhController extends UserController {
     RecherchePatientMedecin rp;
     DossierPatient dp;
     CompleterExamen ce;
-    CR cr;
+    CompleterExamenListe cr;
     RequetesSQL sql;
     String error = "";
     String success = "";
@@ -86,7 +86,7 @@ public class ManipAndPhController extends UserController {
         for(int i = 0; i< exams.size(); i++) {
             patients.add(sql.getPatientFromExam(exams.get(i).getExamId()));
         }
-        cr = new CR(this, user, exams, patients);
+        cr = new CompleterExamenListe(this, user, exams, patients);
         cr.setVisible(true);
         
         
