@@ -6,6 +6,7 @@ import Modele.Examen;
 import Modele.Login;
 import Modele.Pacs;
 import Modele.Patient;
+import Vue.AfficherExamen;
 import Vue.AjouterExamen;
 import Vue.CompleterExamen;
 import Vue.Dashboard;
@@ -30,6 +31,7 @@ public class ManipAndPhController extends UserController {
     DossierPatient dp;
     CompleterExamen ce;
     CompleterExamenListe cr;
+    AfficherExamen ae;
     RequetesSQL sql;
     String error = "";
     String success = "";
@@ -92,9 +94,15 @@ public class ManipAndPhController extends UserController {
         }
         cr = new CompleterExamenListe(this, user, exams, patients);
         cr.setVisible(true);
-        
-        
     }
+    
+    public void displayExam(String examId) throws SQLException {
+        Examen e = sql.getExamenById(examId);
+        Patient p = sql.getPatientFromExam(e.getExamId());
+        ae = new AfficherExamen(this, user, e, p);
+        ce.setVisible(true);
+    }
+    
     // RECHERCHE ET AJOUT EN BD    
     public ArrayList<Patient> recherchePatient(String critere, String recherche) throws SQLException {
     
@@ -129,10 +137,6 @@ public class ManipAndPhController extends UserController {
         ArrayList<Patient> liste = new ArrayList<>();
         liste = (ArrayList<Patient>) sql.getPatientByCriteria(critere, recherche);
         return liste;
-    }
-
-    public void displayExam(String idExam) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void updateExam(Examen e, String report) throws SQLException {
