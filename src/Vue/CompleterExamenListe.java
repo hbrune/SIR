@@ -238,23 +238,23 @@ public class CompleterExamenListe extends javax.swing.JFrame {
     }//GEN-LAST:event_completeButtonActionPerformed
 
     private void backButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButton2ActionPerformed
-    /*    try {
+        try {
             mc.displayRecherchePatient();
         } catch (SQLException ex) {
             Logger.getLogger(DossierPatient.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.dispose()*/
+        this.dispose();
     }//GEN-LAST:event_backButton2ActionPerformed
 
     private void decoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decoButtonActionPerformed
-       /* user = null;
+       user = null;
         try {
             LoginController lc = new LoginController();
             this.dispose();
 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
     }//GEN-LAST:event_decoButtonActionPerformed
 
     private void JExamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JExamMouseClicked

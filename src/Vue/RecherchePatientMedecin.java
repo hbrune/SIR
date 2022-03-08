@@ -76,7 +76,7 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         jPanel2.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 12)); // NOI18N
 
         critere.setEditable(true);
-        critere.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID Patient", "Nom", "Prénom", "Date de naissance", "Sexe" }));
+        critere.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tous les patients", "Identifiant unique", "Nom", "Prénom", "Date de naissance", "Sexe" }));
         critere.setToolTipText("choisissez un critère de recherche");
         critere.setBorder(null);
 
@@ -296,8 +296,13 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
 
     private void rechercheButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rechercheButtonActionPerformed
         String critereToFind = "";
+        String recherche = rechercheText.getText().toLowerCase();
+        ArrayList<Patient> patients = null;
         switch(String.valueOf(critere.getSelectedItem())) {
-            case ("ID Patient"):
+            case ("Tous les patients"):
+                critereToFind = "all";
+                break;
+            case ("Identifiant unique"):
                 critereToFind = "patientId";
                 break;
             case("Prénom"):
@@ -307,7 +312,8 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
                 critereToFind = "lastNameP";
                 break;
             case ("Sexe"):
-                System.out.println("gender");
+                critereToFind = "gender";
+                recherche = rechercheText.getText().toUpperCase();
                 break;
             case("Date de naissance"):
                 critereToFind = "birthDate";
@@ -315,13 +321,20 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         }
         if(critereToFind.equals("birthDate")) {
             //TODO : recherche avec date
-        } else {
+        } else if (critereToFind.equals("all")) {
+            try {            
+                patients = mc.afficherListePatient();
+            } catch (SQLException ex) {
+                Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else {
            try {
-               mc.recherchePatient(critereToFind, rechercheText.getText().toLowerCase());
+               patients = mc.recherchePatient(critereToFind, recherche);
            } catch (SQLException ex) {
                Logger.getLogger(RecherchePatientSecretaire.class.getName()).log(Level.SEVERE, null, ex);
            }
         }
+        this.updatePatients(patients);
         error.setText(mc.getError());
     }//GEN-LAST:event_rechercheButtonActionPerformed
 

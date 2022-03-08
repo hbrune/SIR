@@ -3,8 +3,11 @@ package ConnexionBD;
 import Modele.Login;
 import Modele.Patient;
 import Modele.Examen;
+import Modele.Pacs;
+import java.io.FileInputStream;
 import java.util.Date;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -406,7 +409,6 @@ base de donn�es
         // Execute the query
         ResultSet rsTest = stmt.executeQuery("SELECT PATIENTID, LASTNAMEP, FIRSTNAMEP, ADRESS, GENDER, BIRTHDATE FROM PATIENT NATURAL JOIN EXAM WHERE EXAMID = '" + idExam + "'") ;
 
-        System.out.println("test");
         String idP = "";
         String lastNameP = "";
         String firstNameP = "";
@@ -430,4 +432,38 @@ base de donn�es
         return p;
     }
     
+    //GESTION D'IMAGES
+    public void addImageToPacs(FileInputStream img, Pacs pacs) throws SQLException {
+        PreparedStatement pstmt = conn.prepareStatement("INSERT INTO PACS VALUES(?, ?, ?)");
+        pstmt.setString(1, pacs.getIdPacs());
+        pstmt.setString(2, pacs.getIdExam());
+        pstmt.setBlob(3, img);
+        pstmt.execute();
+    }
+    
+    public ArrayList<Pacs> getImagesFromExam(String idExam) throws SQLException {
+        ArrayList<Pacs> imagesE = new ArrayList<>();
+        Pacs p = null;
+        
+        // Get a statement from the connection
+        Statement stmt = conn.createStatement() ;
+        
+        // Execute the query
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM PACS WHERE EXAMID = '" + idExam + "'") ;
+        String idPacs = "";
+        String img = "";
+        
+        while(rsTest.next()) {
+            if(idExam.equals(rsTest.getString(2).trim())) {
+                idPacs = rsTest.getString(1);
+                img = rsTest.getBlob(3).toString();
+                p = new Pacs(idPacs, idExam, img);
+                imagesE.add(p);
+            }
+        }        
+        // Close the result set, statement and the connection
+        rsTest.close() ;
+        stmt.close() ;
+        return imagesE;
+    }
 }

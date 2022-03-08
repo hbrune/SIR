@@ -4,6 +4,7 @@ import Vue.CompleterExamenListe;
 import ConnexionBD.RequetesSQL;
 import Modele.Examen;
 import Modele.Login;
+import Modele.Pacs;
 import Modele.Patient;
 import Vue.AjouterExamen;
 import Vue.CompleterExamen;
@@ -11,8 +12,11 @@ import Vue.Dashboard;
 import Vue.DashboardSecretaire;
 import Vue.DossierPatient;
 import Vue.RecherchePatientMedecin;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  *
@@ -91,17 +95,17 @@ public class ManipAndPhController extends UserController {
         
         
     }
-    // RECHERCHE ET AJOUT EN BD
+    // RECHERCHE ET AJOUT EN BD    
+    public ArrayList<Patient> recherchePatient(String critere, String recherche) throws SQLException {
     
-    public void recherchePatient(String critere, String recherche) throws SQLException {
-    
+        ArrayList<Patient> patients = null;
         if (recherche.equals("recherche selon le critère selectionné") || recherche.equals("")) {
             error = "Veuillez entrer une recherche";
         } else {
             error = "";
-            ArrayList<Patient> patients = sql.getPatientByCriteria(critere, recherche);
-            rp.updatePatients(patients);
+            patients = sql.getPatientByCriteria(critere, recherche);
         }
+        return patients;
     }
     
     public void ajouterExam(Examen e) throws SQLException {
@@ -134,6 +138,18 @@ public class ManipAndPhController extends UserController {
     public void updateExam(Examen e, String report) throws SQLException {
         sql.addReport(e.getExamId(), report);
     }
+    
+    public ArrayList<Pacs> afficherListeImages(String idExam) throws SQLException {
+        return sql.getImagesFromExam(idExam);
+        
+    }
+
+    public void addImage(FileInputStream in, String idExam) throws SQLException {
+        String uid = UUID.randomUUID().toString().replace("-","").substring(0,10);
+        Pacs pacs = new Pacs(uid, idExam, "image" );
+        sql.addImageToPacs(in, pacs);
+    }
+    
 
     
 

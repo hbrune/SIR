@@ -13,7 +13,7 @@ public class Pacs {
     String idPacs;
     String image;
     
-    public Pacs(String idExam, String idPacs, String image) {
+    public Pacs(String idPacs, String idExam, String image) {
         this.idExam = idExam;
         this.idPacs = idPacs;
         this.image = image;

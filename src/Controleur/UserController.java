@@ -33,7 +33,7 @@ public class UserController {
     
     // RECHERCHE ET AJOUT EN BD
     
-    public void recherchePatient(String critere, String recherche) throws SQLException {
+    /*public void recherchePatient(String critere, String recherche) throws SQLException {
     
         //recherchePatientByCriteria(critere, recherche);
         if (recherche.equals("recherche selon le critère selectionné") || recherche.equals("")) {
@@ -44,7 +44,7 @@ public class UserController {
          //   rp.updatePatients(patients);
             System.out.println(patients.size());
         }
-    }
+    }*/
     
     public String generateUid() {
         return UUID.randomUUID().toString().replace("-","").substring(0,10);
