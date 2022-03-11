@@ -4,7 +4,19 @@ import Modele.Login;
 import Modele.Patient;
 import Modele.Examen;
 import Modele.Pacs;
+import java.awt.FlowLayout;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
 import java.util.Date;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +27,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 
 public class RequetesSQL {
@@ -260,6 +278,41 @@ base de donn�es
         stmt.close() ;
     }
     
+    // USERS
+    
+    public Login getProById(String id) throws SQLException {    
+        // Get a statement from the connection
+        Statement stmt = conn.createStatement() ;
+        
+        // Execute the query
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM LOGIN where proId = '" + id + "'") ;
+        
+        Login user = null;
+        String idU = "";
+        String lastNameU = "";
+        String firstNameU = "";
+        String password = "";
+        int role = 0;
+        
+        
+        while(rsTest.next()) {
+            //remplir les infos du patient avec les résultats de la requête
+                idU = rsTest.getString(1);
+                password = rsTest.getString(2);
+                lastNameU = rsTest.getString(3);
+                firstNameU = rsTest.getString(4);
+                role = rsTest.getInt(5);             
+                user = new Login(idU, password, lastNameU, firstNameU, role);
+        }
+        
+        // Close the result set, statement and the connection
+        rsTest.close() ;
+        stmt.close() ;
+        return user;
+    }
+    
+    //EXAMENS
+    
     public void addExamen(Examen e) throws SQLException {
         
         //Get a statement from the connection
@@ -273,6 +326,25 @@ base de donn�es
         rsTest.close() ;
         stmt.close() ;
         
+    }
+    
+    public boolean isExamenDigital(Examen e) throws SQLException {
+        boolean digital = false;
+        //Get a statement from the connection
+        Statement stmt = dap.getConn().createStatement() ;
+        
+        //Execute the query
+        java.sql.Timestamp ddnSql = new java.sql.Timestamp(e.getDate().getTime());
+        System.out.println(ddnSql);
+        ResultSet rsTest = stmt.executeQuery("SELECT COUNT(*) FROM PACS WHERE EXAMID = '" + e.getExamId() + "'");
+        while(rsTest.next()) { 
+            if (rsTest.getInt(1)>0) {
+                digital = true;
+            }
+        }     
+        rsTest.close() ;
+        stmt.close() ;
+        return digital;
     }
     
     public void addReport(String examId, String report) throws SQLException {
@@ -433,15 +505,21 @@ base de donn�es
     }
     
     //GESTION D'IMAGES
-    public void addImageToPacs(FileInputStream img, Pacs pacs) throws SQLException {
+    public void addImageToPacs(Image img, Pacs pacs) throws SQLException, IOException {
+        
         PreparedStatement pstmt = conn.prepareStatement("INSERT INTO PACS VALUES(?, ?, ?)");
         pstmt.setString(1, pacs.getIdPacs());
         pstmt.setString(2, pacs.getIdExam());
-        pstmt.setBlob(3, img);
+        
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        ImageIO.write((RenderedImage) img,"png", os); 
+        InputStream in = new ByteArrayInputStream(os.toByteArray());
+        
+        pstmt.setBlob(3, in);
         pstmt.execute();
     }
     
-    public ArrayList<Pacs> getImagesFromExam(String idExam) throws SQLException {
+    public ArrayList<Pacs> getImagesFromExam(String idExam) throws SQLException, IOException {
         ArrayList<Pacs> imagesE = new ArrayList<>();
         Pacs p = null;
         
@@ -451,12 +529,13 @@ base de donn�es
         // Execute the query
         ResultSet rsTest = stmt.executeQuery("SELECT * FROM PACS WHERE EXAMID = '" + idExam + "'") ;
         String idPacs = "";
-        String img = "";
+        InputStream is = null;
         
         while(rsTest.next()) {
             if(idExam.equals(rsTest.getString(2).trim())) {
                 idPacs = rsTest.getString(1);
-                img = rsTest.getBlob(3).toString();
+                is = rsTest.getBlob(3).getBinaryStream();
+                Image img = ImageIO.read(is);
                 p = new Pacs(idPacs, idExam, img);
                 imagesE.add(p);
             }
@@ -465,5 +544,38 @@ base de donn�es
         rsTest.close() ;
         stmt.close() ;
         return imagesE;
+    }
+    
+    public Pacs getImageFromId(String idPacs) throws SQLException, FileNotFoundException, IOException {
+        Pacs p = null;
+        
+        // Get a statement from the connection
+        Statement stmt = conn.createStatement() ;
+        
+        // Execute the query
+        ResultSet rsTest ;
+        String idExam = "";
+        //Blob img = null;
+        
+        try {
+            rsTest = stmt.executeQuery("SELECT * FROM PACS WHERE PACSID = '" + idPacs + "'");
+            while(rsTest.next()) {
+                idPacs = rsTest.getString(1);
+                idExam = rsTest.getString(2);
+                InputStream is = rsTest.getBinaryStream(3);
+                
+                Image im = ImageIO.read(is);
+                
+                p = new Pacs(idPacs, idExam, im);
+                
+                
+            }
+            rsTest.close() ;
+            stmt.close() ;
+        } catch (SQLException ex) {
+            Logger.getLogger(RequetesSQL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return p;
+        
     }
 }

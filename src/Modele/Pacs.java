@@ -4,6 +4,9 @@
  */
 package Modele;
 
+import java.awt.Image;
+import java.io.InputStream;
+
 /**
  *
  * @author Brune
@@ -11,9 +14,9 @@ package Modele;
 public class Pacs {
     String idExam;
     String idPacs;
-    String image;
+    Image image;
     
-    public Pacs(String idPacs, String idExam, String image) {
+    public Pacs(String idPacs, String idExam, Image image) {
         this.idExam = idExam;
         this.idPacs = idPacs;
         this.image = image;
@@ -27,7 +30,7 @@ public class Pacs {
         return idPacs;
     }
     
-    public String getImage() {
+    public Image getImage() {
         return image;
     }
 }

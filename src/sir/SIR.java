@@ -47,6 +47,7 @@ public class SIR extends JFrame {
         System.out.println(ajdSql);
         
         RequetesSQL rs = new RequetesSQL();
+        rs.getImageFromId("ca7a84e6c6");
         //String uid1 = UUID.randomUUID().toString().replace("-","").substring(0,10);
         //System.out.println(uid1);
         //String uid2 = UUID.randomUUID().toString().replace("-","").substring(0,10);

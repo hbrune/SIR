@@ -35,13 +35,14 @@ public class DossierPatient extends javax.swing.JFrame {
     DefaultTableModel examsModel;
     
     public DossierPatient(Login user, Patient patient, ManipAndPhController mc,  ArrayList<Examen> exams) {
+        
+        initComponents();
         ButtonGroup G = new ButtonGroup();
         G.add(JR1);
         G.add(JR2);
         G.add(JR3);
         JR1.setSelected(true);
 
-        initComponents();
         Toolkit toolkit = getToolkit();
         Dimension size= toolkit.getScreenSize();
         setLocation(size.width/2 - getWidth()/2 ,  size.height/2-getHeight()/2) ;
@@ -60,6 +61,10 @@ public class DossierPatient extends javax.swing.JFrame {
         accesExamButton.setEnabled(false);  
     }
 
+    public Patient getPatient() {
+        return patient;
+    }
+    
     public void removeCellEditorListener(CellEditorListener l) {
     }
 
@@ -98,7 +103,6 @@ public class DossierPatient extends javax.swing.JFrame {
         JR1 = new javax.swing.JRadioButton();
         JR2 = new javax.swing.JRadioButton();
         JR3 = new javax.swing.JRadioButton();
-        jLabel5 = new javax.swing.JLabel();
 
         jLabel8.setText("...");
 
@@ -227,6 +231,11 @@ public class DossierPatient extends javax.swing.JFrame {
         JExam.setRowHeight(30);
         JExam.setSelectionForeground(new java.awt.Color(0, 0, 0));
         JExam.getTableHeader().setReorderingAllowed(false);
+        JExam.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JExamMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(JExam);
         JExam.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         if (JExam.getColumnModel().getColumnCount() > 0) {
@@ -258,30 +267,36 @@ public class DossierPatient extends javax.swing.JFrame {
             }
         });
 
-        JR1.setText("Radio");
+        JR1.setText("Tous");
         JR1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 JR1ActionPerformed(evt);
             }
         });
 
-        JR2.setText("IRM");
+        JR2.setText("Examens numériques");
 
-        JR3.setText("Scanner");
-
-        jLabel5.setText("Recherche par type d'examen : ");
+        JR3.setText("Examens papier");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(JR1)
+                .addGap(18, 18, 18)
+                .addComponent(JR2)
+                .addGap(18, 18, 18)
+                .addComponent(JR3)
+                .addGap(145, 145, 145))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
+                        .addGap(128, 128, 128)
                         .addComponent(jLabel1))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(74, 74, 74)
+                        .addGap(61, 61, 61)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel4)
@@ -309,38 +324,33 @@ public class DossierPatient extends javax.swing.JFrame {
                                     .addComponent(jLabel13)
                                     .addGap(18, 18, 18)
                                     .addComponent(adressLabel))))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                            .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(69, 69, 69)
-                            .addComponent(accesExamButton)
-                            .addGap(162, 162, 162))
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                            .addComponent(jLabel15)
-                            .addGap(78, 78, 78)))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
-                        .addGap(18, 18, 18)
-                        .addComponent(JR1)
-                        .addGap(18, 18, 18)
-                        .addComponent(JR2)
-                        .addGap(18, 18, 18)
-                        .addComponent(JR3)
-                        .addGap(170, 170, 170))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(97, 97, 97))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(145, 145, 145)
+                        .addComponent(accesExamButton))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15))
+                .addGap(97, 97, 97))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 65, Short.MAX_VALUE)
+                        .addGap(26, 26, 26)
+                        .addComponent(jLabel15)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(JR1)
+                            .addComponent(JR2)
+                            .addComponent(JR3)))
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(idPatientLabel)
                             .addComponent(jLabel4))
@@ -363,23 +373,14 @@ public class DossierPatient extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel13)
-                            .addComponent(adressLabel))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE))
+                            .addComponent(adressLabel)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addGap(30, 30, 30)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5)
-                            .addComponent(JR1)
-                            .addComponent(JR2)
-                            .addComponent(JR3))
-                        .addGap(32, 32, 32)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(52, 52, 52)))
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(accesExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(96, 96, 96))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(accesExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(112, 132, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -428,16 +429,25 @@ public class DossierPatient extends javax.swing.JFrame {
     private void accesExamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accesExamButtonActionPerformed
         int row = JExam.getSelectedRow();
         String idExam = JExam.getModel().getValueAt(row, 0).toString();
-        
-        /*if (idExam != null){
-            mc.displayExam(idExam);
+        System.out.println(idExam);
+        if (idExam != null){
+            try {
+                mc.displayExam(idExam);
+            } catch (SQLException ex) {
+                Logger.getLogger(DossierPatient.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        this.dispose();*/
+        this.dispose();
     }//GEN-LAST:event_accesExamButtonActionPerformed
 
     private void JR1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JR1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_JR1ActionPerformed
+
+    private void JExamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JExamMouseClicked
+        accesExamButton.setEnabled(true);
+        
+    }//GEN-LAST:event_JExamMouseClicked
 
     /**
      * @param args the command line arguments
@@ -511,7 +521,6 @@ public class DossierPatient extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;

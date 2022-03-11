@@ -7,13 +7,19 @@ import Modele.Login;
 import Modele.Pacs;
 import Modele.Patient;
 import Vue.AfficherExamen;
+import Vue.AfficherExamenPapier;
 import Vue.AjouterExamen;
+import Vue.AjouterImagesNumerisees;
 import Vue.CompleterExamen;
 import Vue.Dashboard;
 import Vue.DashboardSecretaire;
 import Vue.DossierPatient;
 import Vue.RecherchePatientMedecin;
+import Vue.TraitementImage;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -32,6 +38,9 @@ public class ManipAndPhController extends UserController {
     CompleterExamen ce;
     CompleterExamenListe cr;
     AfficherExamen ae;
+    AfficherExamenPapier aep;
+    AjouterImagesNumerisees ain;
+    TraitementImage ti;    
     RequetesSQL sql;
     String error = "";
     String success = "";
@@ -99,10 +108,31 @@ public class ManipAndPhController extends UserController {
     public void displayExam(String examId) throws SQLException {
         Examen e = sql.getExamenById(examId);
         Patient p = sql.getPatientFromExam(e.getExamId());
-        ae = new AfficherExamen(this, user, e, p);
-        ce.setVisible(true);
+        Login reportMedecin = sql.getProById(e.getProIdReport());
+        System.out.println(reportMedecin.getFirstName());
+        if (sql.isExamenDigital(e)) {
+            ae = new AfficherExamen(this, user, e, p, reportMedecin);
+            ae.setVisible(true);
+        } else {
+            aep = new AfficherExamenPapier(this, user, e, p, reportMedecin);
+            aep.setVisible(true);
+        }
     }
     
+    public void displayAddImagesToExam(Examen e, Patient p) {
+        ain = new AjouterImagesNumerisees(this, user, e, p, new ArrayList<GestionImage.Image>());
+        ain.setVisible(true);
+    }
+    
+    public void displayTraiterImage(GestionImage.Image img, AjouterImagesNumerisees ain, boolean status) throws IOException {
+        ti = new TraitementImage(this, img, this.ain, status);
+        ti.setVisible(true);
+    }
+    
+    public void displayAddImageToExam(Examen e, Patient p, ArrayList<GestionImage.Image> images) throws SQLException {
+        ain = new AjouterImagesNumerisees(this, user, e, p, images);
+        ain.setVisible(true);
+    }
     // RECHERCHE ET AJOUT EN BD    
     public ArrayList<Patient> recherchePatient(String critere, String recherche) throws SQLException {
     
@@ -143,21 +173,18 @@ public class ManipAndPhController extends UserController {
         sql.addReport(e.getExamId(), report);
     }
     
-    public ArrayList<Pacs> afficherListeImages(String idExam) throws SQLException {
+    public ArrayList<Pacs> afficherListeImages(String idExam) throws SQLException, IOException {
         return sql.getImagesFromExam(idExam);
         
     }
 
-    public void addImage(FileInputStream in, String idExam) throws SQLException {
+    public void addImage(Image in, String idExam) throws SQLException, IOException {
         String uid = UUID.randomUUID().toString().replace("-","").substring(0,10);
-        Pacs pacs = new Pacs(uid, idExam, "image" );
+        Pacs pacs = new Pacs(uid, idExam, in );
         sql.addImageToPacs(in, pacs);
-    }
-    
-
-    
+    }  
 
 
 
-
+   
 }
