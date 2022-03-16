@@ -7,6 +7,8 @@
         <Property name="text" type="java.lang.String" value="..."/>
       </Properties>
     </Component>
+    <Component class="javax.swing.ButtonGroup" name="buttonGroup1">
+    </Component>
   </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
@@ -506,11 +508,17 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Examens num&#xe9;riques"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JR2ActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JRadioButton" name="JR3">
           <Properties>
             <Property name="text" type="java.lang.String" value="Examens papier"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="JR3ActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

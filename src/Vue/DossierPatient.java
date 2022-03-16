@@ -15,6 +15,7 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.table.*;
 import java.awt.Component;
 import java.awt.event.*;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,16 +34,18 @@ public class DossierPatient extends javax.swing.JFrame {
     Login user;
     Patient patient;
     DefaultTableModel examsModel;
+    ButtonGroup G;
+    ArrayList<Examen> exams;
     
     public DossierPatient(Login user, Patient patient, ManipAndPhController mc,  ArrayList<Examen> exams) {
         
         initComponents();
-        ButtonGroup G = new ButtonGroup();
+        G = new ButtonGroup();
         G.add(JR1);
         G.add(JR2);
         G.add(JR3);
         JR1.setSelected(true);
-
+        
         Toolkit toolkit = getToolkit();
         Dimension size= toolkit.getScreenSize();
         setLocation(size.width/2 - getWidth()/2 ,  size.height/2-getHeight()/2) ;
@@ -50,6 +53,7 @@ public class DossierPatient extends javax.swing.JFrame {
         this.user = user;
         this.mc = mc;
         this.patient = patient;
+        this.exams = exams;
         idPatientLabel.setText(patient.getPatientId().trim());
         lastNameLabel.setText(patient.getLastNameP().trim().toUpperCase());
         firstNameLabel.setText(patient.getFirstNameP().trim().substring(0, 1).toUpperCase() + patient.getFirstNameP().substring(1).trim());
@@ -78,6 +82,7 @@ public class DossierPatient extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel8 = new javax.swing.JLabel();
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         backButton = new javax.swing.JButton();
         decoButton = new javax.swing.JButton();
@@ -275,8 +280,18 @@ public class DossierPatient extends javax.swing.JFrame {
         });
 
         JR2.setText("Examens numériques");
+        JR2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JR2ActionPerformed(evt);
+            }
+        });
 
         JR3.setText("Examens papier");
+        JR3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JR3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -432,7 +447,11 @@ public class DossierPatient extends javax.swing.JFrame {
         System.out.println(idExam);
         if (idExam != null){
             try {
-                mc.displayExam(idExam);
+                try {
+                    mc.displayExam(idExam);
+                } catch (IOException ex) {
+                    Logger.getLogger(DossierPatient.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(DossierPatient.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -441,13 +460,23 @@ public class DossierPatient extends javax.swing.JFrame {
     }//GEN-LAST:event_accesExamButtonActionPerformed
 
     private void JR1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JR1ActionPerformed
-        // TODO add your handling code here:
+        this.updateExams(exams);
     }//GEN-LAST:event_JR1ActionPerformed
 
     private void JExamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JExamMouseClicked
         accesExamButton.setEnabled(true);
         
     }//GEN-LAST:event_JExamMouseClicked
+
+    private void JR2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JR2ActionPerformed
+        ArrayList<Examen> exams = mc.getExams("digital", patient);
+        this.updateExams(exams);
+    }//GEN-LAST:event_JR2ActionPerformed
+
+    private void JR3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JR3ActionPerformed
+        ArrayList<Examen> exams = mc.getExams("paper", patient);
+        this.updateExams(exams);
+    }//GEN-LAST:event_JR3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -509,6 +538,7 @@ public class DossierPatient extends javax.swing.JFrame {
     private javax.swing.JButton addExamButton;
     private javax.swing.JLabel adressLabel;
     private javax.swing.JButton backButton;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel dateLabel;
     private javax.swing.JButton decoButton;
     private javax.swing.JLabel firstNameLabel;

@@ -44,6 +44,7 @@ public class AfficherExamenPapier extends javax.swing.JFrame {
         ddnPatient.setText(p.getDdn().toString().trim());
         report.setText(e.getReport());
         report.setEditable(false);
+        report.setLineWrap(true);
         this.reportMedecin.setText(reportMedecin.getLastName().toUpperCase().trim() + " " + reportMedecin.getFirstName().substring(0, 1).toUpperCase() + reportMedecin.getFirstName().substring(1).trim());
 
     }

@@ -24,6 +24,8 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -105,13 +107,14 @@ public class ManipAndPhController extends UserController {
         cr.setVisible(true);
     }
     
-    public void displayExam(String examId) throws SQLException {
+    public void displayExam(String examId) throws SQLException, IOException {
         Examen e = sql.getExamenById(examId);
         Patient p = sql.getPatientFromExam(e.getExamId());
         Login reportMedecin = sql.getProById(e.getProIdReport());
         System.out.println(reportMedecin.getFirstName());
         if (sql.isExamenDigital(e)) {
-            ae = new AfficherExamen(this, user, e, p, reportMedecin);
+            ArrayList<Pacs> images = sql.getImagesFromExam(examId);
+            ae = new AfficherExamen(this, user, e, p, reportMedecin, images);
             ae.setVisible(true);
         } else {
             aep = new AfficherExamenPapier(this, user, e, p, reportMedecin);
@@ -169,8 +172,27 @@ public class ManipAndPhController extends UserController {
         return liste;
     }
 
+    
     public void updateExam(Examen e, String report) throws SQLException {
         sql.addReport(e.getExamId(), report);
+    }
+    
+    public ArrayList<Examen> getExams(String type, Patient p) {
+        ArrayList<Examen> exams = new ArrayList<>();
+        if(type.equals("digital")) {
+            try {
+                exams = sql.getDigitalExams(p);
+            } catch (SQLException ex) {
+                Logger.getLogger(ManipAndPhController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                exams = sql.getPaperExams(p);
+            } catch (SQLException ex) {
+                Logger.getLogger(ManipAndPhController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return exams;
     }
     
     public ArrayList<Pacs> afficherListeImages(String idExam) throws SQLException, IOException {
@@ -182,9 +204,5 @@ public class ManipAndPhController extends UserController {
         String uid = UUID.randomUUID().toString().replace("-","").substring(0,10);
         Pacs pacs = new Pacs(uid, idExam, in );
         sql.addImageToPacs(in, pacs);
-    }  
-
-
-
-   
+    }     
 }

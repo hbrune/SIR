@@ -313,6 +313,7 @@ base de donn�es
     
     //EXAMENS
     
+    //ajout
     public void addExamen(Examen e) throws SQLException {
         
         //Get a statement from the connection
@@ -320,7 +321,6 @@ base de donn�es
         
         //Execute the query
         java.sql.Timestamp ddnSql = new java.sql.Timestamp(e.getDate().getTime());
-        System.out.println(ddnSql);
         ResultSet rsTest = stmt.executeQuery("INSERT INTO EXAM VALUES ('" + e.getExamId() + "', '" + e.getPatientId() + "', '" + e.getProId() + "', '" + e.getProIdReport() +  "', '" + e.getType() + "', '" + e.getReport() + "', CURRENT_TIMESTAMP, " + e.getStatus() +")");
 
         rsTest.close() ;
@@ -328,45 +328,14 @@ base de donn�es
         
     }
     
-    public boolean isExamenDigital(Examen e) throws SQLException {
-        boolean digital = false;
-        //Get a statement from the connection
-        Statement stmt = dap.getConn().createStatement() ;
-        
-        //Execute the query
-        java.sql.Timestamp ddnSql = new java.sql.Timestamp(e.getDate().getTime());
-        System.out.println(ddnSql);
-        ResultSet rsTest = stmt.executeQuery("SELECT COUNT(*) FROM PACS WHERE EXAMID = '" + e.getExamId() + "'");
-        while(rsTest.next()) { 
-            if (rsTest.getInt(1)>0) {
-                digital = true;
-            }
-        }     
-        rsTest.close() ;
-        stmt.close() ;
-        return digital;
-    }
-    
-    public void addReport(String examId, String report) throws SQLException {
-        
-        //Get a statement from the connection
-        Statement stmt = dap.getConn().createStatement() ;
-        
-        //Execute the query
-        ResultSet rsTest = stmt.executeQuery("UPDATE EXAM SET report = '" + report + "', status = 1 WHERE examId = '" + examId +"'") ;
-        
-        rsTest.close() ;
-        stmt.close() ;
-        
-    }
-    
+    //requêtes générales
     public Examen getExamenById(String id) throws SQLException {    
         // Get a statement from the connection
         Statement stmt = conn.createStatement() ;
-        
+
         // Execute the query
         ResultSet rsTest = stmt.executeQuery("SELECT * FROM EXAM where examId = '" + id + "'") ;
-        
+
         Examen e = null;
         String examId = "";
         String patientId = "";
@@ -376,7 +345,7 @@ base de donn�es
         String report = "";
         Date date = null;
         int status;
-        
+
         while(rsTest.next()) {
                 examId = rsTest.getString(1);
                 patientId = rsTest.getString(2);
@@ -388,7 +357,7 @@ base de donn�es
                 status = rsTest.getInt(8);
                 e = new Examen(examId, patientId, proId, proIdReport, type, report, date, status);
         }
-        
+
         // Close the result set, statement and the connection
         rsTest.close() ;
         stmt.close() ;
@@ -433,6 +402,114 @@ base de donn�es
         stmt.close() ;
         return examsP;
     }
+    
+    //examens numérique et non numériques
+    public boolean isExamenDigital(Examen e) throws SQLException {
+        boolean digital = false;
+        //Get a statement from the connection
+        Statement stmt = dap.getConn().createStatement() ;
+        
+        //Execute the query
+        java.sql.Timestamp ddnSql = new java.sql.Timestamp(e.getDate().getTime());
+        System.out.println(ddnSql);
+        ResultSet rsTest = stmt.executeQuery("SELECT COUNT(*) FROM PACS WHERE EXAMID = '" + e.getExamId() + "'");
+        while(rsTest.next()) { 
+            if (rsTest.getInt(1)>0) {
+                digital = true;
+            }
+        }     
+        rsTest.close() ;
+        stmt.close() ;
+        return digital;
+    }
+    
+   
+    public ArrayList<Examen> getDigitalExams(Patient p) throws SQLException {
+        ArrayList<Examen> exams = new ArrayList<>();
+        String idPatient = p.getPatientId();
+        //Get a statement from the connection
+        Statement stmt = dap.getConn().createStatement() ;
+        
+        //Execute the query
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM EXAM WHERE PATIENTID = '" + idPatient + "' AND EXAMID IN (SELECT EXAMID FROM PACS)");
+        Examen e = null;
+        String examId = "";
+        String patientId = "";
+        String proId = "";
+        String proIdReport = "";
+        String type;
+        String report = "";
+        Date date = null;
+        int status;
+        
+        while(rsTest.next()) {
+                examId = rsTest.getString(1);
+                patientId = rsTest.getString(2);
+                proId = rsTest.getString(3);
+                proIdReport = rsTest.getString(4);
+                type = rsTest.getString(5);
+                report = rsTest.getString(6);
+                date =  rsTest.getDate(7);    
+                status = rsTest.getInt(8);
+                e = new Examen(examId, patientId, proId, proIdReport, type, report, date, status);
+                exams.add(e);
+        }
+            
+        rsTest.close() ;
+        stmt.close() ;
+        return exams;
+    }
+    
+    public ArrayList<Examen> getPaperExams(Patient p) throws SQLException {
+        ArrayList<Examen> exams = new ArrayList<>();
+        String idPatient = p.getPatientId();
+        //Get a statement from the connection
+        Statement stmt = dap.getConn().createStatement() ;
+        
+        //Execute the query
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM EXAM WHERE PATIENTID = '" + idPatient + "' AND EXAMID NOT IN (SELECT EXAMID FROM PACS)");
+        Examen e = null;
+        String examId = "";
+        String patientId = "";
+        String proId = "";
+        String proIdReport = "";
+        String type;
+        String report = "";
+        Date date = null;
+        int status;
+        
+        while(rsTest.next()) {
+                examId = rsTest.getString(1);
+                patientId = rsTest.getString(2);
+                proId = rsTest.getString(3);
+                proIdReport = rsTest.getString(4);
+                type = rsTest.getString(5);
+                report = rsTest.getString(6);
+                date =  rsTest.getDate(7);    
+                status = rsTest.getInt(8);
+                e = new Examen(examId, patientId, proId, proIdReport, type, report, date, status);
+                exams.add(e);
+        }
+            
+        rsTest.close() ;
+        stmt.close() ;
+        return exams;
+    }
+    
+    public void addReport(String examId, String report) throws SQLException {
+        
+        //Get a statement from the connection
+        Statement stmt = dap.getConn().createStatement() ;
+        
+        //Execute the query
+        ResultSet rsTest = stmt.executeQuery("UPDATE EXAM SET report = '" + report + "', status = 1 WHERE examId = '" + examId +"'") ;
+        
+        rsTest.close() ;
+        stmt.close() ;
+        
+    }
+    
+
     
     public ArrayList<Examen> getExamensIncomplete() throws SQLException {    
         
