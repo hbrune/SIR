@@ -8,15 +8,28 @@ import Controleur.LoginController;
 import Controleur.ManipAndPhController;
 import Modele.Examen;
 import Modele.Login;
+import Modele.Pacs;
 import Modele.Patient;
 import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.ButtonGroup;
+import javax.swing.DefaultListModel;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -27,6 +40,8 @@ public class AjouterExamen extends javax.swing.JFrame {
     Patient patient;
     Login user;
     ManipAndPhController mc;
+    DefaultListModel imagesModel;
+    ArrayList<Image> imagesToAdd;
     
     public AjouterExamen(Patient p, Login user, ManipAndPhController mc, String uid) {
         initComponents();        
@@ -47,10 +62,13 @@ public class AjouterExamen extends javax.swing.JFrame {
         genderLabel.setText(patient.getGender());
         adressLabel.setText(patient.getAdress().trim());
         idExamLabel.setText(uid);
+        reportText.setLineWrap(true);
         if(user.getFunction() == 3) {
             reportText.setVisible(false);
         }
+        imagesToAdd = new ArrayList<>();
     }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -62,8 +80,6 @@ public class AjouterExamen extends javax.swing.JFrame {
     private void initComponents() {
 
         buttonGroup1 = new javax.swing.ButtonGroup();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        JExam = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         backButton = new javax.swing.JButton();
         decoButton = new javax.swing.JButton();
@@ -96,47 +112,10 @@ public class AjouterExamen extends javax.swing.JFrame {
         reportText = new javax.swing.JTextArea();
         idExamLabel = new javax.swing.JLabel();
         addExamButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        JImages = new javax.swing.JTable();
+        addImageButton = new javax.swing.JButton();
         error = new javax.swing.JLabel();
-
-        JExam.setBackground(new java.awt.Color(228, 237, 246));
-        JExam.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        JExam.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, "", ""},
-                {null, "", ""},
-                {null, "", ""},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "N° Examen", "Date ", "Type"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, true
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        JExam.setColumnSelectionAllowed(true);
-        JExam.setRowHeight(30);
-        JExam.setSelectionForeground(new java.awt.Color(153, 204, 255));
-        JExam.getTableHeader().setReorderingAllowed(false);
-        jScrollPane2.setViewportView(JExam);
+        jScrollPane2 = new javax.swing.JScrollPane();
+        imagesList = new javax.swing.JList<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -171,7 +150,7 @@ public class AjouterExamen extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 723, Short.MAX_VALUE)
                 .addComponent(decoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
         );
@@ -286,48 +265,18 @@ public class AjouterExamen extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
-        jButton1.setText("Ajouter une image");
-
-        JImages.setBackground(new java.awt.Color(228, 237, 246));
-        JImages.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        JImages.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, ""},
-                {null, ""},
-                {null, ""},
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "N° Image", "URL PACS"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
+        addImageButton.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
+        addImageButton.setText("Ajouter une image");
+        addImageButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addImageButtonActionPerformed(evt);
             }
         });
-        JImages.setColumnSelectionAllowed(true);
-        JImages.setRowHeight(25);
-        JImages.setSelectionForeground(new java.awt.Color(153, 204, 255));
-        JImages.getTableHeader().setReorderingAllowed(false);
-        jScrollPane3.setViewportView(JImages);
 
         error.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 13)); // NOI18N
         error.setForeground(new java.awt.Color(255, 0, 51));
+
+        jScrollPane2.setViewportView(imagesList);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -373,51 +322,53 @@ public class AjouterExamen extends javax.swing.JFrame {
                                         .addComponent(jLabel9)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(dateLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)))))))
-                .addGap(10, 10, 10)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel8)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(499, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(10, 10, 10)
+                        .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(529, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel19)
-                                            .addComponent(jLabel16)
-                                            .addComponent(jLabel17))
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(idExamLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jLabel20)
+                                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addComponent(JR1)
-                                                .addGap(18, 18, 18)
-                                                .addComponent(JR2))
-                                            .addComponent(typeExam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 341, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(jLabel19)
+                                                    .addComponent(jLabel17)
+                                                    .addComponent(jLabel16))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                    .addComponent(idExamLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                                        .addComponent(JR1)
+                                                        .addGap(18, 18, 18)
+                                                        .addComponent(JR2))
+                                                    .addComponent(typeExam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(CR)
+                                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(jPanel2Layout.createSequentialGroup()
-                                        .addGap(103, 103, 103)
-                                        .addComponent(jButton1))))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jLabel20)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 351, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(CR))
-                        .addContainerGap(63, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addGap(12, 12, 12)
-                        .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 534, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                        .addGap(107, 107, 107)
+                                        .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(117, 117, 117)
+                        .addComponent(addImageButton)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -456,38 +407,40 @@ public class AjouterExamen extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(47, 47, 47)
-                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(13, 13, 13))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel17)
-                    .addComponent(idExamLabel)
-                    .addComponent(CR))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(47, 47, 47)
+                                .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(13, 13, 13))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel17)
+                            .addComponent(idExamLabel))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel19)
                             .addComponent(typeExam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel16)
                             .addComponent(JR1)
-                            .addComponent(JR2))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                            .addComponent(JR2)
+                            .addComponent(jLabel16))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                         .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(92, 92, 92)
+                        .addComponent(CR)
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(addImageButton)
+                .addGap(10, 10, 10)
+                .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(17, 17, 17))
         );
@@ -543,7 +496,6 @@ public class AjouterExamen extends javax.swing.JFrame {
             report = reportText.getText();
         }
         String type = typeExam.getSelectedItem().toString();
-        ArrayList<String> images = new ArrayList<>();
 
         //SI EXAM NUM VERIF QUE IMG != NULL
         if(!type.equals("")) {
@@ -552,14 +504,23 @@ public class AjouterExamen extends javax.swing.JFrame {
                 System.out.println(error.getText());
 
             } else {
-                Date date = new Date();
-                Examen exam = new Examen(examId, patientId, proId, proIdReport, type, report, date, status);
+                if(JR1.isSelected() && imagesToAdd.size() == 0) {
+                    error.setText("Veuillez enregistrer au moins une image.");
+                }else {
+                    Date date = new Date();
+                    Examen exam = new Examen(examId, patientId, proId, proIdReport, type, report, date, status);
                 try {
                     mc.ajouterExam(exam);
+                    for(int i = 0; i < imagesToAdd.size(); i++) {
+                        mc.addImage(imagesToAdd.get(i), exam.getExamId());
+                    }
                     mc.displayDossierPatient(patientId);
                     this.dispose();
                 } catch (SQLException ex) {
                     Logger.getLogger(AjouterExamen.class.getName()).log(Level.SEVERE, null, ex);
+                }   catch (IOException ex) {
+                        Logger.getLogger(AjouterExamen.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         } else {
@@ -571,13 +532,60 @@ public class AjouterExamen extends javax.swing.JFrame {
     }//GEN-LAST:event_addExamButtonActionPerformed
 
     private void JR1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JR1MouseClicked
-        JImages.setVisible(true);
+        imagesList.setVisible(true);
     }//GEN-LAST:event_JR1MouseClicked
 
     private void JR2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JR2MouseClicked
-        JImages.setVisible(false);
+        imagesList.setVisible(false);
     }//GEN-LAST:event_JR2MouseClicked
 
+    private void addImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addImageButtonActionPerformed
+        JFileChooser file = new JFileChooser();
+        file.setCurrentDirectory(new File(System.getProperty("user.home")));
+        //filter the files
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "jpg","gif","png");
+        file.addChoosableFileFilter(filter);
+        int result = file.showSaveDialog(null);
+         //if the user click on save in Jfilechooser
+        if(result == JFileChooser.APPROVE_OPTION){
+            File selectedFile = file.getSelectedFile();
+            String path = selectedFile.getAbsolutePath();
+            System.out.println(selectedFile);
+            FileInputStream in = null;
+            try {
+                in = new FileInputStream(selectedFile);
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(AjouterExamen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            try {
+                Image img = ImageIO.read(in);
+                imagesToAdd.add(img);
+                this.updateImages();
+            } catch (SQLException ex) {
+                Logger.getLogger(AjouterExamen.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(AjouterExamen.class.getName()).log(Level.SEVERE, null, ex);
+            }
+          }
+           //if the user click on save in Jfilechooser
+
+
+          else if(result == JFileChooser.CANCEL_OPTION){
+              System.out.println("No File Select");
+          }
+    }//GEN-LAST:event_addImageButtonActionPerformed
+    
+    private void updateImages() throws SQLException, IOException {
+
+        this.imagesModel = new DefaultListModel();
+
+        imagesList.setModel(imagesModel);
+        
+        for (int i = 0; i < imagesToAdd.size(); i++) {
+
+            imagesModel.add(i, "Image " + (i+1));
+        }
+    }
     /**
      * @param args the command line arguments
      */
@@ -617,11 +625,10 @@ public class AjouterExamen extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel CR;
-    private javax.swing.JTable JExam;
-    private javax.swing.JTable JImages;
     private javax.swing.JRadioButton JR1;
     private javax.swing.JRadioButton JR2;
     private javax.swing.JButton addExamButton;
+    private javax.swing.JButton addImageButton;
     private javax.swing.JLabel adressLabel;
     private javax.swing.JButton backButton;
     private javax.swing.ButtonGroup buttonGroup1;
@@ -632,7 +639,7 @@ public class AjouterExamen extends javax.swing.JFrame {
     private javax.swing.JLabel genderLabel;
     private javax.swing.JLabel idExamLabel;
     private javax.swing.JLabel idPatientLabel;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JList<String> imagesList;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;
@@ -650,10 +657,11 @@ public class AjouterExamen extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JLabel lastNameLabel;
     private javax.swing.JTextArea reportText;
     private javax.swing.JComboBox<String> typeExam;
     // End of variables declaration//GEN-END:variables
+
+
 }

@@ -116,12 +116,13 @@
           <Properties>
             <Property name="editable" type="boolean" value="true"/>
             <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-              <StringArray count="5">
-                <StringItem index="0" value="ID Patient"/>
-                <StringItem index="1" value="Nom"/>
-                <StringItem index="2" value="Pr&#xe9;nom"/>
-                <StringItem index="3" value="Date de naissance"/>
-                <StringItem index="4" value="Sexe"/>
+              <StringArray count="6">
+                <StringItem index="0" value="Tous les patients"/>
+                <StringItem index="1" value="Identifiant unique"/>
+                <StringItem index="2" value="Nom"/>
+                <StringItem index="3" value="Pr&#xe9;nom"/>
+                <StringItem index="4" value="Date de naissance"/>
+                <StringItem index="5" value="Sexe"/>
               </StringArray>
             </Property>
             <Property name="toolTipText" type="java.lang.String" value="choisissez un crit&#xe8;re de recherche"/>

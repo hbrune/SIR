@@ -4,15 +4,28 @@ import Vue.CompleterExamenListe;
 import ConnexionBD.RequetesSQL;
 import Modele.Examen;
 import Modele.Login;
+import Modele.Pacs;
 import Modele.Patient;
+import Vue.AfficherExamen;
+import Vue.AfficherExamenPapier;
 import Vue.AjouterExamen;
+import Vue.AjouterImagesNumerisees;
 import Vue.CompleterExamen;
 import Vue.Dashboard;
 import Vue.DashboardSecretaire;
 import Vue.DossierPatient;
 import Vue.RecherchePatientMedecin;
+import Vue.TraitementImage;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -26,6 +39,10 @@ public class ManipAndPhController extends UserController {
     DossierPatient dp;
     CompleterExamen ce;
     CompleterExamenListe cr;
+    AfficherExamen ae;
+    AfficherExamenPapier aep;
+    AjouterImagesNumerisees ain;
+    TraitementImage ti;    
     RequetesSQL sql;
     String error = "";
     String success = "";
@@ -88,20 +105,48 @@ public class ManipAndPhController extends UserController {
         }
         cr = new CompleterExamenListe(this, user, exams, patients);
         cr.setVisible(true);
-        
-        
     }
-    // RECHERCHE ET AJOUT EN BD
     
-    public void recherchePatient(String critere, String recherche) throws SQLException {
+    public void displayExam(String examId) throws SQLException, IOException {
+        Examen e = sql.getExamenById(examId);
+        Patient p = sql.getPatientFromExam(e.getExamId());
+        Login reportMedecin = sql.getProById(e.getProIdReport());
+        System.out.println(reportMedecin.getFirstName());
+        if (sql.isExamenDigital(e)) {
+            ArrayList<Pacs> images = sql.getImagesFromExam(examId);
+            ae = new AfficherExamen(this, user, e, p, reportMedecin, images);
+            ae.setVisible(true);
+        } else {
+            aep = new AfficherExamenPapier(this, user, e, p, reportMedecin);
+            aep.setVisible(true);
+        }
+    }
     
+    public void displayAddImagesToExam(Examen e, Patient p) {
+        ain = new AjouterImagesNumerisees(this, user, e, p, new ArrayList<GestionImage.Image>());
+        ain.setVisible(true);
+    }
+    
+    public void displayTraiterImage(GestionImage.Image img, AjouterImagesNumerisees ain, boolean status) throws IOException {
+        ti = new TraitementImage(this, img, this.ain, status);
+        ti.setVisible(true);
+    }
+    
+    public void displayAddImageToExam(Examen e, Patient p, ArrayList<GestionImage.Image> images) throws SQLException {
+        ain = new AjouterImagesNumerisees(this, user, e, p, images);
+        ain.setVisible(true);
+    }
+    // RECHERCHE ET AJOUT EN BD    
+    public ArrayList<Patient> recherchePatient(String critere, String recherche) throws SQLException {
+    
+        ArrayList<Patient> patients = null;
         if (recherche.equals("recherche selon le critère selectionné") || recherche.equals("")) {
             error = "Veuillez entrer une recherche";
         } else {
             error = "";
-            ArrayList<Patient> patients = sql.getPatientByCriteria(critere, recherche);
-            rp.updatePatients(patients);
+            patients = sql.getPatientByCriteria(critere, recherche);
         }
+        return patients;
     }
     
     public void ajouterExam(Examen e) throws SQLException {
@@ -127,17 +172,37 @@ public class ManipAndPhController extends UserController {
         return liste;
     }
 
-    public void displayExam(String idExam) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     public void updateExam(Examen e, String report) throws SQLException {
         sql.addReport(e.getExamId(), report);
     }
-
     
+    public ArrayList<Examen> getExams(String type, Patient p) {
+        ArrayList<Examen> exams = new ArrayList<>();
+        if(type.equals("digital")) {
+            try {
+                exams = sql.getDigitalExams(p);
+            } catch (SQLException ex) {
+                Logger.getLogger(ManipAndPhController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                exams = sql.getPaperExams(p);
+            } catch (SQLException ex) {
+                Logger.getLogger(ManipAndPhController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        return exams;
+    }
+    
+    public ArrayList<Pacs> afficherListeImages(String idExam) throws SQLException, IOException {
+        return sql.getImagesFromExam(idExam);
+        
+    }
 
-
-
-
+    public void addImage(Image in, String idExam) throws SQLException, IOException {
+        String uid = UUID.randomUUID().toString().replace("-","").substring(0,10);
+        Pacs pacs = new Pacs(uid, idExam, in );
+        sql.addImageToPacs(in, pacs);
+    }     
 }

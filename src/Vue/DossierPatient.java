@@ -15,6 +15,7 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.table.*;
 import java.awt.Component;
 import java.awt.event.*;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -27,14 +28,24 @@ import java.util.logging.Logger;
  * @author saman
  */
 public class DossierPatient extends javax.swing.JFrame {
-
+     
+       
     ManipAndPhController mc;
     Login user;
     Patient patient;
     DefaultTableModel examsModel;
+    ButtonGroup G;
+    ArrayList<Examen> exams;
     
     public DossierPatient(Login user, Patient patient, ManipAndPhController mc,  ArrayList<Examen> exams) {
+        
         initComponents();
+        G = new ButtonGroup();
+        G.add(JR1);
+        G.add(JR2);
+        G.add(JR3);
+        JR1.setSelected(true);
+        
         Toolkit toolkit = getToolkit();
         Dimension size= toolkit.getScreenSize();
         setLocation(size.width/2 - getWidth()/2 ,  size.height/2-getHeight()/2) ;
@@ -42,6 +53,7 @@ public class DossierPatient extends javax.swing.JFrame {
         this.user = user;
         this.mc = mc;
         this.patient = patient;
+        this.exams = exams;
         idPatientLabel.setText(patient.getPatientId().trim());
         lastNameLabel.setText(patient.getLastNameP().trim().toUpperCase());
         firstNameLabel.setText(patient.getFirstNameP().trim().substring(0, 1).toUpperCase() + patient.getFirstNameP().substring(1).trim());
@@ -53,6 +65,10 @@ public class DossierPatient extends javax.swing.JFrame {
         accesExamButton.setEnabled(false);  
     }
 
+    public Patient getPatient() {
+        return patient;
+    }
+    
     public void removeCellEditorListener(CellEditorListener l) {
     }
 
@@ -66,6 +82,7 @@ public class DossierPatient extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel8 = new javax.swing.JLabel();
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         backButton = new javax.swing.JButton();
         decoButton = new javax.swing.JButton();
@@ -88,6 +105,9 @@ public class DossierPatient extends javax.swing.JFrame {
         adressLabel = new javax.swing.JLabel();
         addExamButton = new javax.swing.JButton();
         accesExamButton = new javax.swing.JButton();
+        JR1 = new javax.swing.JRadioButton();
+        JR2 = new javax.swing.JRadioButton();
+        JR3 = new javax.swing.JRadioButton();
 
         jLabel8.setText("...");
 
@@ -216,6 +236,11 @@ public class DossierPatient extends javax.swing.JFrame {
         JExam.setRowHeight(30);
         JExam.setSelectionForeground(new java.awt.Color(0, 0, 0));
         JExam.getTableHeader().setReorderingAllowed(false);
+        JExam.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                JExamMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(JExam);
         JExam.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_INTERVAL_SELECTION);
         if (JExam.getColumnModel().getColumnCount() > 0) {
@@ -247,55 +272,82 @@ public class DossierPatient extends javax.swing.JFrame {
             }
         });
 
+        JR1.setText("Tous");
+        JR1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JR1ActionPerformed(evt);
+            }
+        });
+
+        JR2.setText("Examens numériques");
+        JR2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JR2ActionPerformed(evt);
+            }
+        });
+
+        JR3.setText("Examens papier");
+        JR3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                JR3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addGap(74, 74, 74)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addGap(18, 18, 18)
-                        .addComponent(idPatientLabel))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(firstNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(lastNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jLabel11)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(genderLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel9))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(dateLabel))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel13)
-                        .addGap(18, 18, 18)
-                        .addComponent(adressLabel)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 81, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(JR1)
+                .addGap(18, 18, 18)
+                .addComponent(JR2)
+                .addGap(18, 18, 18)
+                .addComponent(JR3)
+                .addGap(145, 145, 145))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel15)
-                        .addGap(325, 325, 325))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                                .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(accesExamButton))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 408, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(84, 84, 84))))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(128, 128, 128)
+                        .addComponent(jLabel1))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(61, 61, 61)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jLabel4)
+                                .addGap(18, 18, 18)
+                                .addComponent(idPatientLabel))
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel3)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(firstNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel2)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(lastNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                            .addComponent(jLabel11)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                            .addComponent(genderLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addComponent(jLabel9))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(dateLabel))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(jLabel13)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(adressLabel))))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(145, 145, 145)
+                        .addComponent(accesExamButton))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 484, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel15))
+                .addGap(97, 97, 97))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -303,18 +355,21 @@ public class DossierPatient extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel4)
-                            .addComponent(idPatientLabel))
-                        .addGap(22, 22, 22))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                        .addGap(26, 26, 26)
                         .addComponent(jLabel15)
-                        .addGap(17, 17, 17)))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(JR1)
+                            .addComponent(JR2)
+                            .addComponent(JR3)))
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(idPatientLabel)
+                            .addComponent(jLabel4))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
                             .addComponent(lastNameLabel))
@@ -333,16 +388,14 @@ public class DossierPatient extends javax.swing.JFrame {
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel13)
-                            .addComponent(adressLabel))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 1, Short.MAX_VALUE)
+                            .addComponent(adressLabel)))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(addExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(accesExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(96, 96, 96))))
+                            .addComponent(accesExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(112, 132, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -391,12 +444,39 @@ public class DossierPatient extends javax.swing.JFrame {
     private void accesExamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accesExamButtonActionPerformed
         int row = JExam.getSelectedRow();
         String idExam = JExam.getModel().getValueAt(row, 0).toString();
-        
-        /*if (idExam != null){
-            mc.displayExam(idExam);
+        System.out.println(idExam);
+        if (idExam != null){
+            try {
+                try {
+                    mc.displayExam(idExam);
+                } catch (IOException ex) {
+                    Logger.getLogger(DossierPatient.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(DossierPatient.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
-        this.dispose();*/
+        this.dispose();
     }//GEN-LAST:event_accesExamButtonActionPerformed
+
+    private void JR1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JR1ActionPerformed
+        this.updateExams(exams);
+    }//GEN-LAST:event_JR1ActionPerformed
+
+    private void JExamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JExamMouseClicked
+        accesExamButton.setEnabled(true);
+        
+    }//GEN-LAST:event_JExamMouseClicked
+
+    private void JR2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JR2ActionPerformed
+        ArrayList<Examen> exams = mc.getExams("digital", patient);
+        this.updateExams(exams);
+    }//GEN-LAST:event_JR2ActionPerformed
+
+    private void JR3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JR3ActionPerformed
+        ArrayList<Examen> exams = mc.getExams("paper", patient);
+        this.updateExams(exams);
+    }//GEN-LAST:event_JR3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -451,10 +531,14 @@ public class DossierPatient extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable JExam;
+    private javax.swing.JRadioButton JR1;
+    private javax.swing.JRadioButton JR2;
+    private javax.swing.JRadioButton JR3;
     private javax.swing.JButton accesExamButton;
     private javax.swing.JButton addExamButton;
     private javax.swing.JLabel adressLabel;
     private javax.swing.JButton backButton;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JLabel dateLabel;
     private javax.swing.JButton decoButton;
     private javax.swing.JLabel firstNameLabel;

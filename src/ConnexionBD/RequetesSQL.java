@@ -5,8 +5,23 @@ import Modele.Patient;
 import Modele.Examen;
 import Securite.Encryption;
 import Securite.Salt;
+import Modele.Pacs;
+import java.awt.FlowLayout;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.Blob;
 import java.util.Date;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -14,6 +29,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 
 public class RequetesSQL {
@@ -342,6 +363,42 @@ base de donn�es
         stmt.close() ;
     }
     
+    // USERS
+    
+    public Login getProById(String id) throws SQLException {    
+        // Get a statement from the connection
+        Statement stmt = conn.createStatement() ;
+        
+        // Execute the query
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM LOGIN where proId = '" + id + "'") ;
+        
+        Login user = null;
+        String idU = "";
+        String lastNameU = "";
+        String firstNameU = "";
+        String password = "";
+        int role = 0;
+        
+        
+        while(rsTest.next()) {
+            //remplir les infos du patient avec les résultats de la requête
+                idU = rsTest.getString(1);
+                password = rsTest.getString(2);
+                lastNameU = rsTest.getString(3);
+                firstNameU = rsTest.getString(4);
+                role = rsTest.getInt(5);             
+                user = new Login(idU, password, lastNameU, firstNameU, role);
+        }
+        
+        // Close the result set, statement and the connection
+        rsTest.close() ;
+        stmt.close() ;
+        return user;
+    }
+    
+    //EXAMENS
+    
+    //ajout
     public void addExamen(Examen e) throws SQLException {
         
         //Get a statement from the connection
@@ -349,7 +406,6 @@ base de donn�es
         
         //Execute the query
         java.sql.Timestamp ddnSql = new java.sql.Timestamp(e.getDate().getTime());
-        System.out.println(ddnSql);
         ResultSet rsTest = stmt.executeQuery("INSERT INTO EXAM VALUES ('" + e.getExamId() + "', '" + e.getPatientId() + "', '" + e.getProId() + "', '" + e.getProIdReport() +  "', '" + e.getType() + "', '" + e.getReport() + "', CURRENT_TIMESTAMP, " + e.getStatus() +")");
 
         rsTest.close() ;
@@ -357,26 +413,14 @@ base de donn�es
         
     }
     
-    public void addReport(String examId, String report) throws SQLException {
-        
-        //Get a statement from the connection
-        Statement stmt = dap.getConn().createStatement() ;
-        
-        //Execute the query
-        ResultSet rsTest = stmt.executeQuery("UPDATE EXAM SET report = '" + report + "', status = 1 WHERE examId = '" + examId +"'") ;
-        
-        rsTest.close() ;
-        stmt.close() ;
-        
-    }
-    
+    //requêtes générales
     public Examen getExamenById(String id) throws SQLException {    
         // Get a statement from the connection
         Statement stmt = conn.createStatement() ;
-        
+
         // Execute the query
         ResultSet rsTest = stmt.executeQuery("SELECT * FROM EXAM where examId = '" + id + "'") ;
-        
+
         Examen e = null;
         String examId = "";
         String patientId = "";
@@ -386,7 +430,7 @@ base de donn�es
         String report = "";
         Date date = null;
         int status;
-        
+
         while(rsTest.next()) {
                 examId = rsTest.getString(1);
                 patientId = rsTest.getString(2);
@@ -398,7 +442,7 @@ base de donn�es
                 status = rsTest.getInt(8);
                 e = new Examen(examId, patientId, proId, proIdReport, type, report, date, status);
         }
-        
+
         // Close the result set, statement and the connection
         rsTest.close() ;
         stmt.close() ;
@@ -443,6 +487,114 @@ base de donn�es
         stmt.close() ;
         return examsP;
     }
+    
+    //examens numérique et non numériques
+    public boolean isExamenDigital(Examen e) throws SQLException {
+        boolean digital = false;
+        //Get a statement from the connection
+        Statement stmt = dap.getConn().createStatement() ;
+        
+        //Execute the query
+        java.sql.Timestamp ddnSql = new java.sql.Timestamp(e.getDate().getTime());
+        System.out.println(ddnSql);
+        ResultSet rsTest = stmt.executeQuery("SELECT COUNT(*) FROM PACS WHERE EXAMID = '" + e.getExamId() + "'");
+        while(rsTest.next()) { 
+            if (rsTest.getInt(1)>0) {
+                digital = true;
+            }
+        }     
+        rsTest.close() ;
+        stmt.close() ;
+        return digital;
+    }
+    
+   
+    public ArrayList<Examen> getDigitalExams(Patient p) throws SQLException {
+        ArrayList<Examen> exams = new ArrayList<>();
+        String idPatient = p.getPatientId();
+        //Get a statement from the connection
+        Statement stmt = dap.getConn().createStatement() ;
+        
+        //Execute the query
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM EXAM WHERE PATIENTID = '" + idPatient + "' AND EXAMID IN (SELECT EXAMID FROM PACS)");
+        Examen e = null;
+        String examId = "";
+        String patientId = "";
+        String proId = "";
+        String proIdReport = "";
+        String type;
+        String report = "";
+        Date date = null;
+        int status;
+        
+        while(rsTest.next()) {
+                examId = rsTest.getString(1);
+                patientId = rsTest.getString(2);
+                proId = rsTest.getString(3);
+                proIdReport = rsTest.getString(4);
+                type = rsTest.getString(5);
+                report = rsTest.getString(6);
+                date =  rsTest.getDate(7);    
+                status = rsTest.getInt(8);
+                e = new Examen(examId, patientId, proId, proIdReport, type, report, date, status);
+                exams.add(e);
+        }
+            
+        rsTest.close() ;
+        stmt.close() ;
+        return exams;
+    }
+    
+    public ArrayList<Examen> getPaperExams(Patient p) throws SQLException {
+        ArrayList<Examen> exams = new ArrayList<>();
+        String idPatient = p.getPatientId();
+        //Get a statement from the connection
+        Statement stmt = dap.getConn().createStatement() ;
+        
+        //Execute the query
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM EXAM WHERE PATIENTID = '" + idPatient + "' AND EXAMID NOT IN (SELECT EXAMID FROM PACS)");
+        Examen e = null;
+        String examId = "";
+        String patientId = "";
+        String proId = "";
+        String proIdReport = "";
+        String type;
+        String report = "";
+        Date date = null;
+        int status;
+        
+        while(rsTest.next()) {
+                examId = rsTest.getString(1);
+                patientId = rsTest.getString(2);
+                proId = rsTest.getString(3);
+                proIdReport = rsTest.getString(4);
+                type = rsTest.getString(5);
+                report = rsTest.getString(6);
+                date =  rsTest.getDate(7);    
+                status = rsTest.getInt(8);
+                e = new Examen(examId, patientId, proId, proIdReport, type, report, date, status);
+                exams.add(e);
+        }
+            
+        rsTest.close() ;
+        stmt.close() ;
+        return exams;
+    }
+    
+    public void addReport(String examId, String report) throws SQLException {
+        
+        //Get a statement from the connection
+        Statement stmt = dap.getConn().createStatement() ;
+        
+        //Execute the query
+        ResultSet rsTest = stmt.executeQuery("UPDATE EXAM SET report = '" + report + "', status = 1 WHERE examId = '" + examId +"'") ;
+        
+        rsTest.close() ;
+        stmt.close() ;
+        
+    }
+    
+
     
     public ArrayList<Examen> getExamensIncomplete() throws SQLException {    
         
@@ -491,7 +643,6 @@ base de donn�es
         // Execute the query
         ResultSet rsTest = stmt.executeQuery("SELECT PATIENTID, LASTNAMEP, FIRSTNAMEP, ADRESS, GENDER, BIRTHDATE FROM PATIENT NATURAL JOIN EXAM WHERE EXAMID = '" + idExam + "'") ;
 
-        System.out.println("test");
         String idP = "";
         String lastNameP = "";
         String firstNameP = "";
@@ -515,4 +666,78 @@ base de donn�es
         return p;
     }
     
+    //GESTION D'IMAGES
+    public void addImageToPacs(Image img, Pacs pacs) throws SQLException, IOException {
+        
+        PreparedStatement pstmt = conn.prepareStatement("INSERT INTO PACS VALUES(?, ?, ?)");
+        pstmt.setString(1, pacs.getIdPacs());
+        pstmt.setString(2, pacs.getIdExam());
+        
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        ImageIO.write((RenderedImage) img,"png", os); 
+        InputStream in = new ByteArrayInputStream(os.toByteArray());
+        
+        pstmt.setBlob(3, in);
+        pstmt.execute();
+    }
+    
+    public ArrayList<Pacs> getImagesFromExam(String idExam) throws SQLException, IOException {
+        ArrayList<Pacs> imagesE = new ArrayList<>();
+        Pacs p = null;
+        
+        // Get a statement from the connection
+        Statement stmt = conn.createStatement() ;
+        
+        // Execute the query
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM PACS WHERE EXAMID = '" + idExam + "'") ;
+        String idPacs = "";
+        InputStream is = null;
+        
+        while(rsTest.next()) {
+            if(idExam.equals(rsTest.getString(2).trim())) {
+                idPacs = rsTest.getString(1);
+                is = rsTest.getBlob(3).getBinaryStream();
+                Image img = ImageIO.read(is);
+                p = new Pacs(idPacs, idExam, img);
+                imagesE.add(p);
+            }
+        }        
+        // Close the result set, statement and the connection
+        rsTest.close() ;
+        stmt.close() ;
+        return imagesE;
+    }
+    
+    public Pacs getImageFromId(String idPacs) throws SQLException, FileNotFoundException, IOException {
+        Pacs p = null;
+        
+        // Get a statement from the connection
+        Statement stmt = conn.createStatement() ;
+        
+        // Execute the query
+        ResultSet rsTest ;
+        String idExam = "";
+        //Blob img = null;
+        
+        try {
+            rsTest = stmt.executeQuery("SELECT * FROM PACS WHERE PACSID = '" + idPacs + "'");
+            while(rsTest.next()) {
+                idPacs = rsTest.getString(1);
+                idExam = rsTest.getString(2);
+                InputStream is = rsTest.getBinaryStream(3);
+                
+                Image im = ImageIO.read(is);
+                
+                p = new Pacs(idPacs, idExam, im);
+                
+                
+            }
+            rsTest.close() ;
+            stmt.close() ;
+        } catch (SQLException ex) {
+            Logger.getLogger(RequetesSQL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return p;
+        
+    }
 }

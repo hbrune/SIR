@@ -4,6 +4,7 @@
  */
 package Vue;
 
+import Controleur.LoginController;
 import Controleur.ManipAndPhController;
 import Modele.Examen;
 import Modele.Login;
@@ -186,9 +187,8 @@ public class CompleterExamen extends javax.swing.JFrame {
         reportText.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         jScrollPane1.setViewportView(reportText);
 
-        idExamLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        idExamLabel.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         idExamLabel.setText("jLabel5");
-        idExamLabel.setEnabled(false);
 
         saveExamButton.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 18)); // NOI18N
         saveExamButton.setText("Enregistrer l'examen");
@@ -204,14 +204,13 @@ public class CompleterExamen extends javax.swing.JFrame {
         success.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
         success.setForeground(new java.awt.Color(0, 204, 0));
 
-        idExam.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        idExam.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         idExam.setText("jLabel5");
-        idExam.setEnabled(false);
 
-        typeExam.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
+        typeExam.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         typeExam.setText("jLabel5");
-        typeExam.setEnabled(false);
 
+        dateExam.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         dateExam.setText("jLabel5");
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
@@ -339,23 +338,27 @@ public class CompleterExamen extends javax.swing.JFrame {
                                     .addComponent(adressLabel)))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(idExam)
-                                    .addComponent(jLabel17))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel19)
-                                    .addComponent(typeExam))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel16)
-                                    .addComponent(dateExam))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(idExamLabel))
-                                .addGap(50, 50, 50)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                                        .addComponent(jLabel17)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel19)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(jLabel16)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(51, 51, 51))
+                                    .addGroup(jPanel2Layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(idExam)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(typeExam)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(dateExam)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(idExamLabel)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jLabel21))))
@@ -431,23 +434,23 @@ public class CompleterExamen extends javax.swing.JFrame {
     }//GEN-LAST:event_saveExamButtonActionPerformed
 
     private void decoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_decoButtonActionPerformed
-        /*   user = null;
+        user = null;
         try {
             LoginController lc = new LoginController();
             this.dispose();
 
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Dashboard.class.getName()).log(Level.SEVERE, null, ex);
-        }*/
+        }
     }//GEN-LAST:event_decoButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        /*  try {
-            mc.displayDossierPatient(patient.getPatientId());
+        try {
+            mc.displayListExamToComplete();
         } catch (SQLException ex) {
             Logger.getLogger(AjouterExamen.class.getName()).log(Level.SEVERE, null, ex);
         }
-        this.dispose();*/
+        this.dispose();
     }//GEN-LAST:event_backButtonActionPerformed
 
     /**
