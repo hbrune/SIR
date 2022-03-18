@@ -61,6 +61,32 @@ public class Image
         }
     }
     
+    public void flipHorizontal() {        
+        for (int i = 0; i<height; i++) {
+            for (int j = 0; j<width/2; j++) {
+                Pixel tmp = canvas[i][j];
+                int index =width - j - 1;
+                canvas[i][j] = canvas[i][index];
+                canvas[i][index] = tmp;
+            }
+        }  
+    }
+    
+    /*public void rotateClockwise() {
+        System.out.println(this);
+        Pixel[][] imgRotation = new Pixel[this.width][this.height];
+        for (int i=0; i<width; i++)
+                {
+                    for (int j=0;  j<this.height; j++)
+                    {
+                        imgRotation[i][j] = canvas[j][i];
+                    }
+                }
+        canvas = imgRotation;
+        System.out.println(this);
+        
+    }*/
+    
     /*********************************************
      * 
      * DO NOT EDIT ANYTHING BELOW THIS COMMENT

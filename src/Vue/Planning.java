@@ -4,12 +4,20 @@
  */
 package Vue;
 
+import Controleur.LoginController;
+import Controleur.ManipAndPhController;
+import Modele.Login;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author saman
  */
 public class Planning extends javax.swing.JFrame {
-
+    ManipAndPhController mc;
+    Login user;
     /**
      * Creates new form Planning
      */
@@ -26,11 +34,6 @@ public class Planning extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        calendarAdapter1 = new com.mindfusion.scheduling.CalendarAdapter();
-        calendarAdapter2 = new com.mindfusion.scheduling.CalendarAdapter();
-        calendarAdapter3 = new com.mindfusion.scheduling.CalendarAdapter();
-        dateList1 = new com.mindfusion.scheduling.DateList();
-        itemTransferHandler1 = new com.mindfusion.scheduling.ItemTransferHandler();
         jPanel1 = new javax.swing.JPanel();
         backButton = new javax.swing.JButton();
         decoButton = new javax.swing.JButton();
@@ -42,15 +45,16 @@ public class Planning extends javax.swing.JFrame {
         jLabel29 = new javax.swing.JLabel();
         jLabel30 = new javax.swing.JLabel();
         addPatientButton6 = new javax.swing.JButton();
-        lastNameText3 = new javax.swing.JTextField();
         uidLabel3 = new javax.swing.JLabel();
         success3 = new javax.swing.JLabel();
-        codePostalText3 = new javax.swing.JTextField();
         jLabel31 = new javax.swing.JLabel();
-        adressText3 = new javax.swing.JTextField();
         jLabel32 = new javax.swing.JLabel();
-        ddnSelect3 = new com.toedter.calendar.JDateChooser();
         addPatientButton7 = new javax.swing.JButton();
+        jLabel33 = new javax.swing.JLabel();
+        jLabel34 = new javax.swing.JLabel();
+        jLabel35 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
+        jLabel37 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -133,35 +137,26 @@ public class Planning extends javax.swing.JFrame {
             }
         });
 
-        lastNameText3.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        lastNameText3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
         uidLabel3.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
 
         success3.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         success3.setForeground(new java.awt.Color(0, 204, 0));
 
-        codePostalText3.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        codePostalText3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-
         jLabel31.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 13)); // NOI18N
         jLabel31.setText("PH responsable : ");
-
-        adressText3.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        adressText3.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         jLabel32.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 13)); // NOI18N
         jLabel32.setText("Type d'examen : ");
 
-        addPatientButton7.setBackground(new java.awt.Color(209, 223, 238));
-        addPatientButton7.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
-        addPatientButton7.setText("Ajouter examen ");
-        addPatientButton7.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        addPatientButton7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addPatientButton1ActionPerformed(evt);
-            }
-        });
+        jLabel33.setText("jLabel33");
+
+        jLabel34.setText("jLabel33");
+
+        jLabel35.setText("jLabel33");
+
+        jLabel36.setText("jLabel33");
+
+        jLabel37.setText("jLabel33");
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -185,15 +180,17 @@ public class Planning extends javax.swing.JFrame {
                         .addGap(60, 60, 60)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel5Layout.createSequentialGroup()
-                                .addComponent(ddnSelect3, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(260, 264, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(adressText3, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lastNameText3, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(uidLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(codePostalText3, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGap(179, 179, 179))))))
+                                .addComponent(jLabel33)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(uidLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 167, Short.MAX_VALUE)
+                                .addGap(179, 179, 179))
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel34)
+                                    .addComponent(jLabel35)
+                                    .addComponent(jLabel37)
+                                    .addComponent(jLabel36))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addGap(267, 267, 267)
                 .addComponent(jLabel25)
@@ -233,26 +230,27 @@ public class Planning extends javax.swing.JFrame {
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout.createSequentialGroup()
                                 .addGap(6, 6, 6)
-                                .addComponent(jLabel26)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel26)
+                                    .addComponent(jLabel33))
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel27)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel27)
+                                    .addComponent(jLabel34))
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel29)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel29)
+                                    .addComponent(jLabel35))
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabel31))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel5Layout.createSequentialGroup()
-                                .addComponent(uidLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lastNameText3, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(13, 13, 13)
-                                .addComponent(ddnSelect3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(adressText3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel31)
+                                    .addComponent(jLabel36)))
+                            .addComponent(uidLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(codePostalText3, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel32))
-                        .addGap(91, 91, 91)
+                            .addComponent(jLabel32)
+                            .addComponent(jLabel37))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
                         .addComponent(addPatientButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(41, 41, 41))))
             .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -274,7 +272,7 @@ public class Planning extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 469, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
@@ -301,100 +299,35 @@ public class Planning extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_decoButtonActionPerformed
 
-    private void addPatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPatientButtonActionPerformed
+    private void addPatientButtonActionPerformed(java.awt.event.ActionEvent evt) {                                                 
 
         // daySelection.setSelectedIndex(0);
         // monthSelection.setSelectedIndex(0);
         // yearSelection.setSelectedIndex(yearSelection.getItemCount()-1);
-        }
-    }//GEN-LAST:event_addPatientButtonActionPerformed
-
-    private void addPatientButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPatientButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addPatientButton1ActionPerformed
-
-    
     }
 
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton addPatientButton;
-    private javax.swing.JButton addPatientButton1;
-    private javax.swing.JButton addPatientButton2;
-    private javax.swing.JButton addPatientButton3;
-    private javax.swing.JButton addPatientButton4;
-    private javax.swing.JButton addPatientButton5;
     private javax.swing.JButton addPatientButton6;
     private javax.swing.JButton addPatientButton7;
-    private javax.swing.JTextField adressText;
-    private javax.swing.JTextField adressText1;
-    private javax.swing.JTextField adressText2;
-    private javax.swing.JTextField adressText3;
     private javax.swing.JButton backButton;
-    private com.mindfusion.scheduling.CalendarAdapter calendarAdapter1;
-    private com.mindfusion.scheduling.CalendarAdapter calendarAdapter2;
-    private com.mindfusion.scheduling.CalendarAdapter calendarAdapter3;
-    private javax.swing.JTextField codePostalText;
-    private javax.swing.JTextField codePostalText1;
-    private javax.swing.JTextField codePostalText2;
-    private javax.swing.JTextField codePostalText3;
-    private com.mindfusion.scheduling.DateList dateList1;
-    private com.toedter.calendar.JDateChooser ddnSelect;
-    private com.toedter.calendar.JDateChooser ddnSelect1;
-    private com.toedter.calendar.JDateChooser ddnSelect2;
-    private com.toedter.calendar.JDateChooser ddnSelect3;
     private javax.swing.JButton decoButton;
-    private javax.swing.JLabel error;
-    private javax.swing.JLabel error1;
-    private javax.swing.JLabel error2;
-    private com.mindfusion.scheduling.ItemTransferHandler itemTransferHandler1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
-    private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel16;
-    private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
-    private javax.swing.JLabel jLabel21;
-    private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
-    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabel33;
+    private javax.swing.JLabel jLabel34;
+    private javax.swing.JLabel jLabel35;
+    private javax.swing.JLabel jLabel36;
+    private javax.swing.JLabel jLabel37;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
-    private javax.swing.JTextField lastNameText;
-    private javax.swing.JTextField lastNameText1;
-    private javax.swing.JTextField lastNameText2;
-    private javax.swing.JTextField lastNameText3;
-    private javax.swing.JLabel success;
-    private javax.swing.JLabel success1;
-    private javax.swing.JLabel success2;
     private javax.swing.JLabel success3;
-    private javax.swing.JLabel uidLabel;
-    private javax.swing.JLabel uidLabel1;
-    private javax.swing.JLabel uidLabel2;
     private javax.swing.JLabel uidLabel3;
     // End of variables declaration//GEN-END:variables
 }
