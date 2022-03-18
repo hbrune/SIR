@@ -4,6 +4,9 @@
  */
 package Modele;
 
+import static Securite.Encryption.hashPassword;
+import Securite.Salt;
+
 /**
  *
  * @author Brune
@@ -18,7 +21,8 @@ public class Login {
 
     public Login(String idLogin, String password, String lastName, String firstName, int function) {
         this.idLogin = idLogin;
-        this.password = password;
+        String key = hashPassword(password, Salt.salt).get();
+        this.password = key;
         this.lastName = lastName;
         this.firstName = firstName;
         this.function = function;
@@ -42,7 +46,8 @@ public class Login {
     }
 
     public void setPassword(String password) {
-        this.password = password;
+        String key = hashPassword(password, Salt.salt).get();
+        this.password = key;
     }
 
     public String getLastName() {

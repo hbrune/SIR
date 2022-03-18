@@ -3,6 +3,8 @@ package ConnexionBD;
 import Modele.Login;
 import Modele.Patient;
 import Modele.Examen;
+import Securite.Encryption;
+import Securite.Salt;
 import java.util.Date;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -89,6 +91,90 @@ base de donn�es
         stmt.close() ;
     }
     
+    public Login authentificationNew(String proId, String password) throws SQLException {
+        
+        // Get a statement from the connection
+        Statement stmt = conn.createStatement() ;
+        
+        // Execute the query
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM LOGIN where proId = '" + proId + "'") ;
+        
+        // Préparation des résultats
+        String id = "";
+        String key = "";
+        boolean pwd;
+        String nom = "";
+        String prenom = "";
+        int fonction;
+        Login user = null;
+        
+        
+        while(rsTest.next()) {
+            id = rsTest.getString(1);
+            key = rsTest.getString(2).trim();
+            pwd = Encryption.verifyPassword(password, key, Salt.salt);
+            System.out.println(password);
+            System.out.println(pwd);
+            nom = rsTest.getString(3);
+            prenom = rsTest.getString(4);
+            fonction = rsTest.getInt(5);
+            if(pwd == false) {
+                System.out.println("Votre login est incorrect...");
+            }
+            else{
+                user = new Login(id, password, nom, prenom, fonction);
+                System.out.println("Votre login est correct ! Bienvenue " + rsTest.getString(4));
+            }
+        }  
+        
+        // Close the result set, statement and the connection
+        rsTest.close() ;
+        stmt.close() ;
+        
+        return user;
+    }
+    
+    public Login authentificationNew2(String proId, String password) throws SQLException {
+        
+        // Get a statement from the connection
+        Statement stmt = conn.createStatement() ;
+        
+        // Execute the query
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM LOGIN where proId = '" + proId + "'") ;
+        
+        // Préparation des résultats
+        String id = "";
+        String key = "";
+        boolean pwd = false;
+        String nom = "";
+        String prenom = "";
+        int fonction;
+        Login user = null;
+        
+        try {
+            while(rsTest.next()) {
+                id = rsTest.getString(1);
+                key = rsTest.getString(2);
+                pwd = Encryption.verifyPassword(password, key, Salt.salt);
+                nom = rsTest.getString(3);
+                prenom = rsTest.getString(4);
+                fonction = rsTest.getInt(5);
+                user = new Login(id, password, nom, prenom, fonction);
+                System.out.println("Votre login est correct ! Bienvenue " + rsTest.getString(4));
+            }  
+        }
+        finally {
+            if(pwd == false) {
+                System.out.println("Votre login est incorrect...");
+            }
+        }
+        // Close the result set, statement and the connection
+        rsTest.close() ;
+        stmt.close() ;
+        
+        return user;
+    }
+        
     public Login authentification(String proId, String password) throws SQLException {
         
         // Get a statement from the connection
@@ -107,13 +193,12 @@ base de donn�es
         try {
             while(rsTest.next()) { 
                 id = rsTest.getString(1);
-                password = rsTest.getString(2);
+                pwd = rsTest.getString(2);
                 nom = rsTest.getString(3);
                 prenom = rsTest.getString(4);
                 fonction = rsTest.getInt(5);
                 System.out.println("Votre login est correct ! Bienvenue " + rsTest.getString(4));
-                user = new Login(id, pwd, nom, prenom, fonction);
-                
+                user = new Login(id, pwd, nom, prenom, fonction);    
             }
         }
         finally {

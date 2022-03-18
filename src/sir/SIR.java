@@ -10,6 +10,8 @@ import Controleur.LoginController;
 import Modele.Login;
 import Modele.Patient;
 import Modele.Examen;
+import Securite.Encryption;
+import Securite.Salt;
 import Vue.Authentification;
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -56,19 +58,25 @@ public class SIR extends JFrame {
         //String uid2 = UUID.randomUUID().toString().replace("-","").substring(0,10);
         //System.out.println(uid2);
         //Login manip = new Login(uid2, "roux", "Roux", "Paul", 3);
+        //String uid3 = UUID.randomUUID().toString().replace("-","").substring(0,10);
+        //System.out.println(uid3);
+        //Login manip2 = new Login(uid3, "password", "C", "Mélanie", 3);
         
         // id manip : bcfc00c134
         // id caitlin : 97740e707f
         //Login medecin = new Login(uid2, "mika", "morillon", "mikael", 1);
         // id mika : c6ecb6cb49
+        // id melanie : 5200de435d
         //rs.addUser(secretaire);
         //rs.addUser(medecin);
         //rs.addUser(manip);
+        //rs.addUser(manip2);
+        rs.authentificationNew("5200de435d", "password");
         
         Date ddn = new Date();
-        Patient p1 = new Patient("23","mimi","mimi","5 rue de la Rue","M",ddn);
+        Patient p1 = new Patient("23","mimi","mimi","5 rue de la Rue","H",ddn);
         //rs.addPatient(p1);
-        rs.verifierPatient(p1);
+        //rs.verifierPatient(p1);
         
         //rs.getPatientById("1");
         
