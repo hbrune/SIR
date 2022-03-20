@@ -72,20 +72,21 @@ public class Image
         }  
     }
     
-    /*public void rotateClockwise() {
-        System.out.println(this);
+    public void rotateClockwise() {
         Pixel[][] imgRotation = new Pixel[this.width][this.height];
-        for (int i=0; i<width; i++)
+        for (int i=0; i<height; i++)
                 {
-                    for (int j=0;  j<this.height; j++)
+                    for (int j=0;  j<this.width; j++)
                     {
-                        imgRotation[i][j] = canvas[j][i];
+                        imgRotation[j][this.height-i-1] = canvas[i][j];
                     }
                 }
-        canvas = imgRotation;
-        System.out.println(this);
+        int tmp = width;
+        width = height;
+        height = tmp;
+        canvas = imgRotation; 
         
-    }*/
+    }
     
     /*********************************************
      * 
