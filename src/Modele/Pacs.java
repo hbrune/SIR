@@ -4,8 +4,12 @@
  */
 package Modele;
 
+import java.awt.FlowLayout;
 import java.awt.Image;
 import java.io.InputStream;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 /**
  *
@@ -20,6 +24,19 @@ public class Pacs {
         this.idExam = idExam;
         this.idPacs = idPacs;
         this.image = image;
+    }
+    
+    public void displayImage() {        
+        ImageIcon icon1=new ImageIcon(image);
+        Image newImg = image.getScaledInstance(400, 400, Image.SCALE_SMOOTH);
+        ImageIcon im = new ImageIcon(image);
+        JFrame frame=new JFrame();
+        frame.setLayout(new FlowLayout());
+        frame.setSize(600,600);
+        JLabel lbl2=new JLabel();
+        lbl2.setIcon(im);
+        frame.add(lbl2);
+        frame.setVisible(true);
     }
     
     public String getIdExam() {

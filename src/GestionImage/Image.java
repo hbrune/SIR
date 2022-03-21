@@ -20,6 +20,12 @@ public class Image
     Pixel[][] canvas;
 
     
+    public Image(Pixel[][] img, int height, int width) {
+        canvas = img;
+        this.width = width;
+        this.height = height;
+    }
+    
     public Image(String filename) {
         this.open(filename);
     }

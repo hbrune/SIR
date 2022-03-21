@@ -48,17 +48,19 @@ public class AjouterImagesNumerisees extends javax.swing.JFrame {
     ArrayList<BufferedImage> imageToAdd;
     ArrayList<GestionImage.Image> imagesToAdd;
     DefaultListModel imagesModel;
-    
+    final int NB_IMG_MAX = 10;
+
     /**
      * Creates new form NewJFrame
      */
     public AjouterImagesNumerisees(ManipAndPhController mc, Login user, Examen e, Patient p, ArrayList<Image> images) {
         initComponents();
-        this.setSize(1000,600);
+        this.setSize(1000, 600);
         this.setLocationRelativeTo(null);
+        this.setResizable(false);
         this.mc = mc;
         this.user = user;
-        this.e= e;
+        this.e = e;
         this.p = p;
         this.imagesToAdd = images;
         editImageButton.setEnabled(false);
@@ -335,86 +337,84 @@ public class AjouterImagesNumerisees extends javax.swing.JFrame {
     }//GEN-LAST:event_decoButtonActionPerformed
 
     private void addImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addImageButtonActionPerformed
-        JFileChooser file = new JFileChooser();
-        file.setCurrentDirectory(new File(System.getProperty("user.home")));
-        //filter the files
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "pgm");
-        file.addChoosableFileFilter(filter);
-        file.removeChoosableFileFilter(file.getFileFilter());  //remove the default file filter
-        FileFilter fileFilter = new FileNameExtensionFilter("PGM file", "pgm");
+        if (imagesToAdd.size() < NB_IMG_MAX) {
+            JFileChooser file = new JFileChooser();
+            file.setCurrentDirectory(new File(System.getProperty("user.home")));
+            //filter the files : l'utilisateur peut choisir des .pgm uniquement
+            FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "pgm");
+            file.addChoosableFileFilter(filter);
+            file.removeChoosableFileFilter(file.getFileFilter());  //remove the default file filter
+            FileFilter fileFilter = new FileNameExtensionFilter("PGM file", "pgm");
 
-        int result = file.showSaveDialog(null);
-         //if the user click on save in Jfilechooser
-        if(result == JFileChooser.APPROVE_OPTION){
-            
-            File selectedFile = file.getSelectedFile();
-            String path = selectedFile.getAbsolutePath();
-            System.out.println(selectedFile);
-            FileInputStream in = null;
+            int result = file.showSaveDialog(null);
+            //if the user click on save in Jfilechooser
+            if (result == JFileChooser.APPROVE_OPTION) {
+
+                File selectedFile = file.getSelectedFile();
+                String path = selectedFile.getAbsolutePath();
+                System.out.println(selectedFile);
+                FileInputStream in = null;
+                try {
+                    Image im = new Image(path);
+                    ByteArrayOutputStream imJpg = im.toJpg();
+                    in = new FileInputStream(selectedFile);
+                    BufferedImage img = ImageIO.read(new File(path));
+                    mc.displayTraiterImage(im, this, true);
+                } catch (FileNotFoundException ex) {
+                    Logger.getLogger(AjouterImagesNumerisees.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (IOException ex) {
+                    Logger.getLogger(AjouterImagesNumerisees.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Vous ne pouvez ajouter que " + NB_IMG_MAX + " images à un examen.");
+        }
+
+    }//GEN-LAST:event_addImageButtonActionPerformed
+
+    private void addImagesToExamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addImagesToExamButtonActionPerformed
+        int response = JOptionPane.showConfirmDialog(this, "Voulez-vous ajouter ces images ? Vous ne pourrez plus les modifier.", "Confirmation", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+        //Si l'utilisateur confirme : on ajoute les images à l'examen et on revient à la visualisation de l'examen
+        if (response == JOptionPane.YES_OPTION) {
+            for (int i = 0; i < imagesToAdd.size(); i++) {
+
+                try {
+                    ByteArrayOutputStream myJpg = imagesToAdd.get(i).toJpg();
+                    ImageIcon icon = new ImageIcon(myJpg.toByteArray());
+                    BufferedImage bi = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
+                    Graphics graphics = bi.createGraphics();
+                    icon.paintIcon(null, graphics, 0, 0);
+                    graphics.dispose();
+                    System.out.println(e.getExamId());
+                    mc.addImage(bi, e.getExamId());
+
+                } catch (IOException ex) {
+                    Logger.getLogger(AjouterImagesNumerisees.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (SQLException ex) {
+                    Logger.getLogger(AjouterImagesNumerisees.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
             try {
-                Image im = new Image(path);
-                ByteArrayOutputStream imJpg = im.toJpg();
-                in = new FileInputStream(selectedFile);
-                BufferedImage img = ImageIO.read(new File(path));
-                mc.displayTraiterImage(im, this, true);
-            } catch (FileNotFoundException ex) {
+                System.out.println(e.getExamId());
+                mc.displayExam(e.getExamId());
+                this.dispose();
+            } catch (SQLException ex) {
                 Logger.getLogger(AjouterImagesNumerisees.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
                 Logger.getLogger(AjouterImagesNumerisees.class.getName()).log(Level.SEVERE, null, ex);
             }
-            
-          }
-           //if the user click on save in Jfilechooser
-
-
-          else if(result == JFileChooser.CANCEL_OPTION){
-              System.out.println("No File Select");
-          }  
-    }//GEN-LAST:event_addImageButtonActionPerformed
-
-    private void addImagesToExamButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addImagesToExamButtonActionPerformed
-        final JOptionPane confirmation = new JOptionPane(
-                "Voulez-vous ajouter ces images ? Vous ne pourrez plus les modifier.",
-                JOptionPane.QUESTION_MESSAGE,
-                JOptionPane.YES_NO_OPTION);
-        
-        for (int i = 0; i < imagesToAdd.size(); i++) {
-            
-            try {
-                ByteArrayOutputStream myJpg = imagesToAdd.get(i).toJpg();
-                ImageIcon icon = new ImageIcon(myJpg.toByteArray());
-                BufferedImage bi = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
-                Graphics graphics = bi.createGraphics();
-                icon.paintIcon(null, graphics, 0, 0);
-                graphics.dispose();
-                mc.addImage(bi, e.getExamId());
-                mc.displayExam(e.getExamId()); 
-                ImageIcon icon2 = new ImageIcon(bi);
-                this.dispose();              
-                
-                
-                // Enregistrer un nouveau fichier
-               /* File outputfile = new File("image.jpg");
-                ImageIO.write(bi, "jpg", outputfile);
-                FileInputStream in = new FileInputStream(outputfile);*/
-                
-            } catch (IOException ex) {
-             Logger.getLogger(AjouterImagesNumerisees.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (SQLException ex) {
-                Logger.getLogger(AjouterImagesNumerisees.class.getName()).log(Level.SEVERE, null, ex);
-            } 
         }
-        
-        
+        //Si l'utilisateur annule (response = NO) : on ne fait rien        
     }//GEN-LAST:event_addImagesToExamButtonActionPerformed
 
     private void editImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editImageButtonActionPerformed
         int row = ImagesList.getSelectedIndex();
         Image imgToEdit = imagesToAdd.get(row);
-        
-        if (imgToEdit != null){
+
+        if (imgToEdit != null) {
             try {
-            mc.displayTraiterImage(imgToEdit, this, false);
+                mc.displayTraiterImage(imgToEdit, this, false);
             } catch (IOException ex) {
                 Logger.getLogger(AjouterImagesNumerisees.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -422,34 +422,34 @@ public class AjouterImagesNumerisees extends javax.swing.JFrame {
     }//GEN-LAST:event_editImageButtonActionPerformed
 
     private void ImagesListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ImagesListMouseClicked
-        
+
     }//GEN-LAST:event_ImagesListMouseClicked
 
     private void ImagesListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ImagesListValueChanged
         editImageButton.setEnabled(true);
     }//GEN-LAST:event_ImagesListValueChanged
 
-    
-    public void updateImages() {        
+    public void updateImages() {
         this.imagesModel = new DefaultListModel();
-        
+
         ImagesList.setModel(imagesModel);
         for (int i = 0; i < imagesToAdd.size(); i++) {
-            String num = String.valueOf(i+1);
+            String num = String.valueOf(i + 1);
 
             imagesModel.add(i, "Image " + num);
         }
     }
-    
+
     public void addImage(Image img) {
         imagesToAdd.add(img);
         this.updateImages();
     }
-    
+
     public void editImage(Image img) {
         imagesToAdd.set(ImagesList.getSelectedIndex(), img);
         this.updateImages();
     }
+
     /**
      * @param args the command line arguments
      */

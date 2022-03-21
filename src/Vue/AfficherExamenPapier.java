@@ -32,6 +32,7 @@ public class AfficherExamenPapier extends javax.swing.JFrame {
         initComponents();
         this.setSize(1000,600);
         this.setLocationRelativeTo(null);
+        this.setResizable(false);
         this.user = user;
         this.mc = mc;
         this.e = e;

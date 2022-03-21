@@ -347,20 +347,31 @@ base de donn�es
         stmt.close() ;
     }
 
-    public void recherchePatientByDdn(String critere, String recherche) throws SQLException {
-        
-        // Get a statement from the connection
-        Statement stmt = dap.getConn().createStatement() ;
-        
-        // Execute the query
-        ResultSet rsTest = stmt.executeQuery("SELECT * FROM PATIENT where birthDate = '" + recherche + "'") ;
+    public ArrayList<Patient> recherchePatientByDdn(Date ddn) throws SQLException {
+        ArrayList<Patient> patients = new ArrayList<>();
+        Statement stmt = dap.getConn().createStatement();
+        java.sql.Date ddnSql = new java.sql.Date(ddn.getTime());
+        System.out.println(ddnSql);
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM PATIENT where birthDate = TO_DATE('" + ddnSql + "', 'YYYY-MM-DD')") ;
         while(rsTest.next()) { 
-            System.out.println(rsTest);
-            System.out.println("Id du patient : " + rsTest.getString(1));
+            Patient patCourant = null;
+            String id = rsTest.getString(1);
+            String name = rsTest.getString(2);
+            String surname = rsTest.getString(3);
+            String adress = rsTest.getString(4);
+            String gender = rsTest.getString(5);
+            Date date = rsTest.getDate(6);
+            System.out.println(date);
+            patCourant = new Patient(id, name, surname, adress, gender, ddn);
+            //Ajouter le patient à la liste
+            if(patCourant != null) {
+                patients.add(patCourant);   
+            }
         }
         // Close the result set, statement and the connection
         rsTest.close() ;
         stmt.close() ;
+        return patients;
     }
     
     // USERS
@@ -690,17 +701,17 @@ base de donn�es
         
         // Execute the query
         ResultSet rsTest = stmt.executeQuery("SELECT * FROM PACS WHERE EXAMID = '" + idExam + "'") ;
+        System.out.println(rsTest.getRow());
         String idPacs = "";
         InputStream is = null;
         
         while(rsTest.next()) {
-            if(idExam.equals(rsTest.getString(2).trim())) {
-                idPacs = rsTest.getString(1);
-                is = rsTest.getBlob(3).getBinaryStream();
-                Image img = ImageIO.read(is);
-                p = new Pacs(idPacs, idExam, img);
-                imagesE.add(p);
-            }
+            idPacs = rsTest.getString(1);
+            System.out.println(idPacs);
+            is = rsTest.getBlob(3).getBinaryStream();
+            Image img = ImageIO.read(is);
+            p = new Pacs(idPacs, idExam, img);
+            imagesE.add(p);
         }        
         // Close the result set, statement and the connection
         rsTest.close() ;

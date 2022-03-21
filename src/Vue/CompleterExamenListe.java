@@ -32,16 +32,11 @@ public class CompleterExamenListe extends javax.swing.JFrame {
 
     public CompleterExamenListe(ManipAndPhController mc, Login user, ArrayList<Examen> exams, ArrayList<Patient> patients) {
         initComponents();
-         ButtonGroup G = new ButtonGroup();
-        G.add(JR1);
-        G.add(JR2);
-        G.add(JR3);
-        JR1.setSelected(true);G.add(JR1);
-      ;
-
+        this.setSize(1000, 600);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
         this.user = user;
         this.mc = mc;
-        this.setLocationRelativeTo(null);
         this.updateExams(exams, patients);
         completeButton.setEnabled(false);
     }
@@ -61,10 +56,6 @@ public class CompleterExamenListe extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         JExam = new javax.swing.JTable();
         jLabel8 = new javax.swing.JLabel();
-        JR3 = new javax.swing.JRadioButton();
-        jLabel5 = new javax.swing.JLabel();
-        JR1 = new javax.swing.JRadioButton();
-        JR2 = new javax.swing.JRadioButton();
         jPanel4 = new javax.swing.JPanel();
         backButton2 = new javax.swing.JButton();
         decoButton = new javax.swing.JButton();
@@ -128,48 +119,21 @@ public class CompleterExamenListe extends javax.swing.JFrame {
         jLabel8.setBackground(new java.awt.Color(255, 255, 255));
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_treatment_40px_1.png"))); // NOI18N
 
-        JR3.setText("Scanner");
-
-        jLabel5.setText("Recherche par type d'examen : ");
-
-        JR1.setText("Radio");
-        JR1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                JR1ActionPerformed(evt);
-            }
-        });
-
-        JR2.setText("IRM");
-
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(completeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addComponent(jLabel8)
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel15)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 10, Short.MAX_VALUE)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 944, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel5)
-                .addGap(18, 18, 18)
-                .addComponent(JR1)
-                .addGap(18, 18, 18)
-                .addComponent(JR2)
-                .addGap(18, 18, 18)
-                .addComponent(JR3)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(21, 21, 21)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(completeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 924, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(jLabel8)
+                            .addGap(18, 18, 18)
+                            .addComponent(jLabel15))))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -181,16 +145,10 @@ public class CompleterExamenListe extends javax.swing.JFrame {
                         .addGap(13, 13, 13)
                         .addComponent(jLabel15)))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(JR1)
-                    .addComponent(JR2)
-                    .addComponent(JR3))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 6, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(completeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(117, 117, 117))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 204, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(completeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(135, Short.MAX_VALUE))
         );
 
         jPanel4.setBackground(new java.awt.Color(153, 204, 255));
@@ -278,11 +236,7 @@ public class CompleterExamenListe extends javax.swing.JFrame {
     }//GEN-LAST:event_completeButtonActionPerformed
 
     private void backButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButton2ActionPerformed
-        try {
-            mc.displayRecherchePatient();
-        } catch (SQLException ex) {
-            Logger.getLogger(DossierPatient.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        mc.displayDashboard();
         this.dispose();
     }//GEN-LAST:event_backButton2ActionPerformed
 
@@ -300,10 +254,6 @@ public class CompleterExamenListe extends javax.swing.JFrame {
     private void JExamMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JExamMouseClicked
        completeButton.setEnabled(true);
     }//GEN-LAST:event_JExamMouseClicked
-
-    private void JR1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_JR1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_JR1ActionPerformed
 
     public void updateExams(ArrayList<Examen> exams, ArrayList<Patient> patients) {
         String col[] = {"N° examen","Patient","Date", "Type"};
@@ -366,14 +316,10 @@ public class CompleterExamenListe extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTable JExam;
-    private javax.swing.JRadioButton JR1;
-    private javax.swing.JRadioButton JR2;
-    private javax.swing.JRadioButton JR3;
     private javax.swing.JButton backButton2;
     private javax.swing.JButton completeButton;
     private javax.swing.JButton decoButton;
     private javax.swing.JLabel jLabel15;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;

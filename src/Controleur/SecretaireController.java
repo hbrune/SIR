@@ -81,20 +81,34 @@ public class SecretaireController extends UserController {
         
     // RECHERCHE ET AJOUT EN BD
     
-    public void recherchePatient(String critere, String recherche) throws SQLException {
+    public ArrayList<Patient> afficherListePatient() throws SQLException {
+        ArrayList<Patient> liste = new ArrayList<>();
+        liste = sql.getPatients();
+        return liste;
+    }
     
-        //recherchePatientByCriteria(critere, recherche);
+    public ArrayList<Patient> recherchePatient(String critere, String recherche) throws SQLException {
+        ArrayList<Patient> patients = null;
+        System.out.println(critere +" = " + recherche);
         if (recherche.equals("recherche selon le critère selectionné") || recherche.equals("")) {
             error = "Veuillez entrer une recherche";
         } else {
             error = "";
-            ArrayList<Patient> patients = sql.getPatientByCriteria(critere, recherche.toLowerCase());
-            rp.updatePatients(patients);
-            
-            System.out.println(patients.size());
-            
+            patients = sql.getPatientByCriteria(critere, recherche);
+                        
         }
-       
+        return patients;
+    }
+    
+    
+    public ArrayList<Patient> recherchePatient(Date ddn) {
+        ArrayList<Patient> patients = null;
+        try {
+            patients = sql.recherchePatientByDdn(ddn);
+        } catch (SQLException ex) {
+            error = ex.getMessage();
+        }
+        return patients;
     }
     
     public void ajouterPatient(Patient p) throws SQLException {
@@ -117,11 +131,7 @@ public class SecretaireController extends UserController {
             }
         }
     }
-    
-    public void recherchePatientFromDdn(Date ddn) {
         
-        //Conversion date en date SQL > '05-JAN-2003
-        //recherchePatientByDdn(recherche);     
-           
-    }    
+
+    
 }

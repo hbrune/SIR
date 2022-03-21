@@ -5,6 +5,7 @@
 package Vue;
 
 import Controleur.ManipAndPhController;
+import GestionImage.Pixel;
 import Modele.Examen;
 import Modele.Login;
 import Modele.Patient;
@@ -14,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
+import static java.lang.Math.abs;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -33,6 +35,7 @@ public class TraitementImage extends javax.swing.JFrame {
     Patient p;
     Examen e;
     GestionImage.Image img;
+    GestionImage.Image oldImg;
     AjouterImagesNumerisees ain;
     BufferedImage bi;
     //Si status = true, 1er ajout
@@ -56,12 +59,23 @@ public class TraitementImage extends javax.swing.JFrame {
         this.updateJpg();
         if (status == false) {
             addImageButton.setText("Enregistrer les modifications");
-
         }
+        oldImg = this.img;
    
     }
 
     public void updateJpg() throws IOException {
+        ByteArrayOutputStream myJpg = img.toJpg();
+        ImageIcon icon = new ImageIcon(myJpg.toByteArray());
+        imgLabel.setIcon(ResizeImage(icon));
+
+        bi = new BufferedImage(icon.getIconWidth(), icon.getIconHeight(), BufferedImage.TYPE_INT_RGB);
+        Graphics graphics = bi.createGraphics();
+        icon.paintIcon(null, graphics, 0, 0);
+        graphics.dispose();
+    }
+    
+    public void updateJpg(GestionImage.Image img) throws IOException {
         ByteArrayOutputStream myJpg = img.toJpg();
         ImageIcon icon = new ImageIcon(myJpg.toByteArray());
         imgLabel.setIcon(ResizeImage(icon));
@@ -163,10 +177,11 @@ public class TraitementImage extends javax.swing.JFrame {
 
         JS1.setBackground(new java.awt.Color(255, 255, 255));
         JS1.setForeground(new java.awt.Color(153, 204, 255));
-        JS1.setMajorTickSpacing(25);
+        JS1.setMajorTickSpacing(50);
+        JS1.setMinimum(-100);
         JS1.setPaintLabels(true);
-        JS1.setPaintTicks(true);
         JS1.setToolTipText("Augmenter ou diminuer le niveau de contraste");
+        JS1.setValue(0);
         JS1.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 JS1StateChanged(evt);
@@ -326,6 +341,17 @@ public class TraitementImage extends javax.swing.JFrame {
 
     private void JS1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_JS1StateChanged
         double value = JS1.getValue();
+        if (value < 0) {
+            value = abs(value/100);
+        } else if (value > 0) {
+            value = (value/100) + 1;
+        } else {
+            value = 1;
+        }        
+        GestionImage.Image tmp = oldImg;
+        oldImg.logTransform(value);
+        img = oldImg;
+        oldImg = tmp;
         try {
             updateJpg();
         } catch (IOException ex) {

@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -111,11 +112,16 @@ public class ManipAndPhController extends UserController {
         Examen e = sql.getExamenById(examId);
         Patient p = sql.getPatientFromExam(e.getExamId());
         Login reportMedecin = sql.getProById(e.getProIdReport());
-        System.out.println(reportMedecin.getFirstName());
         if (sql.isExamenDigital(e)) {
-            ArrayList<Pacs> images = sql.getImagesFromExam(examId);
-            ae = new AfficherExamen(this, user, e, p, reportMedecin, images);
-            ae.setVisible(true);
+            try{
+                ArrayList<Pacs> images = sql.getImagesFromExam(e.getExamId());
+                System.out.println(images.size());
+                ae = new AfficherExamen(this, user, e, p, reportMedecin, images);
+                ae.setVisible(true);
+            } catch(SQLException error) {
+                System.out.println(error.getMessage());
+            }
+            
         } else {
             aep = new AfficherExamenPapier(this, user, e, p, reportMedecin);
             aep.setVisible(true);
@@ -148,7 +154,17 @@ public class ManipAndPhController extends UserController {
         }
         return patients;
     }
-    
+      
+
+    public ArrayList<Patient> recherchePatient(Date ddn) {
+        ArrayList<Patient> patients = null;
+        try {
+            patients = sql.recherchePatientByDdn(ddn);
+        } catch (SQLException ex) {
+            error = ex.getMessage();
+        }
+        return patients;
+    }
     public void ajouterExam(Examen e) throws SQLException {
         try {
             sql.addExamen(e);
@@ -203,6 +219,10 @@ public class ManipAndPhController extends UserController {
     public void addImage(Image in, String idExam) throws SQLException, IOException {
         String uid = UUID.randomUUID().toString().replace("-","").substring(0,10);
         Pacs pacs = new Pacs(uid, idExam, in );
-        sql.addImageToPacs(in, pacs);
-    }     
+        try {
+            sql.addImageToPacs(in, pacs);
+        } catch (SQLException ex) {
+                Logger.getLogger(ManipAndPhController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }   
 }

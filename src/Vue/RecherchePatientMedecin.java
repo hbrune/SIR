@@ -34,15 +34,20 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
  public RecherchePatientMedecin(Login user, ManipAndPhController mc,  ArrayList<Patient> patients) {
      
         initComponents();
-        Toolkit toolkit = getToolkit();
-        Dimension size = toolkit.getScreenSize();
-        setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
-    
-        
+        this.setSize(1000, 600);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
         this.mc = mc;
         this.user = user;
         this.updatePatients(patients);
         accesDmrButton.setEnabled(false);
+        ddnSelect.setVisible(false);
+        SexGroup.add(HommeRB);
+        SexGroup.add(FemmeRB);
+        SexGroup.add(AutreRB);
+        FemmeRB.setVisible(false);
+        HommeRB.setVisible(false);
+        AutreRB.setVisible(false);
         
     }
 
@@ -55,6 +60,7 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        SexGroup = new javax.swing.ButtonGroup();
         jPanel2 = new javax.swing.JPanel();
         critere = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -64,6 +70,10 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         rechercheButton = new javax.swing.JButton();
         error = new javax.swing.JLabel();
         accesDmrButton = new javax.swing.JButton();
+        ddnSelect = new com.toedter.calendar.JDateChooser();
+        FemmeRB = new javax.swing.JRadioButton();
+        HommeRB = new javax.swing.JRadioButton();
+        AutreRB = new javax.swing.JRadioButton();
         jPanel1 = new javax.swing.JPanel();
         backButton = new javax.swing.JButton();
         decoButton = new javax.swing.JButton();
@@ -79,6 +89,16 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         critere.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tous les patients", "Identifiant unique", "Nom", "Prénom", "Date de naissance", "Sexe" }));
         critere.setToolTipText("choisissez un critère de recherche");
         critere.setBorder(null);
+        critere.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                critereActionPerformed(evt);
+            }
+        });
+        critere.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                criterePropertyChange(evt);
+            }
+        });
 
         JRecherche.setBackground(new java.awt.Color(228, 237, 246));
         JRecherche.setModel(new javax.swing.table.DefaultTableModel(
@@ -163,50 +183,94 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
             }
         });
 
+        FemmeRB.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
+        FemmeRB.setText("Femme");
+        FemmeRB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FemmeRBActionPerformed(evt);
+            }
+        });
+
+        HommeRB.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
+        HommeRB.setText("Homme");
+        HommeRB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HommeRBActionPerformed(evt);
+            }
+        });
+
+        AutreRB.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
+        AutreRB.setText("Autre");
+        AutreRB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AutreRBActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(accesDmrButton, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel2Layout.createSequentialGroup()
-                        .addGap(31, 31, 31)
+                .addGap(43, 43, 43)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 944, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(critere, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(41, 41, 41)
+                                .addComponent(rechercheButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addComponent(jLabel1)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(critere, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(rechercheText, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(rechercheText, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(ddnSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(FemmeRB)
                                 .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(rechercheButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(25, Short.MAX_VALUE))
+                                .addComponent(HommeRB)
+                                .addGap(18, 18, 18)
+                                .addComponent(AutreRB)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(213, 213, 213))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(accesDmrButton, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 901, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addGap(5, 5, 5)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(critere, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(error))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(rechercheButton)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(rechercheText)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(accesDmrButton, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(44, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(58, 58, 58)
+                                .addComponent(error))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(29, 29, 29)
+                                .addComponent(jLabel1)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(critere, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rechercheButton))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(rechercheText, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(ddnSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(FemmeRB)
+                                .addComponent(HommeRB)
+                                .addComponent(AutreRB)))
+                        .addGap(0, 20, Short.MAX_VALUE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(accesDmrButton, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(17, 17, 17)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 179, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(666, 666, 666))
         );
 
         jPanel1.setBackground(new java.awt.Color(153, 204, 255));
@@ -240,32 +304,30 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                    .addContainerGap(820, Short.MAX_VALUE)
-                    .addComponent(decoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGap(22, 22, 22)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 663, Short.MAX_VALUE)
+                .addComponent(decoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(backButton, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(decoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(29, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel1Layout.createSequentialGroup()
-                    .addContainerGap()
-                    .addComponent(decoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(23, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGap(0, 0, 0))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -294,8 +356,23 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_decoButtonActionPerformed
 
+    private void accesDmrButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accesDmrButtonActionPerformed
+        int row = JRecherche.getSelectedRow();
+        String idPatient = JRecherche.getModel().getValueAt(row, 0).toString();
+
+        if (idPatient != null){
+            try {
+                mc.displayDossierPatient(idPatient);
+            } catch (SQLException ex) {
+                Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        this.dispose();
+    }//GEN-LAST:event_accesDmrButtonActionPerformed
+
     private void rechercheButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rechercheButtonActionPerformed
         String critereToFind = "";
+        Date ddn = null;
         String recherche = rechercheText.getText().toLowerCase();
         ArrayList<Patient> patients = null;
         switch(String.valueOf(critere.getSelectedItem())) {
@@ -311,59 +388,108 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
             case ("Nom"):
                 critereToFind = "lastNameP";
                 break;
-            case ("Sexe"):
-                critereToFind = "gender";
-                recherche = rechercheText.getText().toUpperCase();
-                break;
             case("Date de naissance"):
                 critereToFind = "birthDate";
-                break;   
+                ddn = ddnSelect.getDate();
+                break;
         }
         if(critereToFind.equals("birthDate")) {
-            //TODO : recherche avec date
+            patients = mc.recherchePatient(ddn);
         } else if (critereToFind.equals("all")) {
-            try {            
+            try {
                 patients = mc.afficherListePatient();
             } catch (SQLException ex) {
                 Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
             }
         }else {
-           try {
-               patients = mc.recherchePatient(critereToFind, recherche);
-           } catch (SQLException ex) {
-               Logger.getLogger(RecherchePatientSecretaire.class.getName()).log(Level.SEVERE, null, ex);
-           }
+            try {
+                patients = mc.recherchePatient(critereToFind, recherche);
+            } catch (SQLException ex) {
+                Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         this.updatePatients(patients);
         error.setText(mc.getError());
     }//GEN-LAST:event_rechercheButtonActionPerformed
 
     private void rechercheTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rechercheTextActionPerformed
-        
+
     }//GEN-LAST:event_rechercheTextActionPerformed
 
     private void rechercheTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rechercheTextMouseClicked
         rechercheText.setText("");
     }//GEN-LAST:event_rechercheTextMouseClicked
 
-    private void accesDmrButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_accesDmrButtonActionPerformed
-        int row = JRecherche.getSelectedRow();
-        String idPatient = JRecherche.getModel().getValueAt(row, 0).toString();
-        
-        if (idPatient != null){
-            try {
-            mc.displayDossierPatient(idPatient);
-            } catch (SQLException ex) {
-            Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        this.dispose();
-    }//GEN-LAST:event_accesDmrButtonActionPerformed
-
     private void JRechercheMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_JRechercheMouseClicked
         accesDmrButton.setEnabled(true);
     }//GEN-LAST:event_JRechercheMouseClicked
 
+    private void criterePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_criterePropertyChange
+
+    }//GEN-LAST:event_criterePropertyChange
+
+    private void critereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_critereActionPerformed
+        if(critere.getSelectedIndex() == 4) {
+            rechercheButton.setVisible(true);
+            ddnSelect.setVisible(true);
+            rechercheText.setVisible(false);
+            FemmeRB.setVisible(false);
+            HommeRB.setVisible(false);
+            AutreRB.setVisible(false);
+        } else if (critere.getSelectedIndex() == 5) {   
+            rechercheButton.setVisible(false);
+            rechercheText.setVisible(false);
+            ddnSelect.setVisible(false);
+            FemmeRB.setVisible(true);
+            HommeRB.setVisible(true);
+            AutreRB.setVisible(true);
+            FemmeRB.setSelected(true);
+            try {
+                ArrayList<Patient> patients = mc.recherchePatient("gender", "F");
+                updatePatients(patients);
+            } catch (SQLException ex) {
+                Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+         }else {
+            rechercheButton.setVisible(true);
+            ddnSelect.setVisible(false);
+            rechercheText.setVisible(true);
+            FemmeRB.setVisible(false);
+            HommeRB.setVisible(false);
+            AutreRB.setVisible(false);
+        }
+    }//GEN-LAST:event_critereActionPerformed
+
+    private void FemmeRBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FemmeRBActionPerformed
+        try {
+            ArrayList<Patient> patients = mc.recherchePatient("gender", "F");
+            updatePatients(patients);
+        } catch (SQLException ex) {
+            Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    
+    }//GEN-LAST:event_FemmeRBActionPerformed
+
+    private void HommeRBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HommeRBActionPerformed
+        try {
+                ArrayList<Patient> patients = mc.recherchePatient("gender", "H");
+                updatePatients(patients);
+            } catch (SQLException ex) {
+                Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }//GEN-LAST:event_HommeRBActionPerformed
+
+    private void AutreRBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutreRBActionPerformed
+        try {
+                ArrayList<Patient> patients = mc.recherchePatient("gender", "A");
+                updatePatients(patients);
+            } catch (SQLException ex) {
+                Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }//GEN-LAST:event_AutreRBActionPerformed
+    
+    
     public void updatePatients(ArrayList<Patient> patients) {
         String col[] = {"Identifiant","Nom","Prénom", "Adresse", "Date de naissance", "Sexe"};
 
@@ -379,7 +505,6 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
             Date bod = patients.get(i).getDdn();
             String gender = patients.get(i).getGender();
             Object[] data = {id , lastName, firstName, adress, bod, gender};
-
             patientsModel.addRow(data);
         }
     }
@@ -418,10 +543,15 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButton AutreRB;
+    private javax.swing.JRadioButton FemmeRB;
+    private javax.swing.JRadioButton HommeRB;
     private javax.swing.JTable JRecherche;
+    private javax.swing.ButtonGroup SexGroup;
     private javax.swing.JButton accesDmrButton;
     private javax.swing.JButton backButton;
     private javax.swing.JComboBox<String> critere;
+    private com.toedter.calendar.JDateChooser ddnSelect;
     private javax.swing.JButton decoButton;
     private javax.swing.JLabel error;
     private javax.swing.JLabel jLabel1;

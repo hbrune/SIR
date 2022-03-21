@@ -24,10 +24,9 @@ public class Authentification extends javax.swing.JFrame {
      */
     public Authentification(LoginController controller) {
         initComponents();
-        Toolkit toolkit = getToolkit();
-        Dimension size = toolkit.getScreenSize();
-        setLocation(size.width / 2 - getWidth() / 2, size.height / 2 - getHeight() / 2);
+        this.setSize(1000, 600);
         this.setLocationRelativeTo(null);
+        this.setResizable(false);
         this.controller = controller;
 
     }

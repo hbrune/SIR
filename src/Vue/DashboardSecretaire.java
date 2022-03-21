@@ -29,10 +29,10 @@ public class DashboardSecretaire extends javax.swing.JFrame {
      */
   public DashboardSecretaire(Modele.Login user, Controleur.SecretaireController sc) {
         initComponents();
-        this.user= user;
-        Toolkit toolkit = getToolkit();
-        Dimension size= toolkit.getScreenSize();
-        setLocation(size.width/2 - getWidth()/2 ,  size.height/2-getHeight()/2) ;
+        this.user= user;        
+        this.setSize(1000, 600);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
         //showDate();
         showTime();
         firstName1.setText(user.getFirstName().substring(0, 1).toUpperCase() + user.getFirstName().substring(1).trim());
@@ -153,7 +153,7 @@ public class DashboardSecretaire extends javax.swing.JFrame {
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_baby_calendar_64px.png"))); // NOI18N
 
         recherchePatientButton.setBackground(new java.awt.Color(255, 255, 255));
-        recherchePatientButton.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 14)); // NOI18N
+        recherchePatientButton.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
         recherchePatientButton.setText("Rechercher un patient");
         recherchePatientButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         recherchePatientButton.addActionListener(new java.awt.event.ActionListener() {
@@ -163,7 +163,7 @@ public class DashboardSecretaire extends javax.swing.JFrame {
         });
 
         ajoutPatientButton.setBackground(new java.awt.Color(255, 255, 255));
-        ajoutPatientButton.setFont(new java.awt.Font("Yu Gothic UI Light", 0, 14)); // NOI18N
+        ajoutPatientButton.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
         ajoutPatientButton.setText("Ajouter un patient");
         ajoutPatientButton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         ajoutPatientButton.addActionListener(new java.awt.event.ActionListener() {
@@ -202,19 +202,22 @@ public class DashboardSecretaire extends javax.swing.JFrame {
                 .addGap(49, 49, 49)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(48, 48, 48)
+                        .addGap(81, 81, 81)
                         .addComponent(jLabel9)
-                        .addGap(143, 143, 143)
+                        .addGap(163, 163, 163)
                         .addComponent(jLabel10))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(firstName2))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(ajoutPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(45, 45, 45)
-                        .addComponent(recherchePatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 263, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(ajoutPatientButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel7, javax.swing.GroupLayout.DEFAULT_SIZE, 183, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(firstName2))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addGap(33, 33, 33)
+                                .addComponent(recherchePatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 193, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addComponent(jLabel13)
@@ -242,15 +245,15 @@ public class DashboardSecretaire extends javax.swing.JFrame {
                             .addComponent(jLabel9)
                             .addComponent(jLabel10))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(recherchePatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(ajoutPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(ajoutPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(recherchePatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(305, Short.MAX_VALUE))
+                .addContainerGap(311, Short.MAX_VALUE))
         );
 
         timeLab.getAccessibleContext().setAccessibleDescription("Heure");

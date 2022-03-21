@@ -41,7 +41,9 @@ public class Pixel
     }
     
     public void logIntensity(double coeff) {
-        value = (int) ((int) coeff * Math.log(value+1));
+        value = (int) (coeff * Math.log(value+1)); 
+        
+        
     }
     
     public void powerLawIntensity(double coeff, double gamma) {

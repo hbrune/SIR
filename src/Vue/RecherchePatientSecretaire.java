@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ButtonGroup;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
@@ -29,17 +30,27 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
     Controleur.SecretaireController sc;
     Modele.Login user;
     DefaultTableModel patientsModel;
+    ArrayList<Patient> patients;
     /**
      * Creates new form Recherche_Patient
      */
     public RecherchePatientSecretaire(Modele.Login user, Controleur.SecretaireController sc, ArrayList<Patient> patients) {
         initComponents();
-         Toolkit toolkit = getToolkit();
-        Dimension size= toolkit.getScreenSize();
-        setLocation(size.width/2 - getWidth()/2 ,  size.height/2-getHeight()/2) ;
+        this.setSize(1000, 600);
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
         this.sc = sc;
         this.user = user;
-        this.updatePatients(patients);
+        this.patients = patients;
+        this.updatePatients();
+        ddnSelect.setVisible(false);
+        SexGroup.add(HommeRB);
+        SexGroup.add(FemmeRB);
+        SexGroup.add(AutreRB);
+        FemmeRB.setSelected(true);
+        FemmeRB.setVisible(false);
+        HommeRB.setVisible(false);
+        AutreRB.setVisible(false);
         
     }
 
@@ -56,6 +67,7 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
         jRadioButtonMenuItem1 = new javax.swing.JRadioButtonMenuItem();
         jRadioButtonMenuItem2 = new javax.swing.JRadioButtonMenuItem();
         jDialog1 = new javax.swing.JDialog();
+        SexGroup = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         backButton = new javax.swing.JButton();
         decoButton = new javax.swing.JButton();
@@ -68,6 +80,10 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
         ajoutPatientButton = new javax.swing.JButton();
         rechercheButton = new javax.swing.JButton();
         error = new javax.swing.JLabel();
+        ddnSelect = new com.toedter.calendar.JDateChooser();
+        FemmeRB = new javax.swing.JRadioButton();
+        HommeRB = new javax.swing.JRadioButton();
+        AutreRB = new javax.swing.JRadioButton();
 
         jCheckBoxMenuItem1.setSelected(true);
         jCheckBoxMenuItem1.setText("jCheckBoxMenuItem1");
@@ -149,9 +165,14 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
 
         critere.setEditable(true);
         critere.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
-        critere.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "ID Patient", "Nom", "Prénom", "Date de naissance", "Sexe" }));
+        critere.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tous les patients", "Identifiant unique", "Nom", "Prénom", "Date de naissance", "Sexe" }));
         critere.setToolTipText("choisissez un critère de recherche");
         critere.setBorder(null);
+        critere.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                critereActionPerformed(evt);
+            }
+        });
 
         JRecherche.setBackground(new java.awt.Color(228, 237, 246));
         JRecherche.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 13)); // NOI18N
@@ -231,30 +252,60 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
         error.setFont(new java.awt.Font("Yu Gothic UI", 0, 13)); // NOI18N
         error.setForeground(new java.awt.Color(255, 51, 0));
 
+        FemmeRB.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
+        FemmeRB.setText("Femme");
+        FemmeRB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                FemmeRBActionPerformed(evt);
+            }
+        });
+
+        HommeRB.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
+        HommeRB.setText("Homme");
+        HommeRB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                HommeRBActionPerformed(evt);
+            }
+        });
+
+        AutreRB.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
+        AutreRB.setText("Autre");
+        AutreRB.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                AutreRBActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(31, 31, 31)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 20, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 941, Short.MAX_VALUE)
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(critere, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(rechercheText, javax.swing.GroupLayout.PREFERRED_SIZE, 245, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(ajoutPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(rechercheButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
+                    .addComponent(jLabel1)
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 952, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(critere, javax.swing.GroupLayout.PREFERRED_SIZE, 376, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(rechercheButton, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanel2Layout.createSequentialGroup()
+                                    .addComponent(rechercheText, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(ddnSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(FemmeRB)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(HommeRB)
+                                    .addGap(18, 18, 18)
+                                    .addComponent(AutreRB)))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(error, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(ajoutPatientButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addGap(28, 28, 28))
         );
         jPanel2Layout.setVerticalGroup(
@@ -262,34 +313,45 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(ajoutPatientButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(critere, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(error)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(rechercheText, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(rechercheButton))
-                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(error)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(ajoutPatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(critere, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(rechercheButton))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(rechercheText, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(FemmeRB)
+                                    .addComponent(HommeRB)
+                                    .addComponent(AutreRB))
+                                .addComponent(ddnSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(28, 28, 28)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(174, Short.MAX_VALUE))
+                .addContainerGap(202, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -312,9 +374,14 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
     }//GEN-LAST:event_decoButtonActionPerformed
 
     private void rechercheButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rechercheButtonActionPerformed
-       String critereToFind = "";
+        String critereToFind = "";
+        Date ddn = null;
+        String recherche = rechercheText.getText().toLowerCase();
         switch(String.valueOf(critere.getSelectedItem())) {
-            case ("ID Patient"):
+            case ("Tous les patients"):
+                critereToFind = "all";
+                break;
+            case ("Identifiant unique"):
                 critereToFind = "patientId";
                 break;
             case("Prénom"):
@@ -324,21 +391,36 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
                 critereToFind = "lastNameP";
                 break;
             case ("Sexe"):
-                System.out.println("gender");
+                critereToFind = "gender";
+                if(HommeRB.isSelected()) {
+                    recherche = "H";
+                } else if (FemmeRB.isSelected()) {
+                    recherche = "F";
+                } else {
+                    recherche = "A";
+                }
                 break;
             case("Date de naissance"):
                 critereToFind = "birthDate";
-                break;   
+                ddn = ddnSelect.getDate();
+                break;
         }
         if(critereToFind.equals("birthDate")) {
-            //TODO : recherche avec date
-        } else {
-           try {
-               sc.recherchePatient(critereToFind, rechercheText.getText());
-           } catch (SQLException ex) {
-               Logger.getLogger(RecherchePatientSecretaire.class.getName()).log(Level.SEVERE, null, ex);
-           }
+            this.patients = sc.recherchePatient(ddn);
+        } else if (critereToFind.equals("all")) {
+            try {
+                this.patients = sc.afficherListePatient();
+            } catch (SQLException ex) {
+                Logger.getLogger(RecherchePatientSecretaire.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else {
+            try {
+                this.patients = sc.recherchePatient(critereToFind, recherche);
+            } catch (SQLException ex) {
+                Logger.getLogger(RecherchePatientSecretaire.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        this.updatePatients();
         error.setText(sc.getError());
         
         
@@ -356,8 +438,68 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
     private void rechercheTextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_rechercheTextMouseClicked
         rechercheText.setText("");
     }//GEN-LAST:event_rechercheTextMouseClicked
+
+    private void critereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_critereActionPerformed
+        if(critere.getSelectedIndex() == 4) {
+            rechercheButton.setVisible(true);
+            ddnSelect.setVisible(true);
+            rechercheText.setVisible(false);
+            FemmeRB.setVisible(false);
+            HommeRB.setVisible(false);
+            AutreRB.setVisible(false);
+        } else if (critere.getSelectedIndex() == 5) {   
+            rechercheButton.setVisible(false);
+            rechercheText.setVisible(false);
+            ddnSelect.setVisible(false);
+            FemmeRB.setVisible(true);
+            HommeRB.setVisible(true);
+            AutreRB.setVisible(true);
+            FemmeRB.setSelected(true);
+            try {
+                patients = sc.recherchePatient("gender", "F");
+                updatePatients();
+            } catch (SQLException ex) {
+                Logger.getLogger(RecherchePatientSecretaire.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+         }else {
+            rechercheButton.setVisible(true);
+            ddnSelect.setVisible(false);
+            rechercheText.setVisible(true);
+            FemmeRB.setVisible(false);
+            HommeRB.setVisible(false);
+            AutreRB.setVisible(false);
+        }
+    }//GEN-LAST:event_critereActionPerformed
+
+    private void FemmeRBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FemmeRBActionPerformed
+        try {
+            patients = sc.recherchePatient("gender", "F");
+            updatePatients();
+        } catch (SQLException ex) {
+            Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_FemmeRBActionPerformed
+
+    private void HommeRBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HommeRBActionPerformed
+        try {
+            patients = sc.recherchePatient("gender", "H");
+            updatePatients();
+        } catch (SQLException ex) {
+            Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_HommeRBActionPerformed
+
+    private void AutreRBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutreRBActionPerformed
+        try {
+            patients = sc.recherchePatient("gender", "A");
+            updatePatients();
+        } catch (SQLException ex) {
+            Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_AutreRBActionPerformed
     
-    public void updatePatients(ArrayList<Patient> patients) {
+    public void updatePatients() {
         String col[] = {"Identifiant","Nom","Prénom", "Adresse", "Date de naissance", "Sexe"};
 
         this.patientsModel = new DefaultTableModel(col, 0);
@@ -365,11 +507,11 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
         JRecherche.setModel(patientsModel);
         
         for (int i = 0; i < patients.size(); i++) {
-            String id = patients.get(i).getPatientId();
+            String id = patients.get(i).getPatientId().trim();
             String lastName = patients.get(i).getLastNameP().toUpperCase().trim();
             String firstName = patients.get(i).getFirstNameP().substring(0, 1).toUpperCase() + patients.get(i).getFirstNameP().substring(1).trim();
             String adress = patients.get(i).getAdress().trim();
-            Date bod = patients.get(i).getDdn();
+            String bod = patients.get(i).getDdn().toString();
             String gender = patients.get(i).getGender().trim();
             Object[] data = {id , lastName, firstName, adress, bod, gender};
             patientsModel.addRow(data);
@@ -412,10 +554,15 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JRadioButton AutreRB;
+    private javax.swing.JRadioButton FemmeRB;
+    private javax.swing.JRadioButton HommeRB;
     private javax.swing.JTable JRecherche;
+    private javax.swing.ButtonGroup SexGroup;
     private javax.swing.JButton ajoutPatientButton;
     private javax.swing.JButton backButton;
     private javax.swing.JComboBox<String> critere;
+    private com.toedter.calendar.JDateChooser ddnSelect;
     private javax.swing.JButton decoButton;
     private javax.swing.JLabel error;
     private javax.swing.JCheckBoxMenuItem jCheckBoxMenuItem1;
