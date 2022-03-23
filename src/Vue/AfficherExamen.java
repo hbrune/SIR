@@ -58,15 +58,13 @@ public class AfficherExamen extends javax.swing.JFrame {
         report.setLineWrap(true);
         this.reportMedecin.setText(reportMedecin.getLastName().toUpperCase().trim() + " " + reportMedecin.getFirstName().substring(0, 1).toUpperCase() + reportMedecin.getFirstName().substring(1).trim());
         this.images= images;
-            
+        displayImagePacs.setEnabled(false);
         this.imagesModel = new DefaultListModel();
         
         ImagesList.setModel(imagesModel);
         for (int i = 0; i < images.size(); i++) {
             String num = String.valueOf(i+1);
-
             imagesModel.add(i, "Image " + num);
-           
         } 
         if(user.getFunction() == 3) {
             displayImagePacs.setVisible(false);
@@ -211,6 +209,11 @@ public class AfficherExamen extends javax.swing.JFrame {
         reportMedecin.setText(".....");
 
         ImagesList.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
+        ImagesList.addListSelectionListener(new javax.swing.event.ListSelectionListener() {
+            public void valueChanged(javax.swing.event.ListSelectionEvent evt) {
+                ImagesListValueChanged(evt);
+            }
+        });
         jScrollPane2.setViewportView(ImagesList);
 
         displayImagePacs.setText("Afficher dans le PACS");
@@ -410,10 +413,21 @@ public class AfficherExamen extends javax.swing.JFrame {
     }//GEN-LAST:event_decoButtonActionPerformed
 
     private void displayImagePacsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_displayImagePacsActionPerformed
-        int row = ImagesList.getSelectedIndex();
-        Pacs imgToDisplay = images.get(row);
-        imgToDisplay.displayImage();
+        if(!ImagesList.isSelectionEmpty()) {
+            int row = ImagesList.getSelectedIndex();
+            Pacs imgToDisplay = images.get(row);
+            imgToDisplay.displayImage();
+        }
+        
     }//GEN-LAST:event_displayImagePacsActionPerformed
+
+    private void ImagesListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ImagesListValueChanged
+        if(ImagesList.isSelectionEmpty()) {
+            displayImagePacs.setEnabled(false);
+        } else {
+            displayImagePacs.setEnabled(true);
+        }
+    }//GEN-LAST:event_ImagesListValueChanged
 
         /**
      * @param args the command line arguments

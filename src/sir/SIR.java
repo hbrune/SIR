@@ -6,6 +6,7 @@ package sir;
 
 import ConnexionBD.DatabaseAccessProperties;
 import ConnexionBD.RequetesSQL;
+import Controleur.HL7_SIR;
 import Controleur.LoginController;
 import Modele.Login;
 import Modele.Patient;
@@ -92,6 +93,14 @@ public class SIR extends JFrame {
         
         ArrayList listPatients = rs.getPatients();
         System.out.println("Nombre de patients enregistrés : " + listPatients.size());
+        
+        Patient p = rs.getPatientById("1");
+        Login m = rs.getProById("c6ecb6cb49");
+        
+        HL7_SIR testHL7 = new HL7_SIR(4444);
+        //testHL7.envoyerDonnees(exam1, p, m);
+        //testHL7.recuperationDonnees();
+        
         
         LoginController lc = new LoginController(); 
       

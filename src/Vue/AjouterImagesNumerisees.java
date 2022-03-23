@@ -45,10 +45,10 @@ public class AjouterImagesNumerisees extends javax.swing.JFrame {
     Login user;
     Examen e;
     Patient p;
-    ArrayList<BufferedImage> imageToAdd;
+    //ArrayList<BufferedImage> imageToAdd;
     ArrayList<GestionImage.Image> imagesToAdd;
     DefaultListModel imagesModel;
-    final int NB_IMG_MAX = 10;
+    final int NB_IMG_MAX = 20;
 
     /**
      * Creates new form NewJFrame
@@ -63,12 +63,14 @@ public class AjouterImagesNumerisees extends javax.swing.JFrame {
         this.e = e;
         this.p = p;
         this.imagesToAdd = images;
-        editImageButton.setEnabled(false);
+        editImageButton.setEnabled(false);        
+        removeImage.setVisible(false);
         this.updateImages();
         examId.setText(e.getExamId().trim());
         dateExam.setText(e.getDate().toString().trim());
         typeExam.setText(e.getType().trim());
         patientId.setText(p.getLastNameP().toUpperCase().trim() + " " + p.getFirstNameP().trim().substring(0, 1).toUpperCase() + p.getFirstNameP().substring(1).trim());
+        addImagesToExamButton.setEnabled(false);
     }
 
     /**
@@ -97,6 +99,7 @@ public class AjouterImagesNumerisees extends javax.swing.JFrame {
         patientId = new javax.swing.JLabel();
         typeExam = new javax.swing.JLabel();
         dateExam = new javax.swing.JLabel();
+        removeImage = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -198,6 +201,7 @@ public class AjouterImagesNumerisees extends javax.swing.JFrame {
             public int getSize() { return strings.length; }
             public String getElementAt(int i) { return strings[i]; }
         });
+        ImagesList.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         ImagesList.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 ImagesListMouseClicked(evt);
@@ -221,6 +225,17 @@ public class AjouterImagesNumerisees extends javax.swing.JFrame {
 
         dateExam.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         dateExam.setText("Examen n° ");
+
+        removeImage.setBackground(new java.awt.Color(255, 153, 153));
+        removeImage.setFont(new java.awt.Font("Yu Gothic UI Semibold", 1, 8)); // NOI18N
+        removeImage.setForeground(new java.awt.Color(255, 255, 255));
+        removeImage.setText("X");
+        removeImage.setMargin(new java.awt.Insets(2, 2, 2, 2));
+        removeImage.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeImageActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Yu Gothic UI", 0, 14)); // NOI18N
         jLabel5.setText("Date :");
@@ -248,27 +263,35 @@ public class AjouterImagesNumerisees extends javax.swing.JFrame {
                         .addGap(60, 60, 60)
                         .addComponent(addImageButton, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 173, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(removeImage, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addComponent(editImageButton, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(143, 143, 143))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(391, 391, 391)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(addImagesToExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(406, 406, 406))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addComponent(jLabel1)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(60, 60, 60)
+                                .addComponent(jLabel1)
+                                .addGap(18, 18, 18))
+                            .addComponent(removeImage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(30, 30, 30)
                         .addComponent(editImageButton, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGap(77, 77, 77)
@@ -291,9 +314,9 @@ public class AjouterImagesNumerisees extends javax.swing.JFrame {
                                 .addComponent(dateExam)))
                         .addGap(48, 48, 48)
                         .addComponent(addImageButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(47, 47, 47)
+                .addGap(71, 71, 71)
                 .addComponent(addImagesToExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(260, Short.MAX_VALUE))
+                .addGap(180, 180, 180))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -307,8 +330,8 @@ public class AjouterImagesNumerisees extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, 0)
-                .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 513, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         pack();
@@ -409,6 +432,7 @@ public class AjouterImagesNumerisees extends javax.swing.JFrame {
     }//GEN-LAST:event_addImagesToExamButtonActionPerformed
 
     private void editImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editImageButtonActionPerformed
+        removeImage.setVisible(false);
         int row = ImagesList.getSelectedIndex();
         Image imgToEdit = imagesToAdd.get(row);
 
@@ -427,7 +451,18 @@ public class AjouterImagesNumerisees extends javax.swing.JFrame {
 
     private void ImagesListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ImagesListValueChanged
         editImageButton.setEnabled(true);
+        removeImage.setVisible(true);
+        
+        this.setSize(1000, 600);
     }//GEN-LAST:event_ImagesListValueChanged
+
+    private void removeImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeImageActionPerformed
+        int row = ImagesList.getSelectedIndex();
+        imagesToAdd.remove(row);
+        updateImages();
+        removeImage.setVisible(false);
+
+    }//GEN-LAST:event_removeImageActionPerformed
 
     public void updateImages() {
         this.imagesModel = new DefaultListModel();
@@ -438,16 +473,23 @@ public class AjouterImagesNumerisees extends javax.swing.JFrame {
 
             imagesModel.add(i, "Image " + num);
         }
+        if (imagesToAdd.size() > 0) {
+            addImagesToExamButton.setEnabled(true);
+        } else {
+            addImagesToExamButton.setEnabled(false);
+        }
     }
 
     public void addImage(Image img) {
         imagesToAdd.add(img);
         this.updateImages();
+        removeImage.setVisible(false);
     }
 
     public void editImage(Image img) {
         imagesToAdd.set(ImagesList.getSelectedIndex(), img);
         this.updateImages();
+        removeImage.setVisible(false);
     }
 
     /**
@@ -503,6 +545,7 @@ public class AjouterImagesNumerisees extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel patientId;
+    private javax.swing.JButton removeImage;
     private javax.swing.JLabel typeExam;
     // End of variables declaration//GEN-END:variables
 }
