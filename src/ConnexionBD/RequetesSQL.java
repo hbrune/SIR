@@ -889,6 +889,11 @@ public class RequetesSQL {
         return demandes;
     }
     
+    /**
+    *Gérer les apostrophes 
+    *@param string : chaîne de caractères originale
+    *@return : chaîne de caractères formatée pour être ajoutée à la base de données
+    */
     public String gestionApostrophe(String string) {
         String[] tmp = string.split("'");
         String finalString = tmp[0];
