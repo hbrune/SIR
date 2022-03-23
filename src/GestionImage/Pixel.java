@@ -12,6 +12,10 @@ public class Pixel
     final int MAX_PIXEL_VAL = (int) Math.pow(2,BIT_DEPTH) - 1;
     int value;
     
+    /**
+    *Créer un nouveau pixel
+    *@param value : valeur du pixel
+    */
     public Pixel(int value) {
         if(value < 0) {
             value = 0;
@@ -22,6 +26,10 @@ public class Pixel
         }
     }
     
+    /**
+    *Modifier la valeur du pixel
+    *@param value : valeur du pixel que l'on veut mettre
+    */
     public void setValue(int value) {
         if(value < 0) {
             value = 0;
@@ -32,21 +40,19 @@ public class Pixel
         }
     }
     
+    /**
+    *Récupérer la valeur du pixel
+    *@return : valeur du pixel
+    */
     public int getValue() {
         return value;
     }
     
+    /**
+    *Inverser niveau de gris du pixel
+    */
     public void invertIntensity() {
         value = MAX_PIXEL_VAL - value;
     }
     
-    public void logIntensity(double coeff) {
-        value = (int) (coeff * Math.log(value+1)); 
-        
-        
-    }
-    
-    public void powerLawIntensity(double coeff, double gamma) {
-        value = (int) (coeff * Math.pow(value, gamma));
-    }
 }

@@ -71,7 +71,6 @@ public class Encryption {
             spec.clearPassword();
         }
     }
-
     
     /**
      * verify if the password equals the the password decrypted

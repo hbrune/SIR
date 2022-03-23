@@ -19,30 +19,53 @@ public class Image
     int height;
     Pixel[][] canvas;
 
-    
+    /**
+    *Créer une nouvelle image
+    *@param img : tableau à 2 dimensions
+    *@param height : hauteur de l'image 
+    *@param width : largeur de l'image
+    */
     public Image(Pixel[][] img, int height, int width) {
         canvas = img;
         this.width = width;
         this.height = height;
     }
     
+    /**
+    *Créer une nouvelle image
+    *@param filename : fichier pgm
+    */
     public Image(String filename) {
         this.open(filename);
     }
     
+    /**
+    *Récupérer la largeur d'une image
+    *@return : largeur de l'image
+    */
     public int getWidth() {
         return width;
     }
     
+    /**
+    *Récupérer la hauteur d'une image
+    *@return : hauteur de l'image
+    */
     public int getHeight() {
         return height;
     }
     
+    /**
+    *Récupérer le tableau à 2 dimensions d'une image
+    *@return : tableau à 2 dimensions
+    */
     public Pixel[][] getCanvas() {
-        return canvas;
-        
+        return canvas;    
     }
     
+    /**
+    *Inverser les niveaux de gris
+    */
     public void inverseTranform() {
         for(int i = 0; i < this.height ; i++ ) {
             for(int j = 0; j < this.width ; j++) {
@@ -51,22 +74,9 @@ public class Image
         }
     }
     
-    public void logTransform(double coeff) {
-        for(int i = 0; i < this.height ; i++ ) {
-            for(int j = 0; j < this.width ; j++) {
-                canvas[i][j].logIntensity(coeff);
-            }
-        }
-    }
-    
-    public void powerLawTransform(double coeff, double gamma) {
-        for(int i = 0; i < this.height ; i++ ) {
-            for(int j = 0; j < this.width ; j++) {
-                canvas[i][j].powerLawIntensity(coeff, gamma);
-            }
-        }
-    }
-    
+    /**
+    *Appliquer un effet miroir à une image
+    */
     public void flipHorizontal() {        
         for (int i = 0; i<height; i++) {
             for (int j = 0; j<width/2; j++) {
@@ -78,6 +88,9 @@ public class Image
         }  
     }
     
+    /**
+    *Appliquer une rotation de 90º sur la droite à une image
+    */
     public void rotateClockwise() {
         Pixel[][] imgRotation = new Pixel[this.width][this.height];
         for (int i=0; i<height; i++)
@@ -215,7 +228,12 @@ public class Image
             System.exit(-1);
         }
     }
-        
+       
+    /**
+    *Transformer une image pgm pour permettre sa visualisation
+    *@throws IOException
+    *@return : image sous forme d'un ByteArrayOutputStream
+    */
     public ByteArrayOutputStream toJpg() throws IOException {        
         ByteArrayOutputStream myJpg = null;
         BufferedImage image = new BufferedImage(this.getWidth(),this.getHeight(),BufferedImage.TYPE_BYTE_GRAY);
