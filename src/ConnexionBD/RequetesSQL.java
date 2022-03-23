@@ -467,12 +467,11 @@ public class RequetesSQL {
     }
     
     /**
-    *Vérifier si un patie
-    *@param ddn : date de naissance 
+    *Vérifier si un examen est numérique ou non numérique
+    *@param e : examen 
     *@throws SQLException 
-    *@return : liste de patients ayant une même date de naissance
+    *@return : boolean true si examen est numérique et boolean false si examen est non numérique
     */
-    //examens numérique et non numériques
     public boolean isExamenDigital(Examen e) throws SQLException {
         boolean digital = false;
         //Get a statement from the connection
@@ -492,7 +491,12 @@ public class RequetesSQL {
         return digital;
     }
     
-   
+    /**
+    *Récupérer tous les examens numériques d'un patient
+    *@param p : patient
+    *@throws SQLException 
+    *@return : liste d'examens numériques du patient identifié 
+    */
     public ArrayList<Examen> getDigitalExams(Patient p) throws SQLException {
         ArrayList<Examen> exams = new ArrayList<>();
         String idPatient = p.getPatientId();
@@ -529,6 +533,12 @@ public class RequetesSQL {
         return exams;
     }
     
+    /**
+    *Récupérer tous les examens non numériques d'un patient
+    *@param p : patient
+    *@throws SQLException 
+    *@return : liste d'examens non numériques du patient identifié 
+    */
     public ArrayList<Examen> getPaperExams(Patient p) throws SQLException {
         ArrayList<Examen> exams = new ArrayList<>();
         String idPatient = p.getPatientId();
@@ -565,6 +575,13 @@ public class RequetesSQL {
         return exams;
     }
     
+    /**
+    *Ajouter un compte rendu à un examen
+    *@param examId : id d'un examen
+    *@param report : compte-rendu
+    *@param user : professionnel de santé ayant écrit le compte-rendu
+    *@throws SQLException 
+    */
     public void addReport(String examId, String report, Login user) throws SQLException {
         
         //Get a statement from the connection
@@ -578,8 +595,11 @@ public class RequetesSQL {
         
     }
     
-
-    
+    /**
+    *Récupérer tous les examens incomplets
+    *@throws SQLException 
+    *@return : liste d'examens incomplets
+    */
     public ArrayList<Examen> getExamensIncomplete() throws SQLException {    
         
         ArrayList<Examen> examsP = new ArrayList<>();
@@ -618,6 +638,12 @@ public class RequetesSQL {
         return examsP;
     }
 
+    /**
+    *Récupérer le patient d'un examen précis
+    *@param idExam : id d'un examen
+    *@throws SQLException 
+    *@return : patient 
+    */
     public Patient getPatientFromExam(String idExam) throws SQLException {
         Patient p = null;
         
@@ -651,6 +677,13 @@ public class RequetesSQL {
     }
     
     //GESTION D'IMAGES
+    
+    /**
+    *Ajouter une image au PACS 
+    *@param img : image 
+    *@param pacs : pacs
+    *@throws SQLException 
+    */
     public void addImageToPacs(Image img, Pacs pacs) throws SQLException, IOException {
         
         PreparedStatement pstmt = conn.prepareStatement("INSERT INTO PACS VALUES(?, ?, ?)");
@@ -665,6 +698,12 @@ public class RequetesSQL {
         pstmt.execute();
     }
     
+    /**
+    *Récupérer toutes les images d'un examen
+    *@param idExam : id d'un examen
+    *@throws SQLException 
+    *@return : liste d'images de l'examen identifié 
+    */
     public ArrayList<Pacs> getImagesFromExam(String idExam) throws SQLException, IOException {
         ArrayList<Pacs> imagesE = new ArrayList<>();
         Pacs p = null;
@@ -692,6 +731,12 @@ public class RequetesSQL {
         return imagesE;
     }
     
+    /**
+    *Récupérer une image à l'aide de son id dans le PACS
+    *@param idPacs : id de l'image dans le PACS
+    *@throws SQLException 
+    *@return : image
+    */
     public Pacs getImageFromId(String idPacs) throws SQLException, FileNotFoundException, IOException {
         Pacs p = null;
         
@@ -725,6 +770,11 @@ public class RequetesSQL {
         
     }
     
+    /**
+    *Ajouter une demande à la base de données
+    *@param d : demande que l'on veut ajouter
+    *@throws SQLException 
+    */
     public void addDemande(Demande d) throws SQLException {
         //Get a statement from the connection
         Statement stmt = dap.getConn().createStatement() ;
@@ -740,6 +790,12 @@ public class RequetesSQL {
         }        
     }
     
+    /**
+    *Récupérer une demande ayant un id précis 
+    *@param id : id d'une demande
+    *@throws SQLException 
+    *@return : demande identifiée
+    */
     public Demande getDemandeById(String id) throws SQLException {    
         // Get a statement from the connection
         Statement stmt = conn.createStatement() ;
@@ -776,6 +832,11 @@ public class RequetesSQL {
         return d;
     }
     
+    /**
+    *Récupérer toutes les demandes 
+    *@throws SQLException 
+    *@return : liste de demandes
+    */
     public ArrayList<Demande> getDemandes() throws SQLException {
         ArrayList<Demande> demandes = new ArrayList<>();
         

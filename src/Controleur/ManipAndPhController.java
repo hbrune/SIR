@@ -94,7 +94,17 @@ public class ManipAndPhController extends UserController {
     public void displayCompleteExam(String examId) throws SQLException {
         Examen e = sql.getExamenById(examId);
         Patient p = sql.getPatientFromExam(e.getExamId());
-        ce = new CompleterExamen(user, p, this, e);
+        ArrayList<Pacs> images = new ArrayList<>();
+        if (sql.isExamenDigital(e)) {
+            try {
+                images = sql.getImagesFromExam(examId);
+                ce = new CompleterExamen(user, p, this, e, images);
+            } catch (IOException ex) {
+                Logger.getLogger(ManipAndPhController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            ce = new CompleterExamen(user, p, this, e);
+        }
         ce.setVisible(true);
     }
 

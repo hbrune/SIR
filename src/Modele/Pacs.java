@@ -20,12 +20,21 @@ public class Pacs {
     String idPacs;
     Image image;
     
+    /**
+    *Créer une nouvelle image stockée dans le PACS
+    *@param idPacs : identifiant de l'image dans le PACS
+    *@param idExam : id de l'examen dans lequel on veut mettre l'image
+    *@param image : image
+    */
     public Pacs(String idPacs, String idExam, Image image) {
         this.idExam = idExam;
         this.idPacs = idPacs;
         this.image = image;
     }
     
+    /**
+    *Visualiser une image dans une fenêtre à part
+    */
     public void displayImage() {        
         ImageIcon icon1=new ImageIcon(image);
         Image newImg = image.getScaledInstance(400, 400, Image.SCALE_SMOOTH);
@@ -39,14 +48,26 @@ public class Pacs {
         frame.setVisible(true);
     }
     
+    /**
+    *Récupérer l'id d'un examen 
+    *@return : id de l'examen
+    */
     public String getIdExam() {
         return idExam;
     }
     
+    /**
+    *Récupérer l'id d'une image dans le PACS
+    *@return : id de l'image
+    */
     public String getIdPacs() {
         return idPacs;
     }
     
+    /**
+    *Récupérer une image
+    *@return : image
+    */
     public Image getImage() {
         return image;
     }
