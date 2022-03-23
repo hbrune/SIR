@@ -189,8 +189,8 @@ public class ManipAndPhController extends UserController {
     }
 
     
-    public void updateExam(Examen e, String report) throws SQLException {
-        sql.addReport(e.getExamId(), report);
+    public void updateExam(Examen e, String report, Login user) throws SQLException {
+        sql.addReport(e.getExamId(), report, user);
     }
     
     public ArrayList<Examen> getExams(String type, Patient p) {

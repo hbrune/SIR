@@ -1,5 +1,6 @@
 package ConnexionBD;
     
+import Modele.Demande;
 import Modele.Login;
 import Modele.Patient;
 import Modele.Examen;
@@ -43,17 +44,18 @@ public class RequetesSQL {
     //au début qui va être utilisé dans chaque controleur ? 
     DatabaseAccessProperties dap;
     static Connection conn;
-/*
-* @param conn connexion � la base de donn�es
-* @throws SQLException en cas d'erreur d'acc�s � la 
-base de donn�es
-*/
-    
+   
     public RequetesSQL() throws ClassNotFoundException {
         dap = new DatabaseAccessProperties();
         conn = dap.getConn();
     }
     
+    /**
+    *Vérifier l'existence d'un patient dans la base de données
+    *@param p : patient dont l'existence veut être vérifiée
+    *@throws SQLException 
+    *@return : boolean true si patient existe déjà et boolean false s'il n'existe pas
+    */
     public boolean verifierPatient(Patient p) throws SQLException {
         //Get a statement from the connection
         Statement stmt = dap.getConn().createStatement() ;
@@ -91,6 +93,11 @@ base de donn�es
         return verifPatient;
     }
     
+    /**
+    *Ajouter un patient dans la base de données
+    *@param p : patient que l'on veut ajouter
+    *@throws SQLException 
+    */
     public void addPatient(Patient patient) throws SQLException {
         //Get a statement from the connection
         Statement stmt = dap.getConn().createStatement() ;
@@ -100,7 +107,12 @@ base de donn�es
         rsTest.close() ;
         stmt.close() ;
     }
-            
+      
+    /**
+    *Ajouter un professionnel de santé dans la base de données
+    *@param login : professionnel de santé que l'on veut ajouter
+    *@throws SQLException 
+    */
     public void addUser(Login login) throws SQLException {
         Statement stmt = conn.createStatement() ;
         
@@ -112,7 +124,14 @@ base de donn�es
         stmt.close() ;
     }
     
-    public Login authentificationNew(String proId, String password) throws SQLException {
+    /**
+    *Vérifier l'id et mot de passe du professionel de santé
+    *@param proId : id du professionnel de santé
+    *@param password : mot de passe du professionnel de santé
+    *@throws SQLException 
+    *@return : Login non null si id et mot de passe sont valides et login null si id et mot de passe ne sont pas valides
+    */
+    public Login authentification(String proId, String password) throws SQLException {
         
         // Get a statement from the connection
         Statement stmt = conn.createStatement() ;
@@ -154,86 +173,13 @@ base de donn�es
         
         return user;
     }
-    
-    public Login authentificationNew2(String proId, String password) throws SQLException {
-        
-        // Get a statement from the connection
-        Statement stmt = conn.createStatement() ;
-        
-        // Execute the query
-        ResultSet rsTest = stmt.executeQuery("SELECT * FROM LOGIN where proId = '" + proId + "'") ;
-        
-        // Préparation des résultats
-        String id = "";
-        String key = "";
-        boolean pwd = false;
-        String nom = "";
-        String prenom = "";
-        int fonction;
-        Login user = null;
-        
-        try {
-            while(rsTest.next()) {
-                id = rsTest.getString(1);
-                key = rsTest.getString(2);
-                pwd = Encryption.verifyPassword(password, key, Salt.salt);
-                nom = rsTest.getString(3);
-                prenom = rsTest.getString(4);
-                fonction = rsTest.getInt(5);
-                user = new Login(id, password, nom, prenom, fonction);
-                System.out.println("Votre login est correct ! Bienvenue " + rsTest.getString(4));
-            }  
-        }
-        finally {
-            if(pwd == false) {
-                System.out.println("Votre login est incorrect...");
-            }
-        }
-        // Close the result set, statement and the connection
-        rsTest.close() ;
-        stmt.close() ;
-        
-        return user;
-    }
-        
-    public Login authentification(String proId, String password) throws SQLException {
-        
-        // Get a statement from the connection
-        Statement stmt = conn.createStatement() ;
-        
-        // Execute the query
-        ResultSet rsTest = stmt.executeQuery("SELECT * FROM LOGIN where proId = '" + proId + "' and password = '" + password + "'") ;
-        // Préparation des résultats
-        Login user = null;
-        String id = "";
-        String pwd = "";
-        String nom = "";
-        String prenom = "";
-        int fonction;
-        
-        try {
-            while(rsTest.next()) { 
-                id = rsTest.getString(1);
-                pwd = rsTest.getString(2);
-                nom = rsTest.getString(3);
-                prenom = rsTest.getString(4);
-                fonction = rsTest.getInt(5);
-                System.out.println("Votre login est correct ! Bienvenue " + rsTest.getString(4));
-                user = new Login(id, pwd, nom, prenom, fonction);    
-            }
-        }
-        finally {
-            if(user == null) {
-                System.out.println("Votre login est incorrect...");
-            }
-        }
-        // Close the result set, statement and the connection
-        rsTest.close() ;
-        stmt.close() ;
-        //On retourne l'utilisateur qui se connecte
-        return user;
-    }
    
+    /**
+    *Récupérer un patient grâce à son id
+    *@param id : id du patient
+    *@throws SQLException 
+    *@return : patient possédant l'id mis en paramètre
+    */
     public Patient getPatientById(String id) throws SQLException {    
         // Get a statement from the connection
         Statement stmt = conn.createStatement() ;
@@ -267,7 +213,11 @@ base de donn�es
         return pat;
     }
     
-    //Récupérer TOUS les patients
+    /**
+    *Récupérer tous les patients
+    *@throws SQLException 
+    *@return : liste de patients
+    */
     public ArrayList<Patient> getPatients() throws SQLException {
         ArrayList<Patient> patients = new ArrayList<>();
         
@@ -299,7 +249,13 @@ base de donn�es
         return patients;
     }
     
-    
+    /**
+    *Récupérer tous les patients qui remplissent un critère précis
+    *@param critere : nom de l'attribut correspondant au critère de recherche
+    *@param recherche : valeur de l'attibut correspondant au critère de recherche
+    *@throws SQLException 
+    *@return : liste de patients remplissant un critère
+    */
     public ArrayList<Patient> getPatientByCriteria(String critere, String recherche) throws SQLException {
         ArrayList<Patient> patients = new ArrayList<>();
         
@@ -330,23 +286,13 @@ base de donn�es
         stmt.close() ;
         return patients;
     }
-    
-    public void recherchePatientByCriteria(String critere, String recherche) throws SQLException {
-        
-        // Get a statement from the connection
-        Statement stmt = dap.getConn().createStatement() ;
-        
-        // Execute the query
-        ResultSet rsTest = stmt.executeQuery("SELECT * FROM PATIENT where " + critere + "= '" + recherche + "'") ;
-        while(rsTest.next()) { 
-            System.out.println(rsTest);
-            System.out.println("Id du patient : " + rsTest.getString(1));
-        }
-        // Close the result set, statement and the connection
-        rsTest.close() ;
-        stmt.close() ;
-    }
 
+    /**
+    *Récupérer tous les patients qui ont une date de naissance précise
+    *@param ddn : date de naissance 
+    *@throws SQLException 
+    *@return : liste de patients ayant une même date de naissance
+    */
     public ArrayList<Patient> recherchePatientByDdn(Date ddn) throws SQLException {
         ArrayList<Patient> patients = new ArrayList<>();
         Statement stmt = dap.getConn().createStatement();
@@ -376,6 +322,12 @@ base de donn�es
     
     // USERS
     
+    /**
+    *Récupérer un professionnel de santé grâce à son id
+    *@param id : id du professionnel de santé
+    *@throws SQLException 
+    *@return : professionnel de santé possédant l'id mis en paramètre
+    */
     public Login getProById(String id) throws SQLException {    
         // Get a statement from the connection
         Statement stmt = conn.createStatement() ;
@@ -409,7 +361,11 @@ base de donn�es
     
     //EXAMENS
     
-    //ajout
+    /**
+    *Ajouter un examen à la base de données
+    *@param e : examen
+    *@throws SQLException 
+    */
     public void addExamen(Examen e) throws SQLException {
         
         //Get a statement from the connection
@@ -424,7 +380,12 @@ base de donn�es
         
     }
     
-    //requêtes générales
+    /**
+    *Récupérer un examen grâce à son id
+    *@param id : id de l'examen
+    *@throws SQLException 
+    *@return : examen possédant l'id mis en paramètre
+    */
     public Examen getExamenById(String id) throws SQLException {    
         // Get a statement from the connection
         Statement stmt = conn.createStatement() ;
@@ -460,6 +421,12 @@ base de donn�es
         return e;
     }
     
+    /**
+    *Récupérer tous les examens d'un patient précis à l'aide de son id
+    *@param idP : id d'un patient
+    *@throws SQLException 
+    *@return : liste d'examens du patient identifié 
+    */
     public ArrayList<Examen> getListExamenByPatient(String idP) throws SQLException {    
         
         ArrayList<Examen> examsP = new ArrayList<>();
@@ -468,7 +435,7 @@ base de donn�es
         Statement stmt = conn.createStatement() ;
         
         // Execute the query
-        ResultSet rsTest = stmt.executeQuery("SELECT * FROM EXAM where patientId = '" + idP + "'") ;
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM EXAM where status = 1 and patientId = '" + idP + "'") ;
         
         Examen e = null;
         String examId = "";
@@ -499,6 +466,12 @@ base de donn�es
         return examsP;
     }
     
+    /**
+    *Vérifier si un patie
+    *@param ddn : date de naissance 
+    *@throws SQLException 
+    *@return : liste de patients ayant une même date de naissance
+    */
     //examens numérique et non numériques
     public boolean isExamenDigital(Examen e) throws SQLException {
         boolean digital = false;
@@ -527,7 +500,7 @@ base de donn�es
         Statement stmt = dap.getConn().createStatement() ;
         
         //Execute the query
-        ResultSet rsTest = stmt.executeQuery("SELECT * FROM EXAM WHERE PATIENTID = '" + idPatient + "' AND EXAMID IN (SELECT EXAMID FROM PACS)");
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM EXAM WHERE STATUS = 1 and PATIENTID = '" + idPatient + "' AND EXAMID IN (SELECT EXAMID FROM PACS)");
         Examen e = null;
         String examId = "";
         String patientId = "";
@@ -563,7 +536,7 @@ base de donn�es
         Statement stmt = dap.getConn().createStatement() ;
         
         //Execute the query
-        ResultSet rsTest = stmt.executeQuery("SELECT * FROM EXAM WHERE PATIENTID = '" + idPatient + "' AND EXAMID NOT IN (SELECT EXAMID FROM PACS)");
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM EXAM WHERE STATUS = 1 AND PATIENTID = '" + idPatient + "' AND EXAMID NOT IN (SELECT EXAMID FROM PACS)");
         Examen e = null;
         String examId = "";
         String patientId = "";
@@ -592,13 +565,13 @@ base de donn�es
         return exams;
     }
     
-    public void addReport(String examId, String report) throws SQLException {
+    public void addReport(String examId, String report, Login user) throws SQLException {
         
         //Get a statement from the connection
         Statement stmt = dap.getConn().createStatement() ;
         
         //Execute the query
-        ResultSet rsTest = stmt.executeQuery("UPDATE EXAM SET report = '" + report + "', status = 1 WHERE examId = '" + examId +"'") ;
+        ResultSet rsTest = stmt.executeQuery("UPDATE EXAM SET report = '" + report + "', proidreport = '" + user.getIdLogin() + "' , status = 1 WHERE examId = '" + examId +"'") ;
         
         rsTest.close() ;
         stmt.close() ;
@@ -750,5 +723,99 @@ base de donn�es
         }
         return p;
         
+    }
+    
+    public void addDemande(Demande d) throws SQLException {
+        //Get a statement from the connection
+        Statement stmt = dap.getConn().createStatement() ;
+        //Execute the query
+        java.sql.Date ddnSql = new java.sql.Date(d.getDdn().getTime());
+        java.sql.Date dateSql = new java.sql.Date(d.getDdn().getTime());
+        try {
+            ResultSet rsTest = stmt.executeQuery("INSERT INTO DEMANDE VALUES ('" + d.getDemandeId().toLowerCase() + "', '" + d.getNomP().toLowerCase() + "', '" + d.getPrenomP().toLowerCase() + "', '" + d.getAdresse().toLowerCase() + "', '" + d.getSexe() + "', TO_DATE('" + ddnSql + "', 'YYYY-MM-DD'), '" + d.getTypeExam() + "', TO_DATE('" + dateSql + "', 'YYYY-MM-DD'), '" + d.getCommentaire() + "')");
+            rsTest.close() ;
+            stmt.close() ;
+        } catch (SQLException ex) {
+            Logger.getLogger(RequetesSQL.class.getName()).log(Level.SEVERE, null, ex);
+        }        
+    }
+    
+    public Demande getDemandeById(String id) throws SQLException {    
+        // Get a statement from the connection
+        Statement stmt = conn.createStatement() ;
+
+        // Execute the query
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM DEMANDE WHERE demandeId = '" + id + "'") ;
+
+        Demande d = null;
+        String demandeId = "";
+        String nomP = "";
+        String prenomP = "";
+        String adresse = "";
+        String sexe = "";
+        Date ddn = null;
+        String typeExam = "";
+        Date dateP = null;
+        String comment = "";
+
+        while(rsTest.next()) {
+                demandeId = rsTest.getString(1);
+                nomP = rsTest.getString(2);
+                prenomP = rsTest.getString(3);
+                adresse = rsTest.getString(4);
+                sexe = rsTest.getString(5);
+                ddn = rsTest.getDate(6);
+                typeExam = rsTest.getString(7);
+                dateP = rsTest.getDate(8);    
+                comment = rsTest.getString(9);
+                d = new Demande(demandeId, nomP, prenomP, adresse, sexe, ddn, typeExam, dateP, comment);
+        }
+        // Close the result set, statement and the connection
+        rsTest.close() ;
+        stmt.close() ;
+        return d;
+    }
+    
+    public ArrayList<Demande> getDemandes() throws SQLException {
+        ArrayList<Demande> demandes = new ArrayList<>();
+        
+        // Get a statement from the connection
+        Statement stmt = conn.createStatement() ;
+        
+        // Execute the query
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM DEMANDE") ;
+        
+        Demande dCourante = null;
+        String demandeId = "";
+        String nomP = "";
+        String prenomP = "";
+        String adresse = "";
+        String sexe = "";
+        Date ddn = null;
+        String typeExam = "";
+        Date dateP = null;
+        String comment = "";
+        
+        //Boucle pour chaque patient
+        while(rsTest.next()) {
+            demandeId = rsTest.getString(1);
+            nomP = rsTest.getString(2);
+            prenomP = rsTest.getString(3);
+            adresse = rsTest.getString(4);
+            sexe = rsTest.getString(5);
+            ddn = rsTest.getDate(6);
+            typeExam = rsTest.getString(7);
+            dateP = rsTest.getDate(8);    
+            comment = rsTest.getString(9);
+            dCourante = new Demande(demandeId, nomP, prenomP, adresse, sexe, ddn, typeExam, dateP, comment);
+            
+            //Ajouter le patient à la liste
+            demandes.add(dCourante);
+        }      
+          
+        // Close the result set, statement and the connection
+        rsTest.close() ;
+        stmt.close() ;
+        return demandes;
     }
 }
