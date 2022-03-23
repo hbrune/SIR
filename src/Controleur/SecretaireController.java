@@ -27,14 +27,17 @@ import java.util.UUID;
  * @author Brune
  */
 public class SecretaireController extends UserController {
-    Login user;
     private static RequetesSQL sql;
     DashboardSecretaire dashboard;
     RecherchePatientSecretaire rp;
     String error = "";
     String success = "";
     
-    
+    /**
+    *Afficher l'interface d'accueil propre aux secrétaires, crée une instance de RequeteSQL permettant les échanges avec la base de données.
+    *@param user : utilisateur connecté (secrétaire)
+    *@throws ClassNotFoundException 
+    */
     public SecretaireController(Login user) throws ClassNotFoundException {
         this.user = user;
         sql = new RequetesSQL();
@@ -42,75 +45,54 @@ public class SecretaireController extends UserController {
         dashboard.setVisible(true);
     }
     
-    // GETTERS ET SETTERS
-    
-    public String getError() {
-        return error;
-    }
-    
+    /**
+    Obtenir le message de réussite lors de la création d'un patient
+    *@return : chaine de caractère correspondant au message de réussite (vide s'il n'y en a pas)
+    */
     public String getSuccess() {
         return success;
     }
     
     // INTERFACES
-    
+    /**
+    *Afficher l'interface d'accueil propre aux secrétaires
+    */
     public void displayDashboard() {
         dashboard = new DashboardSecretaire(user, this);
         dashboard.setVisible(true);
     }
     
+    /**
+    *Afficher l'interface de recherche patient
+    *Recherche en base de données de tous les patients enregistrés en base de données pour les afficher
+    */
     public void displayRecherchePatient() throws SQLException {
         ArrayList<Patient> patients = sql.getPatients();
         rp = new RecherchePatientSecretaire(user, this, patients);
         rp.setVisible(true);
     }
     
+    /**
+    *Afficher l'interface d'ajout patient
+    *Génère un identifiant unique et vérifie qu'il n'est pas déjà utilisé
+    * @param origine : nom de l'interface d'origine pour revenir sur la bonne page en cas de retour à la page précédente
+    */
     public void displayAjoutPatient(String origine) throws SQLException {
         String UID = generateUid();
-        /*if(sql.getPatientById(UID) != null) {
+        if(sql.getPatientById(UID) != null) {
             //Un patient avec cet UID existe déjà, on relance la fonction pour générer un autre UID
             displayAjoutPatient(origine);
-        }*/
+        }
         AjouterPatient ap = new AjouterPatient(user, this, origine, UID);
         ap.setVisible(true);
     }
-    
-    public String generateUid() {
-        return UUID.randomUUID().toString().replace("-","").substring(0,10);
-    }
         
     // RECHERCHE ET AJOUT EN BD
-    
-    public ArrayList<Patient> afficherListePatient() throws SQLException {
-        ArrayList<Patient> liste = new ArrayList<>();
-        liste = sql.getPatients();
-        return liste;
-    }
-    
-    public ArrayList<Patient> recherchePatient(String critere, String recherche) throws SQLException {
-        ArrayList<Patient> patients = null;
-        System.out.println(critere +" = " + recherche);
-        if (recherche.equals("recherche selon le critère selectionné") || recherche.equals("")) {
-            error = "Veuillez entrer une recherche";
-        } else {
-            error = "";
-            patients = sql.getPatientByCriteria(critere, recherche);
-                        
-        }
-        return patients;
-    }
-    
-    
-    public ArrayList<Patient> recherchePatient(Date ddn) {
-        ArrayList<Patient> patients = null;
-        try {
-            patients = sql.recherchePatientByDdn(ddn);
-        } catch (SQLException ex) {
-            error = ex.getMessage();
-        }
-        return patients;
-    }
-    
+    /**
+    *Ajouter un patient
+    *Vérification que les champs sont bien remplis et vérification que le patient n'est pas déjà enregistré
+    * @param p : patient à ajouter
+    */
     public void ajouterPatient(Patient p) throws SQLException {
         if(p.getLastNameP().equals("") || p.getFirstNameP().equals("") || p.getAdress().equals("") ) {
             error = "Veuillez remplir tous les champs";
@@ -130,8 +112,5 @@ public class SecretaireController extends UserController {
                 success = "";
             }
         }
-    }
-        
-
-    
+    }      
 }

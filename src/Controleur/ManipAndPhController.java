@@ -33,7 +33,6 @@ import java.util.logging.Logger;
 @ -12,9 +17,28 @@ import Modele.Login;
  */
 public class ManipAndPhController extends UserController {
-    Login user;
     Dashboard dashboard;
     AjouterExamen addExam;
     RecherchePatientMedecin rp;
@@ -45,9 +44,12 @@ public class ManipAndPhController extends UserController {
     AjouterImagesNumerisees ain;
     TraitementImage ti;    
     RequetesSQL sql;
-    String error = "";
-    String success = "";
     
+    /**
+    *Afficher l'interface d'accueil propre à l'utilisateur connecté (manipulateur radio ou praticien hospitalier), crée une instance de RequeteSQL permettant les échanges avec la base de données.
+    *@param user : utilisateur connecté (secrétaire)
+    *@throws ClassNotFoundException 
+    */
     public ManipAndPhController(Login user) throws ClassNotFoundException {
         this.user = user;
         sql = new RequetesSQL();
@@ -55,35 +57,33 @@ public class ManipAndPhController extends UserController {
         dashboard.setVisible(true);
     }
 
-    // GETTERS ET SETTERS
-    
-    public String getError() {
-        return error;
-    }
-    
-    public String getSuccess() {
-        return success;
-    }
-    
     // DISPLAY VIEWS 
+    /**
+    *Afficher l'interface d'accueil propre à l'utilisateur connecté (manipulateur radio ou praticien hospitalier)
+    */
+    public void displayDashboard() {
+        dashboard = new Dashboard(user, this);
+        dashboard.setVisible(true);
+    }
     
+    
+    /**
+    *Afficher l'interface de recherche patient
+    *Recherche en base de données de tous les patients enregistrés en base de données pour les afficher
+    *@throws SQLException
+    */
     public void displayRecherchePatient() throws SQLException {
         ArrayList<Patient> patients = sql.getPatients();
         rp = new RecherchePatientMedecin(user, this, patients);
         rp.setVisible(true);
     }
     
-    public void displayDashboard() {
-        dashboard = new Dashboard(user, this);
-        dashboard.setVisible(true);
-    }
-    
-    public void displayAddExam(Patient p) {
-        String UID = generateUid();
-        addExam = new AjouterExamen(p, user, this, UID);
-        addExam.setVisible(true);
-    }
-    
+    /**
+    * Afficher le dossier du patient sélectionné, identifié par son identifiant
+    * Recherche en base de données des examens enregistrés pour ce patient
+    * @param idPatient : identifiant du patient pour le rechercher en base de données
+    * @throws SQLException
+    */
     public void displayDossierPatient(String idPatient) throws SQLException {
         Patient p = sql.getPatientByCriteria("patientId", idPatient).get(0);
         ArrayList<Examen> e = sql.getListExamenByPatient(p.getPatientId());
@@ -91,10 +91,33 @@ public class ManipAndPhController extends UserController {
         dp.setVisible(true);
     }
     
+    /**
+    * Afficher l'interface d'ajout d'examen
+    * Génère un identifiant unique et vérifie qu'il n'est pas déjà utilisé
+    * @param p : patient pour lequel un examen est créé
+    *Recherche en base de données de tous les patients enregistrés en base de données pour les afficher
+    */
+    public void displayAddExam(Patient p) {
+        String UID = generateUid();
+        addExam = new AjouterExamen(p, user, this, UID);
+        addExam.setVisible(true);
+    }
+    
+    
     public void displayCompleteExam(String examId) throws SQLException {
         Examen e = sql.getExamenById(examId);
         Patient p = sql.getPatientFromExam(e.getExamId());
-        ce = new CompleterExamen(user, p, this, e);
+        ArrayList<Pacs> images = new ArrayList<>();
+        if (sql.isExamenDigital(e)) {
+            try {
+                images = sql.getImagesFromExam(examId);
+                ce = new CompleterExamen(user, p, this, e, images);
+            } catch (IOException ex) {
+                Logger.getLogger(ManipAndPhController.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            ce = new CompleterExamen(user, p, this, e);
+        }        
         ce.setVisible(true);
     }
 
@@ -143,43 +166,16 @@ public class ManipAndPhController extends UserController {
         ain.setVisible(true);
     }
     // RECHERCHE ET AJOUT EN BD    
-    public ArrayList<Patient> recherchePatient(String critere, String recherche) throws SQLException {
     
-        ArrayList<Patient> patients = null;
-        if (recherche.equals("recherche selon le critère selectionné") || recherche.equals("")) {
-            error = "Veuillez entrer une recherche";
-        } else {
-            error = "";
-            patients = sql.getPatientByCriteria(critere, recherche);
-        }
-        return patients;
-    }
-      
 
-    public ArrayList<Patient> recherchePatient(Date ddn) {
-        ArrayList<Patient> patients = null;
-        try {
-            patients = sql.recherchePatientByDdn(ddn);
-        } catch (SQLException ex) {
-            error = ex.getMessage();
-        }
-        return patients;
-    }
     public void ajouterExam(Examen e) throws SQLException {
         try {
             sql.addExamen(e);
-            success = "Examen enregistré";
         } catch(SQLException error) {
             this.error = error.getMessage();
         }
     }
-    
-    //A appeler dans le constructeur de l'interface chercher patient
-    public ArrayList<Patient> afficherListePatient() throws SQLException {
-        ArrayList<Patient> liste = new ArrayList<>();
-        liste = sql.getPatients();
-        return liste;
-    }
+  
 
     //A appeler quand on clique sur le bouton rechercher un patient
     public ArrayList<Patient> afficherListePatientAvecCritere(String critere, String recherche) throws SQLException {

@@ -409,7 +409,7 @@ public class RecherchePatientSecretaire extends javax.swing.JFrame {
             this.patients = sc.recherchePatient(ddn);
         } else if (critereToFind.equals("all")) {
             try {
-                this.patients = sc.afficherListePatient();
+                this.patients = sc.listePatient();
             } catch (SQLException ex) {
                 Logger.getLogger(RecherchePatientSecretaire.class.getName()).log(Level.SEVERE, null, ex);
             }

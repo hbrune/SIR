@@ -50,9 +50,9 @@ public class SIR extends JFrame {
         System.out.println(ajdSql);
         
         RequetesSQL rs = new RequetesSQL();
-        rs.getImageFromId("ca7a84e6c6");
+        //rs.getImageFromId("ca7a84e6c6");
         //String uid1 = UUID.randomUUID().toString().replace("-","").substring(0,10);
-        //System.out.println(uid1);
+        //System.out.println("id manip : " + uid1);
         //String uid2 = UUID.randomUUID().toString().replace("-","").substring(0,10);
         //System.out.println(uid2);
         //Login secretaire = new Login(uid1, "roux", "ROUX", "Caitlin", 4);
@@ -68,9 +68,12 @@ public class SIR extends JFrame {
         //Login manip3 = new Login(uid4, "random", "Gladieux", "Philippe", 3);
         
         // id manip : bcfc00c134
-        // id caitlin : 97740e707f
+        // id caitlin : 765a960405
+        //String uid2 = UUID.randomUUID().toString().replace("-","").substring(0,10);
+        //System.out.println(uid2);
         //Login medecin = new Login(uid2, "mika", "morillon", "mikael", 1);
-        // id mika : c6ecb6cb49
+        //rs.addUser(medecin);
+        // id mika : 2a8809b766
         // id melanie : 5200de435d
         // id Philippe : 52b59a2451
         //rs.addUser(secretaire);

@@ -99,8 +99,6 @@ public class Dashboard extends javax.swing.JFrame {
         jCalendar1 = new com.toedter.calendar.JCalendar();
         jLabel8 = new javax.swing.JLabel();
         completeExamButton = new javax.swing.JButton();
-        recherchePatientButton2 = new javax.swing.JButton();
-        jLabel12 = new javax.swing.JLabel();
         completeExamIcon = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -222,19 +220,6 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
-        recherchePatientButton2.setBackground(new java.awt.Color(255, 255, 255));
-        recherchePatientButton2.setFont(new java.awt.Font("Yu Gothic UI Semibold", 0, 14)); // NOI18N
-        recherchePatientButton2.setText("Examens à réaliser");
-        recherchePatientButton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        recherchePatientButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                recherchePatientButton2ActionPerformed(evt);
-            }
-        });
-
-        jLabel12.setBackground(new java.awt.Color(255, 255, 255));
-        jLabel12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_treatment_40px_1.png"))); // NOI18N
-
         completeExamIcon.setBackground(new java.awt.Color(255, 255, 255));
         completeExamIcon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Vue/icons8_tick_box_40px.png"))); // NOI18N
 
@@ -262,28 +247,23 @@ public class Dashboard extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(305, 656, Short.MAX_VALUE)
-                                .addComponent(jLabel8))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(29, 29, 29)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(recherchePatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 174, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                                         .addComponent(jLabel10)
                                         .addGap(69, 69, 69)))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(recherchePatientButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                        .addComponent(jLabel12)
-                                        .addGap(67, 67, 67)))
-                                .addGap(18, 18, 18)
+                                .addGap(89, 89, 89)
                                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(completeExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 164, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel2Layout.createSequentialGroup()
                                         .addGap(59, 59, 59)
-                                        .addComponent(completeExamIcon)))))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(completeExamIcon)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGap(305, 656, Short.MAX_VALUE)
+                                .addComponent(jLabel8)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
                         .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(4, 4, 4)))
                 .addGap(55, 55, 55))
@@ -310,12 +290,10 @@ public class Dashboard extends javax.swing.JFrame {
                         .addGap(90, 90, 90)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabel10)
-                            .addComponent(jLabel12)
                             .addComponent(completeExamIcon))
                         .addGap(18, 18, 18)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(recherchePatientButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(recherchePatientButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(completeExamButton, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(247, Short.MAX_VALUE))
         );
@@ -371,10 +349,6 @@ public class Dashboard extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_completeExamButtonActionPerformed
 
-    private void recherchePatientButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recherchePatientButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_recherchePatientButton2ActionPerformed
-
     /**
      * @param args the command line arguments
      */
@@ -422,7 +396,6 @@ public class Dashboard extends javax.swing.JFrame {
     private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -430,7 +403,6 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lastName;
     private javax.swing.JButton recherchePatientButton;
-    private javax.swing.JButton recherchePatientButton2;
     private javax.swing.JLabel time;
     // End of variables declaration//GEN-END:variables
 }

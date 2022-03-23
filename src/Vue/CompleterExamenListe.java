@@ -107,7 +107,6 @@ public class CompleterExamenListe extends javax.swing.JFrame {
         JExam.setFocusable(false);
         JExam.setRowHeight(30);
         JExam.setRowMargin(5);
-        JExam.setSelectionBackground(new java.awt.Color(102, 153, 255));
         JExam.setSelectionForeground(new java.awt.Color(0, 0, 0));
         JExam.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {

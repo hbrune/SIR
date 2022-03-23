@@ -433,16 +433,20 @@ public class AjouterImagesNumerisees extends javax.swing.JFrame {
 
     private void editImageButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editImageButtonActionPerformed
         removeImage.setVisible(false);
-        int row = ImagesList.getSelectedIndex();
-        Image imgToEdit = imagesToAdd.get(row);
+        if(!ImagesList.isSelectionEmpty()) {
+            int row = ImagesList.getSelectedIndex();
+            Image imgToEdit = imagesToAdd.get(row);
 
-        if (imgToEdit != null) {
-            try {
-                mc.displayTraiterImage(imgToEdit, this, false);
-            } catch (IOException ex) {
-                Logger.getLogger(AjouterImagesNumerisees.class.getName()).log(Level.SEVERE, null, ex);
+            if (imgToEdit != null) {
+                try {
+                    mc.displayTraiterImage(imgToEdit, this, false);
+                } catch (IOException ex) {
+                    Logger.getLogger(AjouterImagesNumerisees.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
+            editImageButton.setEnabled(false);
         }
+        
     }//GEN-LAST:event_editImageButtonActionPerformed
 
     private void ImagesListMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_ImagesListMouseClicked
@@ -450,8 +454,13 @@ public class AjouterImagesNumerisees extends javax.swing.JFrame {
     }//GEN-LAST:event_ImagesListMouseClicked
 
     private void ImagesListValueChanged(javax.swing.event.ListSelectionEvent evt) {//GEN-FIRST:event_ImagesListValueChanged
-        editImageButton.setEnabled(true);
-        removeImage.setVisible(true);
+        if(!ImagesList.isSelectionEmpty()) {
+            editImageButton.setEnabled(true);
+            removeImage.setVisible(true);
+        } else {
+            editImageButton.setEnabled(false);
+            removeImage.setVisible(false);
+        }
         
         this.setSize(1000, 600);
     }//GEN-LAST:event_ImagesListValueChanged

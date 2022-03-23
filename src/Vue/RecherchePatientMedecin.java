@@ -30,6 +30,7 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
     Controleur.ManipAndPhController mc;
     Modele.Login user;
     DefaultTableModel patientsModel;
+    ArrayList<Patient> patients;
     
  public RecherchePatientMedecin(Login user, ManipAndPhController mc,  ArrayList<Patient> patients) {
      
@@ -39,7 +40,8 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         this.setResizable(false);
         this.mc = mc;
         this.user = user;
-        this.updatePatients(patients);
+        this.patients = patients;
+        this.updatePatients();
         accesDmrButton.setEnabled(false);
         ddnSelect.setVisible(false);
         SexGroup.add(HommeRB);
@@ -143,7 +145,6 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         JRecherche.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
 
         rechercheText.setFont(new java.awt.Font("Yu Gothic UI Light", 2, 12)); // NOI18N
-        rechercheText.setText("recherche selon le critère selectionné");
         rechercheText.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         rechercheText.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -214,31 +215,29 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(43, 43, 43)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(critere, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(41, 41, 41)
-                                .addComponent(rechercheButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(jLabel1)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(rechercheText, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(ddnSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(FemmeRB)
-                                .addGap(18, 18, 18)
-                                .addComponent(HommeRB)
-                                .addGap(18, 18, 18)
-                                .addComponent(AutreRB)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 228, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(213, 213, 213))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(accesDmrButton, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 901, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(rechercheText, javax.swing.GroupLayout.PREFERRED_SIZE, 210, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(ddnSelect, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(FemmeRB)
+                        .addGap(18, 18, 18)
+                        .addComponent(HommeRB)
+                        .addGap(18, 18, 18)
+                        .addComponent(AutreRB))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(accesDmrButton, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 901, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(jLabel1)
+                            .addGap(18, 18, 18)
+                            .addComponent(error, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                            .addComponent(critere, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(41, 41, 41)
+                            .addComponent(rechercheButton, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -247,12 +246,13 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(58, 58, 58)
-                                .addComponent(error))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addGap(29, 29, 29)
-                                .addComponent(jLabel1)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(error, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)))
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(critere, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(rechercheButton))
@@ -325,9 +325,7 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
-                .addGap(0, 0, 0))
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -374,7 +372,6 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
         String critereToFind = "";
         Date ddn = null;
         String recherche = rechercheText.getText().toLowerCase();
-        ArrayList<Patient> patients = null;
         switch(String.valueOf(critere.getSelectedItem())) {
             case ("Tous les patients"):
                 critereToFind = "all";
@@ -394,22 +391,36 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
                 break;
         }
         if(critereToFind.equals("birthDate")) {
+            System.out.println("recherche");
             patients = mc.recherchePatient(ddn);
         } else if (critereToFind.equals("all")) {
             try {
-                patients = mc.afficherListePatient();
+                patients = mc.listePatient();
+            } catch (SQLException ex) {
+                Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else if (critereToFind.equals("all")) {
+            try {
+                patients = mc.listePatient();
             } catch (SQLException ex) {
                 Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
             }
         }else {
-            try {
-                patients = mc.recherchePatient(critereToFind, recherche);
-            } catch (SQLException ex) {
-                Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(recherche);
+            if(!recherche.equals("")) {
+                try {
+                    patients = mc.recherchePatient(critereToFind, recherche);
+                    this.updatePatients();
+                    error.setText(mc.getError());
+                } catch (SQLException ex) {
+                    Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } else {
+                error.setText("Veuillez entrer une recherche");
             }
+            
         }
-        this.updatePatients(patients);
-        error.setText(mc.getError());
+        
     }//GEN-LAST:event_rechercheButtonActionPerformed
 
     private void rechercheTextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rechercheTextActionPerformed
@@ -429,6 +440,7 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
     }//GEN-LAST:event_criterePropertyChange
 
     private void critereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_critereActionPerformed
+        error.setText("");
         if(critere.getSelectedIndex() == 4) {
             rechercheButton.setVisible(true);
             ddnSelect.setVisible(true);
@@ -445,8 +457,8 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
             AutreRB.setVisible(true);
             FemmeRB.setSelected(true);
             try {
-                ArrayList<Patient> patients = mc.recherchePatient("gender", "F");
-                updatePatients(patients);
+                patients = mc.recherchePatient("gender", "F");
+                updatePatients();
             } catch (SQLException ex) {
                 Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -463,8 +475,8 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
 
     private void FemmeRBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_FemmeRBActionPerformed
         try {
-            ArrayList<Patient> patients = mc.recherchePatient("gender", "F");
-            updatePatients(patients);
+            patients = mc.recherchePatient("gender", "F");
+            updatePatients();
         } catch (SQLException ex) {
             Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -473,8 +485,8 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
 
     private void HommeRBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_HommeRBActionPerformed
         try {
-                ArrayList<Patient> patients = mc.recherchePatient("gender", "H");
-                updatePatients(patients);
+                patients = mc.recherchePatient("gender", "H");
+                updatePatients();
             } catch (SQLException ex) {
                 Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -482,30 +494,31 @@ public class RecherchePatientMedecin extends javax.swing.JFrame {
 
     private void AutreRBActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AutreRBActionPerformed
         try {
-                ArrayList<Patient> patients = mc.recherchePatient("gender", "A");
-                updatePatients(patients);
+                patients = mc.recherchePatient("gender", "A");
+                updatePatients();
             } catch (SQLException ex) {
                 Logger.getLogger(RecherchePatientMedecin.class.getName()).log(Level.SEVERE, null, ex);
             }
     }//GEN-LAST:event_AutreRBActionPerformed
     
     
-    public void updatePatients(ArrayList<Patient> patients) {
+    public void updatePatients() {
         String col[] = {"Identifiant","Nom","Prénom", "Adresse", "Date de naissance", "Sexe"};
 
         this.patientsModel = new DefaultTableModel(col, 0);
 
         JRecherche.setModel(patientsModel);
-        
-        for (int i = 0; i < patients.size(); i++) {
-            String id = patients.get(i).getPatientId().trim();
-            String lastName = patients.get(i).getLastNameP().toUpperCase().trim();
-            String firstName = patients.get(i).getFirstNameP().substring(0, 1).toUpperCase() + patients.get(i).getFirstNameP().substring(1).trim();
-            String adress = patients.get(i).getAdress().trim();
-            Date bod = patients.get(i).getDdn();
-            String gender = patients.get(i).getGender();
-            Object[] data = {id , lastName, firstName, adress, bod, gender};
-            patientsModel.addRow(data);
+        if(patients.size() > 0) {
+            for (int i = 0; i < patients.size(); i++) {
+                String id = patients.get(i).getPatientId().trim();
+                String lastName = patients.get(i).getLastNameP().toUpperCase().trim();
+                String firstName = patients.get(i).getFirstNameP().substring(0, 1).toUpperCase() + patients.get(i).getFirstNameP().substring(1).trim();
+                String adress = patients.get(i).getAdress().trim();
+                Date bod = patients.get(i).getDdn();
+                String gender = patients.get(i).getGender();
+                Object[] data = {id , lastName, firstName, adress, bod, gender};
+                patientsModel.addRow(data);
+            }
         }
     }
     

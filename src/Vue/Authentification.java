@@ -96,7 +96,7 @@ public class Authentification extends javax.swing.JFrame {
         jLabel5.setText("Mot de passe : ");
 
         jTextField1.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
-        jTextField1.setText("c6ecb6cb49");
+        jTextField1.setText("2a8809b766");
         jTextField1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -104,6 +104,7 @@ public class Authentification extends javax.swing.JFrame {
             }
         });
 
+        jPasswordField1.setText("mika");
         jPasswordField1.setAutoscrolls(false);
         jPasswordField1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {

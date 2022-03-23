@@ -50,11 +50,6 @@ public class AjouterPatient extends javax.swing.JFrame {
         this.origine = origine;
         uidLabel.setText(uid);
     }
-    
-    
-    
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -376,16 +371,17 @@ public class AjouterPatient extends javax.swing.JFrame {
     }//GEN-LAST:event_JR1ActionPerformed
 
     private void addPatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPatientButtonActionPerformed
+        
         String patientId = uidLabel.getText();
         String firstName = firstNameText.getText();
-        String lastName = lastNameText.getText();
+        String lastName = lastNameText.getText();  
         String adress = adressText.getText() + " " + codePostalText.getText() + " " + villeText.getText();
         String gender = "";
         if(JR1.isSelected()) {
             gender = "H";
         } else {
             gender = "F";
-        }
+        } 
         
         Date ddn = ddnSelect.getDate();
         //Gestion de la date
@@ -428,6 +424,9 @@ public class AjouterPatient extends javax.swing.JFrame {
         
     }//GEN-LAST:event_addPatientButtonActionPerformed
 
+    
+    
+      
     /**
      * @param args the command line arguments
      */

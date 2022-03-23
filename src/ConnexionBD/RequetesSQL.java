@@ -62,7 +62,7 @@ public class RequetesSQL {
         
         //Execute the query
         java.sql.Date ddnSql = new java.sql.Date(p.getDdn().getTime());
-        ResultSet rsTest = stmt.executeQuery("SELECT * FROM PATIENT where lastNameP = '" + p.getLastNameP().toLowerCase() + "' and firstNameP = '" + p.getFirstNameP().toLowerCase() + "' and birthDate = TO_DATE('" + ddnSql + "', 'YYYY-MM-DD')");
+        ResultSet rsTest = stmt.executeQuery("SELECT * FROM PATIENT where lastNameP = '" + gestionApostrophe(p.getLastNameP().toLowerCase()) + "' and firstNameP = '" + p.getFirstNameP().toLowerCase() + "' and birthDate = TO_DATE('" + ddnSql + "', 'YYYY-MM-DD')");
         
         Patient patient = null;
         String patientId = "";
@@ -102,8 +102,13 @@ public class RequetesSQL {
         //Get a statement from the connection
         Statement stmt = dap.getConn().createStatement() ;
         //Execute the query
+        String id = patient.getPatientId().toLowerCase();
+        String nom = gestionApostrophe(patient.getLastNameP().toLowerCase());
+        String prenom = gestionApostrophe(patient.getFirstNameP().toLowerCase());  
+        String adresse = gestionApostrophe(patient.getAdress().toLowerCase());
+        String sexe = patient.getGender();
         java.sql.Date ddnSql = new java.sql.Date(patient.getDdn().getTime());
-        ResultSet rsTest = stmt.executeQuery("INSERT INTO PATIENT VALUES ('" + patient.getPatientId().toLowerCase() + "', '" + patient.getLastNameP().toLowerCase() + "', '" + patient.getFirstNameP().toLowerCase() + "', '" + patient.getAdress().toLowerCase() + "', '" + patient.getGender() + "', TO_DATE('" + ddnSql + "', 'YYYY-MM-DD'))");
+        ResultSet rsTest = stmt.executeQuery("INSERT INTO PATIENT VALUES ('" + id + "', '" + nom + "', '" + prenom + "', '" + adresse + "', '" + sexe + "', TO_DATE('" + ddnSql + "', 'YYYY-MM-DD'))");
         rsTest.close() ;
         stmt.close() ;
     }
@@ -373,7 +378,9 @@ public class RequetesSQL {
         
         //Execute the query
         java.sql.Timestamp ddnSql = new java.sql.Timestamp(e.getDate().getTime());
-        ResultSet rsTest = stmt.executeQuery("INSERT INTO EXAM VALUES ('" + e.getExamId() + "', '" + e.getPatientId() + "', '" + e.getProId() + "', '" + e.getProIdReport() +  "', '" + e.getType() + "', '" + e.getReport() + "', CURRENT_TIMESTAMP, " + e.getStatus() +")");
+        String report = gestionApostrophe(e.getReport());
+        System.out.println(report);
+        ResultSet rsTest = stmt.executeQuery("INSERT INTO EXAM VALUES ('" + e.getExamId() + "', '" + e.getPatientId() + "', '" + e.getProId() + "', '" + e.getProId() +  "', '" + e.getType() + "', '" + report + "', CURRENT_TIMESTAMP, " + e.getStatus() +")");
 
         rsTest.close() ;
         stmt.close() ;
@@ -571,6 +578,8 @@ public class RequetesSQL {
         Statement stmt = dap.getConn().createStatement() ;
         
         //Execute the query
+        report = gestionApostrophe(report);
+        System.out.println(report);
         ResultSet rsTest = stmt.executeQuery("UPDATE EXAM SET report = '" + report + "', proidreport = '" + user.getIdLogin() + "' , status = 1 WHERE examId = '" + examId +"'") ;
         
         rsTest.close() ;
@@ -817,5 +826,17 @@ public class RequetesSQL {
         rsTest.close() ;
         stmt.close() ;
         return demandes;
+    }
+    
+    public String gestionApostrophe(String string) {
+        String[] tmp = string.split("'");
+        String finalString = tmp[0];
+        if(tmp.length > 1) {
+            for (int i = 1 ; i < tmp.length ; i++) {
+                finalString += "''" + tmp[i];
+            }
+        }
+        //System.out.println("originale : " + string + " modifiée : " + finalString);
+        return finalString;
     }
 }
